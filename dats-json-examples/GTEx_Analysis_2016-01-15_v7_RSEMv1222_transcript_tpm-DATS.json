@@ -1,0 +1,139 @@
+{
+    "@type": "Dataset",
+    "identifier": {"identifier": "GTEx_Analysis_2016-01-15_v7_RSEMv1.2.22_transcript_tpm"},
+    "dates": [{
+        "date": "2017-06-30",
+        "type": {"value": "release date"}
+    }],
+    "title": "GTEx_Analysis_2016-01-15_v7_RSEMv1.2.22_transcript_tpm",
+    "description": "<some description>",
+    "storedIn": {
+        "@type": "DataRepository",
+        "name": "dbGaP"
+    },
+    "producedBy": {
+        "@type": "DataAnalysis",
+        "description": "<some description for RSEM analysis>",
+        "name": "GTEx_Analysis_2016-01-15_v7_RSEMv1.2.22_transcript_tpm",
+        "types": [{"value": "transcript per million bases"}],
+        "input": [{
+            "@type": "Material",
+            "name": "RNA-1",
+            "identifier": {"identifier": "uuid-111"},
+            "description": "total RNA extracted from aliquot 1 from specimen of peripheral blood",
+            "taxonomy": [{
+                "name": "Homo sapiens",
+                "identifiers": [{
+                    "identifier": "9606",
+                    "identifierSource": "ncbitax"
+                }]
+            }],
+            "role": [{
+                "value": "RNA extract",
+                "valueIRI": ""
+            }],
+            "derivesFrom": [{
+                "@type": "Material",
+                "name": "blood-1",
+                "identifier": {"identifier": "uuid-11"},
+                "description": "specimen of peripheral blood collected from a patient",
+                "taxonomy": [{
+                    "name": "Homo sapiens",
+                    "identifiers": [{
+                        "identifier": "9606",
+                        "identifierSource": "ncbitax"
+                    }]
+                }],
+                "role": [{
+                    "value": "specimen",
+                    "valueIRI": ""
+                }],
+                "derivesFrom": [
+                    {
+                        "@type": "Material",
+                        "name": "anonymized-patient-1",
+                        "identifier": {"identifier": "uuid-1"},
+                        "description": "a patient",
+                        "taxonomy": [{
+                            "name": "Homo sapiens",
+                            "identifiers": [{
+                                "identifier": "9606",
+                                "identifierSource": "ncbitax"
+                            }]
+                        }],
+                        "role": [
+                            {
+                                "value": "patient",
+                                "valueIRI": ""
+                            },
+                            {
+                                "value": "donor",
+                                "valueIRI": ""
+                            }
+                        ]
+                    },
+                    {
+                        "@type": "AnatomicalPart",
+                        "name": "adipose tissue",
+                        "identifier": {
+                            "identifier": "uuid-11",
+                            "identifierIRI": ""
+                        }
+                    }
+                ]
+            }]
+        }],
+        "output": [{}],
+        "measures": [{
+            "@type": "Dimension",
+            "name": {
+                "value": "Transcripts Per Kilobase Million",
+                "valueIRI": ""
+            },
+            "description": "Transcripts Per Kilobase Million",
+            "identifier": {
+                "identifier": "Dim3",
+                "identifierSource": ""
+            },
+            "datatype": [{"": ""}],
+            "types": [{
+                "value": "count",
+                "valueIRI": ""
+            }],
+            "values": []
+        }],
+        "uses": [{
+            "@type": "Software",
+            "name": "RSEM",
+            "version": "v1.2.22"
+        }]
+    },
+    "distributions": [{
+        "@type": "DatasetDistribution",
+        "access": {
+            "@type": "Access",
+            "accessURL": "$baseurl/GTEx_Analysis_2016-01-15_v7_RSEMv1.2.22_transcript_tpm.txt.gz",
+            "landingPage": "https://www.gtexportal.org/home/datasets"
+        },
+        "conformsTo": {
+            "@type": "DataStandard",
+            "name": "gzip",
+            "description": "gzip is a compression format based on the DEFLATE algorithm",
+            "identifier": {"identifier": ""}
+        }
+    }],
+    "types": [{
+        "information": {"value": "transcription profiling"},
+        "method": {"value": "nucleotide sequencing"},
+        "platform": {"value": "Illumina"},
+        "instrument": {"value": ""}
+    }],
+    "creators": [{
+        "@type": "Person",
+        "affiliations": [{
+            "@type": "Organization",
+            "name": "GTEK"
+        }],
+        "fullName": "<TO BE FILLED"
+    }]
+}

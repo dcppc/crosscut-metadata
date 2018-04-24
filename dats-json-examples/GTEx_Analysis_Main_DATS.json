@@ -1,0 +1,31 @@
+{
+"@type": "Dataset",
+"identifiers": {"identifier": "GTEx_Analysis_2016-01-15_v7_RNA-SEQ"},
+"dates": [
+{
+ "date": "2017-06-30",
+ "type": {"value": "release date"}
+}
+],
+"name":"test",
+"title": "GTEx_Subject_Phenotypes_RNASeQCv1.1.8_read_counts",
+"storedIn": {
+  "@type": "DataRepository",
+  "name": "dbGaP"
+}, 
+ "creators":[        {
+            "@type": "Person",
+            "affiliations": [{
+                "@type": "Organization",
+                "name": "GTEK"
+            }],
+            "fullName": "bob smith"
+}], 
+"types": [
+    {
+      "information": { "value": "transcription profiling"},
+      "method"   : { "value": "nucleotide sequencing"},
+      "platform" : { "value": "Illumina"},
+      "instrument" : { "value": ""}
+      }
+      ]}

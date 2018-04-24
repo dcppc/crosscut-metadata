@@ -1,0 +1,67 @@
+{
+            "@type": "Material",
+            "name": "RNA-1",
+            "identifier": {"identifier": "uuid-111"},
+            "description": "total RNA extracted from aliquot 1 from specimen of peripheral blood",
+            "taxonomy": [{
+                "name": "Homo sapiens",
+                "identifiers": [{
+                    "identifier": "9606",
+                    "identifierSource": "ncbitax"
+                }]
+            }],
+            "role": [{
+                "value": "RNA extract",
+                "valueIRI": ""
+            }],
+            "derivesFrom": [{
+                "@type": "Material",
+                "name": "blood-1",
+                "identifier": {"identifier": "uuid-11"},
+                "description": "specimen of peripheral blood collected from a patient",
+                "taxonomy": [{
+                    "name": "Homo sapiens",
+                    "identifiers": [{
+                        "identifier": "9606",
+                        "identifierSource": "ncbitax"
+                    }]
+                }],
+                "role": [{
+                    "value": "specimen",
+                    "valueIRI": ""
+                }],
+                "derivesFrom": [
+                    {
+                        "@type": "Material",
+                        "name": "anonymized-patient-1",
+                        "identifier": {"identifier": "uuid-1"},
+                        "description": "a patient",
+                        "taxonomy": [{
+                            "name": "Homo sapiens",
+                            "identifiers": [{
+                                "identifier": "9606",
+                                "identifierSource": "ncbitax"
+                            }]
+                        }],
+                        "role": [
+                            {
+                                "value": "patient",
+                                "valueIRI": ""
+                            },
+                            {
+                                "value": "donor",
+                                "valueIRI": ""
+                            }
+                        ]
+                    },
+                    {
+                        "@type": "AnatomicalPart",
+                        "name": "adipose tissue",
+                        "identifier": {
+                            "identifier": "uuid-11",
+                            "identifierIRI": ""
+                        }
+                    }
+                ]
+            }]
+        }

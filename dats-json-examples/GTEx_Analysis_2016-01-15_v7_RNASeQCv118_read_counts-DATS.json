@@ -1,0 +1,71 @@
+{
+    "@type": "Dataset",
+    "identifier": {"identifier": "GTEx_Analysis_2016-01-15_v7_RNASeQCv118_read_counts"},
+    "dates": [{
+        "date": "2017-06-30",
+        "type": {"value": "release date"}
+    }],
+    "title": "GTEx_Subject_Phenotypes_RNASeQCv1.1.8_read_counts",
+    "description": "",
+    "storedIn": {
+        "@type": "DataRepository",
+        "name": "dbGaP"
+    },
+    "types": [{
+        "information": {"value": "transcription profiling"},
+        "method": {"value": "nucleotide sequencing"},
+        "platform": {"value": "Illumina"},
+        "instrument": {"value": ""}
+    }],
+    "creators": [{
+        "@type": "Person",
+        "affiliations": [{
+            "@type": "Organization",
+            "name": "GTEK"
+        }],
+        "fullName": "bob smith"
+    }], 
+    "producedBy": {
+        "@type": "DataAnalysis",
+        "name": "GTEx_Analysis_2016-01-15_v7_RNASeQCv1.1.8",
+        "description": "",
+        "measures": [{
+            "@type": "Dimension",
+            "name": {
+                "value": "gene read counts",
+                "valueIRI": ""
+            },
+            "description": "gene read counts",
+            "identifier": {
+                "identifier": "Dim1",
+                "identifierSource": ""
+            },
+            "datatype": {"": ""},
+            "types": [{
+                "value": "count",
+                "valueIRI": ""
+            }],
+            "values": []
+        }],
+        "uses": [{
+            "@type": "Software",
+            "name": "RNASeQC",
+            "version": "v1.1.8"
+        }]
+    },    
+    "distributions": [{
+        "@type": "DatasetDistribution",
+        "access": {
+            "@type": "Access",
+            "accessURL": "",
+            "landingPage": "https://www.gtexportal.org/home/datasets"
+        },
+        "conformsTo": [{
+            "@type": "DataStandard",
+            "name": "Gene Cluster Text file format",
+            "type": {"value":"format"},
+            "description": "The GCT format is a tab delimited file format that describes an expression dataset. It is produced by GenePattern software from the Broad Institute",
+            "identifier": {"identifier": ""}
+        }]       
+    }]
+}

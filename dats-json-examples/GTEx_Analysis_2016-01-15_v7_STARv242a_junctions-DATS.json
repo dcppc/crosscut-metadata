@@ -1,0 +1,146 @@
+{
+    "@type": "Dataset",
+    "identifiers": {"identifier": "GTEx_Analysis_2016-01-15_v7_STARv2.4.2a_junctions"},
+    "dates": [
+        {
+            "date": "2017-06-30",
+            "type": {"value": "release date"}
+        }
+    ],
+    "name":"",
+    "title": "GTEx_Analysis_2016-01-15_v7_STARv2.4.2a_junctions",
+    "description": "This subject phenotype data table includes demographic information (n=9 variables; gender, age, race, ethnicty, height, weight, and bmi), study eligibiliy, general medical history (n=21 variables), autoimmune, degenerative, neurological (n=11 variables), evidence of HIV (n=9 variables), blood donation (n=2 variables), information (n=41 variables), potential exposure: physical contact (n=3 variables), potential exposure: sexual activity (n=4 variables), history at time of death (n=13 variables), tissue transplant (n=2 variables), medical history source, death circumstances (n=26 variables), tissue recovery (n=13 variables), serology results (n=14 variables), organ donor or post-mortem cohort, and total ischemic time for a donor.",
+    "storedIn": {
+        "@type": "DataRepository",
+        "name": "dbGaP"
+    },
+    "producedBy": {
+        "@type": "DataAnalysis",
+        "description": "",
+        "types": [
+            {"value": "junction"},
+        ],
+        "name": "GTEx_Analysis_2016-01-15_v7_STARv2.4.2a_junctions",
+        "input": [{
+            "@type": "Material",
+            "name": "RNA-1",
+            "identifier": {"identifier": "uuid-111"},
+            "description": "total RNA extracted from aliquot 1 from specimen of peripheral blood",
+            "taxonomy": [{
+                "name": "Homo sapiens",
+                "identifiers": [{
+                    "identifier": "9606",
+                    "identifierSource": "ncbitax"
+                }]
+            }],
+            "role": [{
+                "value": "RNA extract",
+                "valueIRI": ""
+            }],
+            "derivesFrom": [{
+                "@type": "Material",
+                "name": "blood-1",
+                "identifier": {"identifier": "uuid-11"},
+                "description": "specimen of peripheral blood collected from a patient",
+                "taxonomy": [{
+                    "name": "Homo sapiens",
+                    "identifiers": [{
+                        "identifier": "9606",
+                        "identifierSource": "ncbitax"
+                    }]
+                }],
+                "role": [{
+                    "value": "specimen",
+                    "valueIRI": ""
+                }],
+                "derivesFrom": [
+                    {
+                        "@type": "Material",
+                        "name": "anonymized-patient-1",
+                        "identifier": {"identifier": "uuid-1"},
+                        "description": "a patient",
+                        "taxonomy": [{
+                            "name": "Homo sapiens",
+                            "identifiers": [{
+                                "identifier": "9606",
+                                "identifierSource": "ncbitax"
+                            }]
+                        }],
+                        "role": [
+                            {
+                                "value": "patient",
+                                "valueIRI": ""
+                            },
+                            {
+                                "value": "donor",
+                                "valueIRI": ""
+                            }
+                        ]
+                    },
+                    {
+                        "@type": "AnatomicalPart",
+                        "name": "adipose tissue",
+                        "identifier": {
+                            "identifier": "uuid-11",
+                            "identifierIRI": ""
+                        }
+                    }
+                ]
+            }]
+        }],
+        "output": [],
+        "measures": [{
+            "@type": "Dimension",
+            "name": {
+                "value": "Transcripts Per Kilobase Million",
+                "valueIRI": ""
+            },
+            "description": "Transcripts Per Kilobase Million",
+            "identifier": {
+                "identifier": "Dim2",
+                "identifierSource": ""
+            },
+            "datatype": [{"": ""}],
+            "types": [{
+                "value": "count",
+                "valueIRI": ""
+            }],
+            "values": []
+        }],
+        "uses": [{
+            "@type": "Software",
+            "name": "STAR Aligner",
+            "version": "v2.4.2a"
+        }]
+    },
+       "distributions": [{
+        "@type": "DatasetDistribution",
+        "access": {
+            "@type": "Access",
+            "accessURL": "$baseurl/GTEx_Analysis_2016-01-15_v7_STARv2.4.2a_junctions.gct.gz",
+            "landingPage": "https://www.gtexportal.org/home/datasets"
+        },
+        "conformsTo" : {
+            "@type": "DataStandard",
+            "name" : "Gene Cluster Text file format",
+            "description" : "The GCT format is a tab delimited file format that describes an expression dataset. It is produced by GenePattern software from the Broad Institute",
+            "identifier" : {"identifier": ""}
+        }
+    }],
+     "types": [
+    {
+      "information": { "value": "transcription profiling"},
+      "method"   : { "value": "nucleotide sequencing"},
+      "platform" : { "value": "Illumina"},
+      "instrument" : { "value": ""}
+      }],
+      
+    "creators":[        {
+            "@type": "Person",
+            "affiliations": [{
+                "@type": "Organization",
+                "name": "GTEK"
+            }],
+            "fullName": "<TO BE FILLED"
+        }]
+}
