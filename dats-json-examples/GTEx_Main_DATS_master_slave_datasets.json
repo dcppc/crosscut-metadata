@@ -21,7 +21,7 @@
         "@type": "Person",
         "affiliations": [{
             "@type": "Organization",
-            "name": "GTEK"
+            "name": "GTEx"
         }],
         "fullName": "bob smith"
     }],
@@ -35,7 +35,7 @@
     }],
     "hasPart": [{
         "@type": "Dataset",
-        "identifier": {"identifier": "GTEx_Analysis_2016-01-15_v7_RNA-SEQ"},
+        "identifier": {"identifier": "GTEx_Analysis_2016-01-15_v7_RNASeQCv1.1.8_read_counts"},
         "dates": [{
             "date": "2017-06-30",
             "type": {"value": "release date"}
@@ -56,7 +56,7 @@
             "@type": "Person",
             "affiliations": [{
                 "@type": "Organization",
-                "name": "GTEK"
+                "name": "GTEx"
             }],
             "fullName": "bob smith"
         }]
