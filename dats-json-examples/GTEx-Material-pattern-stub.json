@@ -2,11 +2,11 @@
             "@type": "Material",
             "name": "RNA-1",
             "identifier": {"identifier": "uuid-111"},
-            "description": "total RNA extracted from aliquot 1 from specimen of peripheral blood",
+            "description": "total RNA extracted from aliquot 1 from specimen of adipose - subcutaneous tissue",
             "taxonomy": [{
                 "name": "Homo sapiens",
                 "identifiers": [{
-                    "identifier": "9606",
+                    "identifier": "ncbitax:9606",
                     "identifierSource": "ncbitax"
                 }]
             }],
@@ -18,11 +18,11 @@
                 "@type": "Material",
                 "name": "blood-1",
                 "identifier": {"identifier": "uuid-11"},
-                "description": "specimen of peripheral blood collected from a patient",
+                "description": "specimen of adipose - subcutaneous tissue collected from a patient",
                 "taxonomy": [{
                     "name": "Homo sapiens",
                     "identifiers": [{
-                        "identifier": "9606",
+                        "identifier": "ncbitax:9606",
                         "identifierSource": "ncbitax"
                     }]
                 }],
@@ -39,7 +39,7 @@
                         "taxonomy": [{
                             "name": "Homo sapiens",
                             "identifiers": [{
-                                "identifier": "9606",
+                                "identifier": "ncbitax:9606",
                                 "identifierSource": "ncbitax"
                             }]
                         }],
@@ -56,10 +56,10 @@
                     },
                     {
                         "@type": "AnatomicalPart",
-                        "name": "adipose tissue",
+                        "name": "adipose subcutaneous tissue",
                         "identifier": {
-                            "identifier": "uuid-11",
-                            "identifierIRI": ""
+                            "identifier": "UBERON:2190",
+                            "identifierIRI": "http://purl.obolibrary.org/obo/UBERON_0002190"
                         }
                     }
                 ]
