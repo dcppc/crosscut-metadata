@@ -4,6 +4,7 @@
             "identifier": {"identifier": "uuid-111"},
             "description": "total RNA extracted from aliquot 1 from specimen of adipose - subcutaneous tissue",
             "taxonomy": [{
+                "@type": "TaxonomicInformation",
                 "name": "Homo sapiens",
                 "identifier": {
                     "identifier": "ncbitax:9606",
@@ -20,6 +21,7 @@
                 "identifier": {"identifier": "uuid-11"},
                 "description": "specimen of adipose - subcutaneous tissue collected from a patient",
                 "taxonomy": [{
+                    "@type": "TaxonomicInformation",
                     "name": "Homo sapiens",
                     "identifier": {
                         "identifier": "ncbitax:9606",
