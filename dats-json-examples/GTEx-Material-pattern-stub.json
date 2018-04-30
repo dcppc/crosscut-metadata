@@ -5,10 +5,10 @@
             "description": "total RNA extracted from aliquot 1 from specimen of adipose - subcutaneous tissue",
             "taxonomy": [{
                 "name": "Homo sapiens",
-                "identifiers": [{
+                "identifier": {
                     "identifier": "ncbitax:9606",
                     "identifierSource": "ncbitax"
-                }]
+                }
             }],
             "roles": [{
                 "value": "RNA extract",
@@ -21,10 +21,10 @@
                 "description": "specimen of adipose - subcutaneous tissue collected from a patient",
                 "taxonomy": [{
                     "name": "Homo sapiens",
-                    "identifier": [{
+                    "identifier": {
                         "identifier": "ncbitax:9606",
                         "identifierSource": "ncbitax"
-                    }]
+                    }
                 }],
                 "roles": [{
                     "value": "specimen",
@@ -38,10 +38,10 @@
                         "description": "a patient",
                         "taxonomy": [{
                             "name": "Homo sapiens",
-                            "identifier": [{
+                            "identifier": {
                                 "identifier": "ncbitax:9606",
                                 "identifierSource": "ncbitax"
-                            }]
+                            }
                         }],
                         "roles": [
                             {
