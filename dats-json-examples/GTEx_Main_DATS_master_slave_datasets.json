@@ -5,7 +5,7 @@
         "date": "2017-06-30",
         "type": {"value": "release date"}
     }],
-    "title": "GTEx_Subject_Phenotypes_RNASeQCv1.1.8_read_counts",
+    "title": "GTEx_Subject_Phenotypes_RNASeQCv1.1.8",
     "description": "",
     "storedIn": {
         "@type": "DataRepository",
@@ -21,7 +21,7 @@
         "@type": "Person",
         "affiliations": [{
             "@type": "Organization",
-            "name": "GTEK"
+            "name": "GTEx"
         }],
         "fullName": "bob smith"
     }],
@@ -33,9 +33,10 @@
             "landingPage": ""
         }
     }],
-    "hasPart": [{
+    "hasPart": [
+    {
         "@type": "Dataset",
-        "identifier": {"identifier": "GTEx_Analysis_2016-01-15_v7_RNA-SEQ"},
+        "identifier": {"identifier": "GTEx_Analysis_2016-01-15_v7_RNASeQCv1.1.8_read_counts"},
         "dates": [{
             "date": "2017-06-30",
             "type": {"value": "release date"}
@@ -52,13 +53,141 @@
             "platform": {"value": "Illumina"},
             "instrument": {"value": ""}
         }],
+        "measures": [{
+            "@type": "Dimension",
+            "name": {
+                "value": "gene read counts",
+                "valueIRI": "http://purl.obolibrary.org/obo/STATO_0000064"
+            },
+            "description": "gene read counts",
+            "identifier": {
+                "identifier": "Dim1",
+                "identifierSource": ""
+            },
+            "datatype": {"": ""},
+            "types": [{
+                "value": "count",
+                "valueIRI": "http://purl.obolibrary.org/obo/STATO_0000047"
+            }],
+            "values": []
+        }],
+        "uses": [{
+            "@type": "Software",
+            "name": "RNASeQC",
+            "version": "v1.1.8"
+        }],
         "creators": [{
             "@type": "Person",
             "affiliations": [{
                 "@type": "Organization",
-                "name": "GTEK"
+                "name": "GTEx"
             }],
             "fullName": "bob smith"
         }]
-    }]
+    },
+    { 
+        "@type": "Dataset",
+        "identifier": {"identifier": "GTEx_Analysis_2016-01-15_v7_RSEMv1.2.22_transcript_tpm"},
+        "dates": [{
+            "date": "2017-06-30",
+            "type": {"value": "release date"}
+        }],
+        "title": "GTEx_Analysis_2016-01-15_v7_RSEMv1.2.22_transcript_tpm",
+        "description": "",
+        "storedIn": {
+            "@type": "DataRepository",
+            "name": "dbGaP"
+        },
+        "types": [{
+            "information": {"value": "transcription profiling"},
+            "method": {"value": "nucleotide sequencing"},
+            "platform": {"value": "Illumina"},
+            "instrument": {"value": ""}
+        }],
+        "measures": [{
+            "@type": "Dimension",
+            "name": {
+                "value": "Transcripts Per Kilobase Million",
+                "valueIRI": ""
+            },
+            "description": "Transcripts Per Kilobase Million",
+            "identifier": {
+                "identifier": "Dim3",
+                "identifierSource": ""
+            },
+            "datatype": [{"": ""}],
+            "types": [{
+                "value": "count",
+                "valueIRI": ""
+            }],
+            "values": []
+        }],
+        "uses": [{
+            "@type": "Software",
+            "name": "RSEM",
+            "version": "v1.2.22"
+        }],
+        "creators": [{
+            "@type": "Person",
+            "affiliations": [{
+                "@type": "Organization",
+                "name": "GTEx"
+            }],
+            "fullName": "bob smith"
+        }]
+    },
+    { 
+        "@type": "Dataset",
+        "identifier": {"identifier": "GTEx_Analysis_2016-01-15_v7_STARv2.4.2a_junctions"},
+        "dates": [{
+            "date": "2017-06-30",
+            "type": {"value": "release date"}
+        }],
+        "title": "GTEx_Analysis_2016-01-15_v7_STARv2.4.2a_junctions",
+        "description": "",
+        "storedIn": {
+            "@type": "DataRepository",
+            "name": "dbGaP"
+        },
+        "types": [{
+            "information": {"value": "transcription profiling"},
+            "method": {"value": "nucleotide sequencing"},
+            "platform": {"value": "Illumina"},
+            "instrument": {"value": ""}
+        }],
+        "measures": [{
+            "@type": "Dimension",
+            "name": {
+                "value": "Junction read counts",
+                "valueIRI": "http://purl.obolibrary.org/obo/STATO_0000064"
+            },
+            "description": "Junction read counts",
+            "identifier": {
+                "identifier": "Dim3",
+                "identifierSource": ""
+            },
+            "datatype": [{"": ""}],
+            "types": [{
+                "value": "count",
+                "valueIRI": "http://purl.obolibrary.org/obo/STATO_0000047"
+            }],
+            "values": []
+        }],
+        "isAbout":[{}],
+        "uses": [{
+            "@type": "Software",
+            "name": "STAR Aligner",
+            "version": "v2.4.2a"
+        }],
+        "creators": [{
+            "@type": "Person",
+            "affiliations": [{
+                "@type": "Organization",
+                "name": "GTEx"
+            }],
+            "fullName": "bob smith"
+        }]
+    }   
+    
+    ]
 }

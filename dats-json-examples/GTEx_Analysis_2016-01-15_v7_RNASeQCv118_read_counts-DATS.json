@@ -13,15 +13,15 @@
     },
     "types": [{
         "information": {"value": "transcription profiling"},
-        "method": {"value": "nucleotide sequencing"},
-        "platform": {"value": "Illumina"},
+        "method": {"value": "nucleotide sequencing","valueIRI": "http://purl.obolibrary.org/obo/OBI_0000626"},
+        "platform": {"value": "Illumina", "valueIRI" : "http://purl.obolibrary.org/obo/OBI_0000759"},
         "instrument": {"value": ""}
     }],
     "creators": [{
         "@type": "Person",
         "affiliations": [{
             "@type": "Organization",
-            "name": "GTEK"
+            "name": "GTEx"
         }],
         "fullName": "bob smith"
     }], 
@@ -33,7 +33,7 @@
             "@type": "Dimension",
             "name": {
                 "value": "gene read counts",
-                "valueIRI": ""
+                "valueIRI": "http://purl.obolibrary.org/obo/STATO_0000064"
             },
             "description": "gene read counts",
             "identifier": {
@@ -43,7 +43,7 @@
             "datatype": {"": ""},
             "types": [{
                 "value": "count",
-                "valueIRI": ""
+                "valueIRI": "http://purl.obolibrary.org/obo/STATO_0000047"
             }],
             "values": []
         }],
