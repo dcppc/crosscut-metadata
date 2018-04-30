@@ -10,7 +10,7 @@
                     "identifierSource": "ncbitax"
                 }]
             }],
-            "role": [{
+            "roles": [{
                 "value": "RNA extract",
                 "valueIRI": ""
             }],
@@ -21,12 +21,12 @@
                 "description": "specimen of adipose - subcutaneous tissue collected from a patient",
                 "taxonomy": [{
                     "name": "Homo sapiens",
-                    "identifiers": [{
+                    "identifier": [{
                         "identifier": "ncbitax:9606",
                         "identifierSource": "ncbitax"
                     }]
                 }],
-                "role": [{
+                "roles": [{
                     "value": "specimen",
                     "valueIRI": ""
                 }],
@@ -38,12 +38,12 @@
                         "description": "a patient",
                         "taxonomy": [{
                             "name": "Homo sapiens",
-                            "identifiers": [{
+                            "identifier": [{
                                 "identifier": "ncbitax:9606",
                                 "identifierSource": "ncbitax"
                             }]
                         }],
-                        "role": [
+                        "roles": [
                             {
                                 "value": "patient",
                                 "valueIRI": ""
