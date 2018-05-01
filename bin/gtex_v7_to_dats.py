@@ -445,6 +445,7 @@ def main():
     # print subject sample count histogram
     if args.print_sample_histogram:
         print_subject_sample_count_histogram(samples)
+        sys.exit(0)
 
     # TODO - refactor metadata parsing and JSON production into separate modules
 
