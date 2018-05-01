@@ -1,15 +1,20 @@
 # GTEX-ETL
 
-To run the (preliminary) GTEx v7 to DATS converter you'll first need to download two tab-delimited GTEx metadata
-files. Go to https://www.gtexportal.org/home/datasets and log in, then download the following two files, which
-the conversion script will expect to find in the current working directory when it is invoked:
+To run the (preliminary) GTEx v7 to DATS converter
+(https://github.com/dcppc-phosphorous/GTEX-ETL/blob/master/bin/gtex_v7_to_dats.py)
+you'll first need to download the two tab-delimited GTEx public
+metadata files. Go to https://www.gtexportal.org/home/datasets and log
+in, then download the following two files, which the conversion script
+will expect to find in the current working directory when it is
+invoked:
 
 * GTEx_v7_Annotations_SampleAttributesDS.txt
 * GTEx_v7_Annotations_SubjectPhenotypesDS.txt
 
-Running the conversion script with the `--print_sample_histogram` flag will parse the two metadata files and 
-display a histogram showing how many subjects/patients (n_subjects, column 2) are linked to the indicated 
-number of samples (n_samples, column 1). For example:
+Running the conversion script with the `--print_sample_histogram` flag
+will parse the two metadata files and display a histogram showing how
+many subjects/patients (`n_subjects`, column 2) are linked to the
+indicated number of samples (`n_samples`, column 1). For example:
 
     bash-3.2$ ./bin/gtex_v7_to_dats.py --print_sample_histogram
     INFO:root:Read 752 subject(s) from GTEx_v7_Annotations_SubjectPhenotypesDS.txt
@@ -60,7 +65,7 @@ number of samples (n_samples, column 1). For example:
     43	1
     44	5
     45	1
-    53  1
+    53	1
     56	1
     57	1
     68	1
@@ -69,8 +74,8 @@ number of samples (n_samples, column 1). For example:
     n_total_subjects=752
     bash-3.2$ 
 
-The outlier "subject" linked to 160 samples is a leukemia cell line (K-562) and is also the only subject
-with an id not of the form GTEX-XXXX. Note that this histogram includes all of the samples from the metadata
+The outlier "subject" linked to 160 samples is a leukemia cell line (`K-562`) and is also the only subject
+with an id not of the form `GTEX-XXXX`. Note that this histogram includes all of the samples from the metadata
 file, not all of which were used for RNA-Seq (and some of which are marked as excluded ("EXCLUDE") from the 
 analysis freeze.)
 
