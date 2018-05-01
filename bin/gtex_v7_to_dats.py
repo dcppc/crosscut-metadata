@@ -1,8 +1,13 @@
 #!/usr/bin/env python3
 
+# Convert GTEx v7 metadata to DATS JSON
+
 import argparse
+from collections import OrderedDict
 import csv
+import json
 import logging
+import os
 import re
 import sys
 
@@ -49,7 +54,8 @@ SAMPLE_ATT_COLS = [
     {'id': 'SMRIN', 'empty_ok': True },
     {'id': 'SMTS', 'cv': SA_TISSUE_TYPES , 'empty_ok': False },
     {'id': 'SMTSD', 'cv': SA_DETAILED_TISSUE_TYPES , 'empty_ok': False },
-    {'id': 'SMUBRID', 'empty_ok': False },
+    # Uberon id e.g., 0002190 or EFO id e.g., EFO_0002009 (undocumented)
+    {'id': 'SMUBRID', 'regex': r'^\d{7}|EFO_\d+$', 'empty_ok': False },
     {'id': 'SMTSISCH', 'empty_ok': True },
     {'id': 'SMTSPAX', 'empty_ok': True },
     {'id': 'SMNABTCH', 'empty_ok': False },
@@ -106,6 +112,31 @@ SAMPLE_ATT_COLS = [
     {'id': 'SMDPMPRT', 'empty_ok': True }
 ]
 
+DATS_TAXON_HUMAN =  [
+    OrderedDict([
+            ("@type", "TaxonomicInformation"),
+            ("name", "Homo sapiens"),
+            ("identifier", OrderedDict([
+                        ("identifier", "ncbitax:9606"),
+                        ("identifierSource", "ncbitax")]))
+            ])
+    ]
+
+DATS_DONOR_ROLES = [
+    OrderedDict([
+            ("value", "patient"),
+            ("valueIRI",  "")]),
+    OrderedDict([
+            ("value", "donor"),
+            ("valueIRI", "")])
+    ]
+
+TMPID = 0
+
+# ------------------------------------------------------
+# Error handling
+# ------------------------------------------------------
+
 def fatal_error(err_msg):
     logging.fatal(err_msg)
     sys.exit(1)
@@ -114,9 +145,11 @@ def fatal_parse_error(err_msg, file, lnum):
     msg = err_msg + " at line " + str(lnum) + " of " + file
     fatal_error(msg)
 
-#
+# ------------------------------------------------------
+# Metadata file parsing
+# ------------------------------------------------------
+
 # Generic parser for subject/phenotype and sample/attribute metadata files
-#
 def read_metadata_file(file_path, column_metadata, id_column):
     # rows indexed by the value in id_column
     rows = {}
@@ -221,10 +254,182 @@ def link_samples_to_subjects(samples, subjects):
             fatal_error("Found reference to nonexistent SUBJID '" + subjid + "' from SAMPID '" + + "'")
         sample['subject'] = subjects[subjid]
 
+def print_subject_sample_count_histogram(samples):
+    print("Histogram of number of subjects that have a given number of samples")
+
+    # count samples per subject
+    subject_sample_count = {}
+    for s in samples:
+        sample = samples[s]
+        subject = sample['subject']['SUBJID']['mapped_value']
+        if subject in subject_sample_count:
+            subject_sample_count[subject] += 1
+        else:
+            subject_sample_count[subject] = 1
+
+    # convert to histogram
+    ssc_hist = {}
+    for s in subject_sample_count:
+        ct = subject_sample_count[s]
+        if ct in ssc_hist:
+            ssc_hist[ct] += 1
+        else:
+            ssc_hist[ct] = 1
+#        print(s + " has " + str(ct) + " sample(s)")
+
+    # print histogram
+    n_total_samples = 0
+    n_total_subjects = 0
+    print("n_samples\tn_subjects")
+    for n_samples in sorted(ssc_hist):
+        n_subjects = ssc_hist[n_samples]
+        print(str(n_samples) + "\t" + str(n_subjects))
+        n_total_subjects += n_subjects
+        n_total_samples += (n_subjects * n_samples)
+    print("n_total_samples=" + str(n_total_samples))
+    print("n_total_subjects=" + str(n_total_subjects))
+
+
+# ------------------------------------------------------
+# DATS JSON Output
+# ------------------------------------------------------
+
+# Generate temporary/nonunique id for DATS 'identifier'
+def tmpid():
+    global TMPID
+    TMPID += 1
+    return "TMPID_" + '%08d' % TMPID
+
+def write_single_sample_json(sample, output_file):
+    samp_id = sample['SAMPID']['mapped_value']
+    subj_id = sample['SUBJID']['mapped_value']
+    subject = sample['subject']
+    print("writing " + samp_id + " to " + output_file)
+
+    # Uberon id (or EFO id, contrary to the documentation)
+    anat_id = sample['SMUBRID']['mapped_value']
+    if anat_id is None:
+        print("No Uberon/anatomy ID specified for sample " + samp_id)
+        sys.exit(1)
+
+    anatomy_identifier = None
+    # TODO - query anatomy term from UBERON/EFO instead?
+    anatomy_name = sample['SMTSD']['mapped_value']
+
+    # EFO id
+    if re.match(r'^EFO_\d+', anat_id):
+        anatomy_identifier = OrderedDict([
+                ("identifier",  anat_id),
+                ("identifierIRI", "https://www.ebi.ac.uk/ols/ontologies/efo/terms?short_form=" + str(anat_id))])
+    # Uberon id
+    else:
+        anatomy_identifier = OrderedDict([
+                ("identifier",  "UBERON:" + str(anat_id)),
+                ("identifierIRI", "http://purl.obolibrary.org/obo/UBERON_" + str(anat_id))])
+
+    # anatomical part
+    anatomical_part = OrderedDict([
+            ("@type", "AnatomicalPart"),
+            ("name", anatomy_name),
+            ("identifier", anatomy_identifier)
+            ])
+
+    # human experimental subject/patient
+    subject_sex = OrderedDict([
+            ("@type", "Dimension"),
+            ("name", "Gender"),
+            ("description", "Gender of the subject"),
+            ("values", ["male", "female"])
+            ])
+
+    subject_age = OrderedDict([
+            ("@type", "Dimension"),
+            ("name", "Age range"),
+            ("description", "Age range of the subject"),
+            ("values", SUBJ_PHEN_COLS[2]['cv'])
+            ])
+
+    subject_hardy_scale = OrderedDict([
+            ("@type", "Dimension"),
+            ("name", "Hardy scale"),
+            ("description", "Hardy scale death classification for the subject"),
+            ("values", [str(x) for x in SUBJ_PHEN_COLS[3]['integer_cv'].values()])
+            ])
+
+    subject_characteristics = [
+        subject_sex,
+        subject_age,
+        subject_hardy_scale
+        ]
+
+    # TODO - not clear if this is the correct place for the values that correspond to subject_characteristics
+    subject_props = [
+        {"Gender": subject['SEX']['mapped_value']},
+        {"Age range": subject['AGE']['mapped_value']},
+        {"Hardy scale": subject['DTHHRDY']['mapped_value']}
+        ]
+
+    # human experimental subject/patient
+    subject_material = OrderedDict([
+            ("@type", "Material"),
+            ("name", subj_id),
+            ("identifier", { "identifier": tmpid() }),
+            ("description", "GTEx subject " + subj_id),
+            ("properties", subject_props),
+            ("characteristics", subject_characteristics),
+            ("taxonomy", DATS_TAXON_HUMAN),
+            ("roles", DATS_DONOR_ROLES)
+            ])
+
+    # biological/tissue sample
+    sample_name = subj_id + " " + anatomy_name + " specimen"
+    biological_sample_material = OrderedDict([
+            ("@type", "Material"),
+            ("name", sample_name),
+            ("identifier", {"identifier": tmpid()}),
+            ("description", anatomy_name + " specimen collected from subject " + subj_id),
+            ("taxonomy", DATS_TAXON_HUMAN),
+            ("roles", [ OrderedDict([("value", "specimen"), ("valueIRI", "")]) ]),
+            ("derivesFrom", [ subject_material, anatomical_part ])
+            ])
+
+    # RNA extracted from tissue sample
+    rna_material = OrderedDict([
+            ("@type", "Material"),
+            ("name", "RNA from " + sample_name),
+            ("identifier", {"identifier": tmpid()}),
+            ("description", "total RNA extracted from " + anatomy_name + " specimen collected from subject " + subj_id),
+            ("taxonomy", DATS_TAXON_HUMAN),
+            ("roles", [ OrderedDict([("value", "RNA extract"), ("valueIRI", "")])]),
+            ("derivesFrom", [ biological_sample_material ])
+            ])
+
+    with open(output_file, mode="w") as jf:
+        jf.write(json.dumps(rna_material, indent=2))
+
+def write_samples_json(subjects, samples, output_dir, smafrze):
+    # write separate JSON file for each sample
+    for s in sorted(samples):
+        sample = samples[s]
+        samp_id = sample['SAMPID']['mapped_value']
+        samp_smafrze = sample['SMAFRZE']['mapped_value']
+        if (smafrze is not None) and (samp_smafrze != smafrze):
+            print("skipping " + samp_id + " from smafrze " + samp_smafrze)
+            continue
+        output_file = os.path.join(output_dir, samp_id + ".json")
+        write_single_sample_json(sample, output_file)
+
+# ------------------------------------------------------
+# main()
+# ------------------------------------------------------
+
 def main():
 
     # input
     parser = argparse.ArgumentParser(description='Convert GTEx v7 metadata to DATS JSON.')
+    parser.add_argument('--output_dir', default='.', help ='Destination directory for DATS JSON files.')
+    parser.add_argument('--smafrze', default=None, help ='Analysis freeze. One of RNASEQ,WGS,WES,OMNI,EXCLUDE.')
+    parser.add_argument('--print_sample_histogram', dest='print_sample_histogram', action='store_true', default=False, help ='Print histogram of samples per subject.')
     args = parser.parse_args()
 
     # logging
@@ -237,7 +442,14 @@ def main():
     # link subjects to samples
     link_samples_to_subjects(samples, subjects)
 
-    # TODO - generate count of samples per subject
+    # print subject sample count histogram
+    if args.print_sample_histogram:
+        print_subject_sample_count_histogram(samples)
+
+    # TODO - refactor metadata parsing and JSON production into separate modules
+
+    # produce DATS JSON file for each sample
+    write_samples_json(subjects, samples, args.output_dir, args.smafrze)
 
 if __name__ == '__main__':
     main()
