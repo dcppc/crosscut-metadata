@@ -1,0 +1,135 @@
+{
+  "@type": "Material",
+  "name": "RNA from GTEX-1117F Adipose - Subcutaneous specimen",
+  "identifier": {
+    "identifier": "TMPID_00000003"
+  },
+  "description": "total RNA extracted from Adipose - Subcutaneous specimen collected from subject GTEX-1117F",
+  "taxonomy": [
+    {
+      "@type": "TaxonomicInformation",
+      "name": "Homo sapiens",
+      "identifier": {
+        "identifier": "ncbitax:9606",
+        "identifierSource": "ncbitax"
+      }
+    }
+  ],
+  "roles": [
+    {
+      "value": "RNA extract",
+      "valueIRI": ""
+    }
+  ],
+  "derivesFrom": [
+    {
+      "@type": "Material",
+      "name": "GTEX-1117F Adipose - Subcutaneous specimen",
+      "identifier": {
+        "identifier": "TMPID_00000002"
+      },
+      "description": "Adipose - Subcutaneous specimen collected from subject GTEX-1117F",
+      "taxonomy": [
+        {
+          "@type": "TaxonomicInformation",
+          "name": "Homo sapiens",
+          "identifier": {
+            "identifier": "ncbitax:9606",
+            "identifierSource": "ncbitax"
+          }
+        }
+      ],
+      "roles": [
+        {
+          "value": "specimen",
+          "valueIRI": ""
+        }
+      ],
+      "derivesFrom": [
+        {
+          "@type": "Material",
+          "name": "GTEX-1117F",
+          "identifier": {
+            "identifier": "TMPID_00000001"
+          },
+          "description": "GTEx subject GTEX-1117F",
+          "properties": [
+            {
+              "Gender": "female"
+            },
+            {
+              "Age range": "60-69"
+            },
+            {
+              "Hardy scale": "Slow death"
+            }
+          ],
+          "characteristics": [
+            {
+              "@type": "Dimension",
+              "name": "Gender",
+              "description": "Gender of the subject",
+              "values": [
+                "male",
+                "female"
+              ]
+            },
+            {
+              "@type": "Dimension",
+              "name": "Age range",
+              "description": "Age range of the subject",
+              "values": [
+                "20-29",
+                "30-39",
+                "40-49",
+                "50-59",
+                "60-69",
+                "70-79"
+              ]
+            },
+            {
+              "@type": "Dimension",
+              "name": "Hardy scale",
+              "description": "Hardy scale death classification for the subject",
+              "values": [
+                "Ventilator case",
+                "Violent and fast death",
+                "Fast death of natural causes",
+                "Intermediate",
+                "Slow death"
+              ]
+            }
+          ],
+          "taxonomy": [
+            {
+              "@type": "TaxonomicInformation",
+              "name": "Homo sapiens",
+              "identifier": {
+                "identifier": "ncbitax:9606",
+                "identifierSource": "ncbitax"
+              }
+            }
+          ],
+          "roles": [
+            {
+              "value": "patient",
+              "valueIRI": ""
+            },
+            {
+              "value": "donor",
+              "valueIRI": ""
+            }
+          ]
+        },
+        {
+          "@type": "AnatomicalPart",
+          "name": "Adipose - Subcutaneous",
+          "identifier": {
+            "identifier": "UBERON:0002190",
+            "identifierIRI": "http://purl.obolibrary.org/obo/UBERON_0002190"
+          }
+        }
+      ]
+    }
+  ]
+}
