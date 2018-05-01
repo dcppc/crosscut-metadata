@@ -126,8 +126,14 @@
           "name": "Adipose - Subcutaneous",
           "identifier": {
             "identifier": "UBERON:0002190",
-            "identifierIRI": "http://purl.obolibrary.org/obo/UBERON_0002190"
-          }
+            "identifierSource": "UBERON"
+          },
+          "alternateIdentifiers": [
+            {
+              "identifier": "http://purl.obolibrary.org/obo/UBERON_0002190",
+              "identifierSource": "UBERON"
+            }
+          ]
         }
       ]
     }

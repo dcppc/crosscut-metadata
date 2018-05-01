@@ -313,6 +313,7 @@ def write_single_sample_json(sample, output_file):
         sys.exit(1)
 
     anatomy_identifier = None
+    anatomy_alt_ids = None
     # TODO - query anatomy term from UBERON/EFO instead?
     anatomy_name = sample['SMTSD']['mapped_value']
 
@@ -320,18 +321,25 @@ def write_single_sample_json(sample, output_file):
     if re.match(r'^EFO_\d+', anat_id):
         anatomy_identifier = OrderedDict([
                 ("identifier",  anat_id),
-                ("identifierIRI", "https://www.ebi.ac.uk/ols/ontologies/efo/terms?short_form=" + str(anat_id))])
+                ("identifierSource",  "EFO")])
+        anatomy_alt_ids = [OrderedDict([
+                    ("identifier", "https://www.ebi.ac.uk/ols/ontologies/efo/terms?short_form=" + str(anat_id)),
+                    ("identifierSource", "EFO")])]
     # Uberon id
     else:
         anatomy_identifier = OrderedDict([
                 ("identifier",  "UBERON:" + str(anat_id)),
-                ("identifierIRI", "http://purl.obolibrary.org/obo/UBERON_" + str(anat_id))])
+                ("identifierSource", "UBERON")])
+        anatomy_alt_ids = [OrderedDict([
+                    ("identifier", "http://purl.obolibrary.org/obo/UBERON_" + str(anat_id)),
+                    ("identifierSource", "UBERON")])]
 
     # anatomical part
     anatomical_part = OrderedDict([
             ("@type", "AnatomicalPart"),
             ("name", anatomy_name),
-            ("identifier", anatomy_identifier)
+            ("identifier", anatomy_identifier),
+            ("alternateIdentifiers", anatomy_alt_ids)
             ])
 
     # human experimental subject/patient
@@ -407,17 +415,26 @@ def write_single_sample_json(sample, output_file):
     with open(output_file, mode="w") as jf:
         jf.write(json.dumps(rna_material, indent=2))
 
-def write_samples_json(subjects, samples, output_dir, smafrze):
+def write_samples_json(subjects, samples, output_dir):
     # write separate JSON file for each sample
     for s in sorted(samples):
         sample = samples[s]
         samp_id = sample['SAMPID']['mapped_value']
-        samp_smafrze = sample['SMAFRZE']['mapped_value']
-        if (smafrze is not None) and (samp_smafrze != smafrze):
-            print("skipping " + samp_id + " from smafrze " + samp_smafrze)
-            continue
         output_file = os.path.join(output_dir, samp_id + ".json")
         write_single_sample_json(sample, output_file)
+
+def filter_samples(samples, smafrze):
+    if smafrze is None:
+        return samples
+    filtered_samples = {}
+    for s in samples:
+        sample = samples[s]
+        samp_smafrze = sample['SMAFRZE']['mapped_value']
+        if samp_smafrze == smafrze:
+            filtered_samples[s] = sample
+    nfs = len(filtered_samples)
+    logging.info("Found " + str(nfs) + "/" + str(len(samples)) + " sample(s) with SMAFRZE=" + smafrze)
+    return filtered_samples
 
 # ------------------------------------------------------
 # main()
@@ -439,6 +456,9 @@ def main():
     subjects = read_subject_phenotypes_file(V7_SUBJECT_PHENOTYPES_FILE)
     samples = read_sample_attributes_file(V7_SAMPLE_ATTRIBUTES_FILE)
 
+    # filter subjects by smafrze
+    samples = filter_samples(samples, args.smafrze)
+
     # link subjects to samples
     link_samples_to_subjects(samples, subjects)
 
@@ -450,7 +470,7 @@ def main():
     # TODO - refactor metadata parsing and JSON production into separate modules
 
     # produce DATS JSON file for each sample
-    write_samples_json(subjects, samples, args.output_dir, args.smafrze)
+    write_samples_json(subjects, samples, args.output_dir)
 
 if __name__ == '__main__':
     main()
