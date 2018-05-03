@@ -1,5 +1,20 @@
 #!/bin/tcsh
 
-# generate JSON for RNASEQ samples only
-mkdir -p gtex_rnaseq_json
-./bin/gtex_v7_to_dats.py --smafrze=RNASEQ --output_dir=gtex_rnaseq_json
+# Generate JSON for RNASEQ samples and then create BDBag
+setenv VERSION 0.1
+setenv EXTERNAL_ID "kc7-crosscut-metadata-v${VERSION}-internal"
+setenv EXTERNAL_DESCR "Internal-only v${VERSION} release of the KC7 crosscut metadata model for GTEx v7 public metadata using DATS v2.2+"
+
+# convert public GTEx v7 metadata to DATS JSON
+mkdir -p $EXTERNAL_ID/samples
+./bin/gtex_v7_to_dats.py --smafrze=RNASEQ --output_dir=$EXTERNAL_ID/samples
+
+# create BDBag
+bdbag --archive tgz \
+ --source-organization 'NIH DCPPC KC7 Working Group' \
+ --contact-name 'Jonathan Crabtree' \
+ --contact-email 'jcrabtree@som.umaryland.edu' \
+ --external-description "$EXTERNAL_DESCR" \
+ --external-identifier $EXTERNAL_ID \
+$EXTERNAL_ID
+
