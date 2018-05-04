@@ -381,7 +381,7 @@ def write_single_sample_json(sample, output_file):
     subject_material = OrderedDict([
             ("@type", "Material"),
             ("name", subj_id),
-            ("identifier", { "identifier": tmpid() }),
+#            ("identifier", { "identifier": tmpid() }),
             ("description", "GTEx subject " + subj_id),
             ("extraProperties", subject_extra_props),
             ("characteristics", subject_characteristics),
@@ -394,7 +394,7 @@ def write_single_sample_json(sample, output_file):
     biological_sample_material = OrderedDict([
             ("@type", "Material"),
             ("name", sample_name),
-            ("identifier", {"identifier": tmpid()}),
+#            ("identifier", {"identifier": tmpid()}),
             ("description", anatomy_name + " specimen collected from subject " + subj_id),
             ("taxonomy", DATS_TAXON_HUMAN),
             ("roles", [ OrderedDict([("value", "specimen"), ("valueIRI", "")]) ]),
@@ -405,7 +405,7 @@ def write_single_sample_json(sample, output_file):
     rna_material = OrderedDict([
             ("@type", "Material"),
             ("name", "RNA from " + sample_name),
-            ("identifier", {"identifier": tmpid()}),
+#            ("identifier", {"identifier": tmpid()}),
             ("description", "total RNA extracted from " + anatomy_name + " specimen collected from subject " + subj_id),
             ("taxonomy", DATS_TAXON_HUMAN),
             ("roles", [ OrderedDict([("value", "RNA extract"), ("valueIRI", "")])]),
