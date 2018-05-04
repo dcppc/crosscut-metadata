@@ -34,7 +34,7 @@ JUNCTION_READ_COUNT_NAME = OrderedDict([("value", "Junction read counts"), ("val
 # "transcription profiling assay"
 TRANSCRIPT_PROFILING_TYPE = OrderedDict([("value", "transcription profiling"), ("valueIRI", "http://purl.obolibrary.org/obo/OBI_0000424")])
 # "RNA-seq assay"
-RNASEQ_ASSAY_TYPE = OrderedDict([("valueIRI", "http://purl.obolibrary.org/obo/OBI_0001271")])
+RNASEQ_ASSAY_TYPE = OrderedDict([("value", "RNA-seq assay"), ("valueIRI", "http://purl.obolibrary.org/obo/OBI_0001271")])
 # "Illumina"
 ILLUMINA_TYPE = OrderedDict([("value", "Illumina"), ("valueIRI", "http://purl.obolibrary.org/obo/OBI_0000759")])
 
@@ -164,6 +164,7 @@ def write_datasets_json(output_file):
     for dss in RNASEQ_DATASETS:
         descr = dss["descr"]
         file = dss["file"]
+
         measures = dss["measures"]
         uses = dss["uses"]
 
@@ -187,9 +188,10 @@ def write_datasets_json(output_file):
                                             ("landingPage", GTEX_DATASETS_URL)
                                             ]))
                                 ])]),
-                # TODO - "measures" does not appear in DATS v2.2 dataset_schema.json?
-                ("measures", measures),
-                ("uses", uses)
+
+                # TODO - 'measures' and 'uses' belong in DataAnalysis, not Dataset?
+#                ("measures", measures),
+#                ("uses", uses)
                 ])
         rnaseq_data_subsets.append(subset)
 
@@ -213,7 +215,8 @@ def write_datasets_json(output_file):
                                                 ("landingPage", GTEX_DATASETS_URL)
                                                 ]))
                                     ])]),
-            ("uses", [RNA_SEQ_QC]),
+            # TODO - 'measures' and 'uses' belong in DataAnalysis, not Dataset?
+#            ("uses", [RNA_SEQ_QC]),
             ("hasPart", rnaseq_data_subsets)
             ])
 
