@@ -304,7 +304,7 @@ def write_single_sample_json(sample, output_file):
     samp_id = sample['SAMPID']['mapped_value']
     subj_id = sample['SUBJID']['mapped_value']
     subject = sample['subject']
-    print("writing " + samp_id + " to " + output_file)
+    logging.debug("writing " + samp_id + " to " + output_file)
 
     # Uberon id (or EFO id, contrary to the documentation)
     anat_id = sample['SMUBRID']['mapped_value']
@@ -381,7 +381,7 @@ def write_single_sample_json(sample, output_file):
     subject_material = OrderedDict([
             ("@type", "Material"),
             ("name", subj_id),
-#            ("identifier", { "identifier": tmpid() }),
+            ("identifier", { "identifier": subj_id }),
             ("description", "GTEx subject " + subj_id),
             ("extraProperties", subject_extra_props),
             ("characteristics", subject_characteristics),
@@ -390,11 +390,11 @@ def write_single_sample_json(sample, output_file):
             ])
 
     # biological/tissue sample
-    sample_name = subj_id + " " + anatomy_name + " specimen"
+    sample_name = samp_id
     biological_sample_material = OrderedDict([
             ("@type", "Material"),
             ("name", sample_name),
-#            ("identifier", {"identifier": tmpid()}),
+            ("identifier", { "identifier": samp_id }),
             ("description", anatomy_name + " specimen collected from subject " + subj_id),
             ("taxonomy", DATS_TAXON_HUMAN),
             ("roles", [ OrderedDict([("value", "specimen"), ("valueIRI", "")]) ]),
