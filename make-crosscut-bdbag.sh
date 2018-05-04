@@ -7,7 +7,7 @@ setenv EXTERNAL_DESCR "Internal-only v${VERSION} release of the KC7 crosscut met
 
 # convert public GTEx v7 metadata to DATS JSON
 mkdir -p $EXTERNAL_ID/samples
-./bin/gtex_v7_to_dats.py --smafrze=RNASEQ --output_dir=$EXTERNAL_ID/samples  >all-samples.json
+./bin/gtex_v7_to_dats.py --smafrze=RNASEQ --output_dir=$EXTERNAL_ID/samples
 
 # create/add DATS JSON for RNA-Seq Datasets
 mkdir -p $EXTERNAL_ID/datasets
