@@ -1,5 +1,6 @@
-0.1 (May 3 2018)
- -Initial KC7-internal release of KC7 crosscut metadata model for GTEx v7 public RNA-Seq metadata.
- -DATS JSON files are unvalidated and may use features not present in current (v2.2) DATS release.
- -This is a preview release for internal consumption only.
+0.1 (May 4 2018)
+ -Initial KC7 internal-only release of KC7 crosscut metadata model for GTEx v7 public RNA-Seq metadata.
+ -DATS JSON files validate against https://github.com/biocaddie/WG3-MetadataSpecifications master branch
+ -DATS JSON files do NOT validate against current (v2.2) DATS release
+ -This is a preview release for internal consumption only and it is subject to change.
 
