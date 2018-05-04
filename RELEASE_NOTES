@@ -1,0 +1,30 @@
+
+v0.1 Release Notes
+
+This release is a KC7 internal-only release of the KC7 crosscut metadata model for GTEx v7 public RNA-Seq metadata.
+Note that although the DATS JSON files have been validated against the JSON schemas in the master branch of 
+https://github.com/biocaddie/WG3-MetadataSpecifications, they will NOT validate against the current (v2.2) DATS
+release. This is a preview release for internal consumption only and it is subject to change.
+
+The following files can be found in the BDBag:
+
+data/docs/ChangeLog       
+  ChangeLog for the crosscut metadata model.
+
+data/docs/RELEASE_NOTES  
+  A copy of this file.
+
+data/datasets/rnaseq.json
+  A single DATS JSON file that represents the parent RNA-Seq Dataset (for the public GTEx v7 data only) and 
+  the individual sub-Datasets/data files associated with it (e.g., gene read counts, exon read counts, TPMs)
+
+data/samples/*.json
+  One DATS JSON file for each RNA-Seq sample in the public GTEx v7 Dataset. In this release each RNA-Seq
+  sample (represented as a DATS Material object) is provided as a separate JSON file. In future releases
+  it is likely that these individual sample files will be combined with the rnaseq.json file that contains
+  the Dataset-level information. For example, the top-level RNA-Seq Dataset could contain an "isAbout" 
+  attribute that lists all 11,688 Materials in this directory.
+
+
+
+
