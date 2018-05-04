@@ -40,7 +40,7 @@
                 "identifier": "Dim1",
                 "identifierSource": ""
             },
-            "datatype": {"": ""},
+            "datatype": {},
             "types": [{
                 "value": "count",
                 "valueIRI": "http://purl.obolibrary.org/obo/STATO_0000047"
