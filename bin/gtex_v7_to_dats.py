@@ -345,21 +345,21 @@ def write_single_sample_json(sample, output_file):
     # human experimental subject/patient
     subject_sex = OrderedDict([
             ("@type", "Dimension"),
-            ("name", "Gender"),
+            ("name", { "value": "Gender" }),
             ("description", "Gender of the subject"),
             ("values", ["male", "female"])
             ])
 
     subject_age = OrderedDict([
             ("@type", "Dimension"),
-            ("name", "Age range"),
+            ("name", { "value": "Age range" }),
             ("description", "Age range of the subject"),
             ("values", SUBJ_PHEN_COLS[2]['cv'])
             ])
 
     subject_hardy_scale = OrderedDict([
             ("@type", "Dimension"),
-            ("name", "Hardy scale"),
+            ("name", { "value": "Hardy scale" } ),
             ("description", "Hardy scale death classification for the subject"),
             ("values", [str(x) for x in SUBJ_PHEN_COLS[3]['integer_cv'].values()])
             ])
@@ -371,10 +371,10 @@ def write_single_sample_json(sample, output_file):
         ]
 
     # TODO - not clear if this is the correct place for the values that correspond to subject_characteristics
-    subject_props = [
-        {"Gender": subject['SEX']['mapped_value']},
-        {"Age range": subject['AGE']['mapped_value']},
-        {"Hardy scale": subject['DTHHRDY']['mapped_value']}
+    subject_extra_props = [
+        OrderedDict([("category","Gender"), ("values", [ subject['SEX']['mapped_value'] ])] ),
+        OrderedDict([("category","Age range"), ("values", [ subject['AGE']['mapped_value'] ])] ),
+        OrderedDict([("category","Hardy scale"), ("values", [ subject['DTHHRDY']['mapped_value'] ])] )
         ]
 
     # human experimental subject/patient
@@ -383,7 +383,7 @@ def write_single_sample_json(sample, output_file):
             ("name", subj_id),
             ("identifier", { "identifier": tmpid() }),
             ("description", "GTEx subject " + subj_id),
-            ("properties", subject_props),
+            ("extraProperties", subject_extra_props),
             ("characteristics", subject_characteristics),
             ("taxonomy", DATS_TAXON_HUMAN),
             ("roles", DATS_DONOR_ROLES)
