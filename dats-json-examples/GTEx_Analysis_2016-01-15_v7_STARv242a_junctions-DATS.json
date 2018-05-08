@@ -1,13 +1,12 @@
 {
     "@type": "Dataset",
-    "identifiers": {"identifier": "GTEx_Analysis_2016-01-15_v7_STARv2.4.2a_junctions"},
+    "identifier": {"identifier": "GTEx_Analysis_2016-01-15_v7_STARv2.4.2a_junctions"},
     "dates": [
         {
             "date": "2017-06-30",
             "type": {"value": "release date"}
         }
     ],
-    "name":"",
     "title": "GTEx_Analysis_2016-01-15_v7_STARv2.4.2a_junctions",
     "description": "This subject phenotype data table includes demographic information (n=9 variables; gender, age, race, ethnicty, height, weight, and bmi), study eligibiliy, general medical history (n=21 variables), autoimmune, degenerative, neurological (n=11 variables), evidence of HIV (n=9 variables), blood donation (n=2 variables), information (n=41 variables), potential exposure: physical contact (n=3 variables), potential exposure: sexual activity (n=4 variables), history at time of death (n=13 variables), tissue transplant (n=2 variables), medical history source, death circumstances (n=26 variables), tissue recovery (n=13 variables), serology results (n=14 variables), organ donor or post-mortem cohort, and total ischemic time for a donor.",
     "storedIn": {
@@ -17,9 +16,6 @@
     "producedBy": {
         "@type": "DataAnalysis",
         "description": "",
-        "types": [
-            {"value": "junction"}
-        ],
         "name": "GTEx_Analysis_2016-01-15_v7_STARv2.4.2a_junctions",
         "input": [{
             "@type": "Material",
@@ -28,10 +24,10 @@
             "description": "total RNA extracted from aliquot 1 from specimen of adipose - subcutaneous tissue",
             "taxonomy": [{
                 "name": "Homo sapiens",
-                "identifiers": [{
+                "identifier": {
                     "identifier": "ncbitax:9606",
                     "identifierSource": "ncbitax"
-                }]
+                }
             }],
             "role": [{
                 "value": "RNA extract",
@@ -44,10 +40,10 @@
                 "description": "specimen of adipose - subcutaneous tissue collected from a patient",
                 "taxonomy": [{
                     "name": "Homo sapiens",
-                    "identifiers": [{
+                    "identifier": {
                         "identifier": "ncbitax:9606",
                         "identifierSource": "ncbitax"
-                    }]
+                    }
                 }],
                 "role": [{
                     "value": "specimen",
@@ -61,10 +57,10 @@
                         "description": "a patient",
                         "taxonomy": [{
                             "name": "Homo sapiens",
-                            "identifiers": [{
+                            "identifier": {
                                 "identifier": "ncbitax:9606",
                                 "identifierSource": "ncbitax"
-                            }]
+                            }
                         }],
                         "role": [
                             {
@@ -100,14 +96,13 @@
                 "identifier": "Dim3",
                 "identifierSource": ""
             },
-            "datatype": [{"": ""}],
+            "datatype": [],
             "types": [{
                 "value": "count",
                 "valueIRI": "http://purl.obolibrary.org/obo/STATO_0000047"
             }],
             "values": []
         }],
-        "isAbout":[{}],
         "uses": [{
             "@type": "Software",
             "name": "STAR Aligner",
@@ -121,12 +116,12 @@
             "accessURL": "$baseurl/GTEx_Analysis_2016-01-15_v7_STARv2.4.2a_junctions.gct.gz",
             "landingPage": "https://www.gtexportal.org/home/datasets"
         },
-        "conformsTo" : {
+        "conformsTo" : [{
             "@type": "DataStandard",
             "name" : "Gene Cluster Text file format",
             "description" : "The GCT format is a tab delimited file format that describes an expression dataset. It is produced by GenePattern software from the Broad Institute",
             "identifier" : {"identifier": ""}
-        }
+        }]
     }],
      "types": [
     {
