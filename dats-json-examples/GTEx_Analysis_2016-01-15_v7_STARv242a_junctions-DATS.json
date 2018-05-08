@@ -18,7 +18,7 @@
         "@type": "DataAnalysis",
         "description": "",
         "types": [
-            {"value": "junction"},
+            {"value": "junction"}
         ],
         "name": "GTEx_Analysis_2016-01-15_v7_STARv2.4.2a_junctions",
         "input": [{
