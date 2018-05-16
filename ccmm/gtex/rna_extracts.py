@@ -295,11 +295,11 @@ def tmpid():
     TMPID += 1
     return "TMPID_" + '%08d' % TMPID
 
-def write_single_sample_json(sample, output_file):
+def get_single_sample_json(sample):
+#    print("converting sample to json: " + str(sample))
     samp_id = sample['SAMPID']['mapped_value']
     subj_id = sample['SUBJID']['mapped_value']
     subject = sample['subject']
-    logging.debug("writing " + samp_id + " to " + output_file)
 
     # Uberon id (or EFO id, contrary to the documentation)
     anat_id = sample['SMUBRID']['mapped_value']
@@ -407,8 +407,19 @@ def write_single_sample_json(sample, output_file):
             ("derivesFrom", [ biological_sample_material ])
             ])
 
+    return rna_material
+
+def write_single_sample_json(sample, output_file):
+    rna_material = get_single_sample_json(sample)
     with open(output_file, mode="w") as jf:
         jf.write(json.dumps(rna_material, indent=2))
+
+def get_samples_json(samples, subjects):
+    samples_json = []
+    for s in sorted(samples):
+        sample_json = get_single_sample_json(samples[s])
+        samples_json.append(sample_json)
+    return samples_json
 
 def write_samples_json(subjects, samples, output_dir):
     # write separate JSON file for each sample

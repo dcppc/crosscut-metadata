@@ -13,11 +13,8 @@ mkdir -p $EXTERNAL_ID/data
 mkdir -p $EXTERNAL_ID/metadata
 mkdir -p $EXTERNAL_ID/metadata/annotations/datasets
 
-# convert public GTEx v7 metadata to DATS JSON
-./bin/gtex_v7_to_dats.py --smafrze=RNASEQ --output_dir=$EXTERNAL_ID/metadata
-
-# create/add DATS JSON for RNA-Seq Datasets
-./bin/gtex_v7_datasets_to_dats.py --output_dir=$EXTERNAL_ID/metadata/annotations/datasets
+# convert public GTEx v7 RNA-SEQ metadata to DATS JSON
+./bin/gtex_v7_to_dats.py --output_dir=$EXTERNAL_ID/metadata/annotations/datasets
 exit
 
 # add documentation files
