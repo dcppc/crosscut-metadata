@@ -1,6 +1,6 @@
 #!/usr/bin/env python3
 
-# Convert GTEx v7 metadata to DATS JSON
+# Convert GTEx v7 sample metadata to DATS JSON (one file per sample.)
 
 import argparse
 import ccmm.gtex.rna_extracts
