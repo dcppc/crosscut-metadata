@@ -26,7 +26,7 @@ def main():
 
     # input
     parser = argparse.ArgumentParser(description='Create DATS JSON for GTEx v7 public RNA-Seq data.')
-    parser.add_argument('--output_dir', default='.', help ='Destination directory for DATS JSON files.')
+    parser.add_argument('--output_file', default='.', help ='Output file path for the DATS JSON file containing the top-level DATS Dataset.')
     args = parser.parse_args()
 
     # logging
@@ -50,9 +50,7 @@ def main():
     rnaseq_dataset['isAbout'] = samples_json
 
     # write Dataset to DATS JSON file
-    rnaseq_file = os.path.join(args.output_dir, "rnaseq.json")
-
-    with open(rnaseq_file, mode="w") as jf:
+    with open(args.output_file, mode="w") as jf:
         jf.write(json.dumps(rnaseq_dataset, indent=2))
 
 if __name__ == '__main__':
