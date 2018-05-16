@@ -104,20 +104,20 @@ RSEM = OrderedDict([
 # Public RNA-Seq datasets listed at https://www.gtexportal.org/home/datasets
 RNASEQ_DATASETS = [
     { "descr": "Gene read counts.", "file": "GTEx_Analysis_2016-01-15_v7_RNASeQCv1.1.8_gene_reads.gct.gz", 
-      "measures": [GENE_READ_COUNTS_DIM], "uses": [RNA_SEQ_QC] },
+      "analysis" : {"name": "Gene read count analysis.", "measures": [GENE_READ_COUNTS_DIM], "uses": [RNA_SEQ_QC]} },
     { "descr": "Gene TPMs.", "file": "GTEx_Analysis_2016-01-15_v7_RNASeQCv1.1.8_gene_tpm.gct.gz", 
-      "measures": [GENE_TPM_DIM], "uses": [RNA_SEQ_QC] },
+      "analysis" : {"name": "Gene TMP analysis.", "measures": [GENE_TPM_DIM], "uses": [RNA_SEQ_QC]} },
     # TODO - this file was derived directly from the preceding one
     { "descr": "Tissue median TPMs.", "file": "GTEx_Analysis_2016-01-15_v7_RNASeQCv1.1.8_gene_median_tpm.gct.gz", 
-      "measures": [TISSUE_MEDIAN_TPM_DIM], "uses": [RNA_SEQ_QC] },
+      "analysis" : {"name": "Tissue median TPM analysis.", "measures": [TISSUE_MEDIAN_TPM_DIM], "uses": [RNA_SEQ_QC]} },
     { "descr": "Junction read counts.", "file": "GTEx_Analysis_2016-01-15_v7_STARv2.4.2a_junctions.gct.gz", 
-      "measures": [JUNCTION_COUNT_DIM], "uses": [STAR] },
+      "analysis" : {"name": "Junction read count analysis.", "measures": [JUNCTION_COUNT_DIM], "uses": [STAR]} },
     { "descr": "Transcript read counts.", "file": "GTEx_Analysis_2016-01-15_v7_RSEMv1.2.22_transcript_expected_count.txt.gz", 
-      "measures": [TRANSCRIPT_READ_COUNTS_DIM], "uses": [RSEM] },
+      "analysis" : {"name": "Transcript read count analysis.", "measures": [TRANSCRIPT_READ_COUNTS_DIM], "uses": [RSEM]} },
     { "descr": "Transcript TPMs.", "file": "GTEx_Analysis_2016-01-15_v7_RSEMv1.2.22_transcript_tpm.txt.gz", 
-      "measures": [TRANSCRIPT_TPM_DIM], "uses": [RSEM] },
+      "analysis" : {"name": "Transcript TPM analysis.", "measures": [TRANSCRIPT_TPM_DIM], "uses": [RSEM]} },
     { "descr": "Exon read counts.", "file": "GTEx_Analysis_2016-01-15_v7_RNASeQCv1.1.8_exon_reads.txt.gz", 
-      "measures": [EXON_READ_COUNTS_DIM], "uses": [RNA_SEQ_QC] }
+      "analysis" : {"name": "Exon read count analysis.", "measures": [EXON_READ_COUNTS_DIM], "uses": [RNA_SEQ_QC]} }
 ]
 
 DB_GAP = OrderedDict([("@type", "DataRepository"), ("name", "dbGaP")])
@@ -149,9 +149,24 @@ def get_dataset_json():
         descr = dss["descr"]
         file = dss["file"]
 
-        measures = dss["measures"]
-        uses = dss["uses"]
+        analysis = dss["analysis"]
+        measures = analysis["measures"]
+        uses = analysis["uses"]
+        # "The name of the activity, usually one sentece or short description of the data analysis."
+        analysis_name = analysis["name"]
+        # "A textual narrative comprised of one or more statements describing the data analysis."
+#        analysis_descr = analysis["descr"]
 
+        # DataAnalysis
+        data_analysis = OrderedDict([
+                ("@type", "DataAnalysis"),
+                ("name", analysis_name),
+#                ("description", analysis_descr),
+                ("measures", measures),
+                ("uses", uses)
+                ])
+
+        # Dataset
         subset = OrderedDict([
                 ("@type", "Dataset"),
                 ("identifier",  OrderedDict([
@@ -164,6 +179,7 @@ def get_dataset_json():
                 ("storedIn", DB_GAP),
                 ("types", GTEX_V7_TYPES),
                 ("creators", [GTEX_CONSORTIUM]),
+                ("producedBy", data_analysis),
                 # TODO - where does the actual filename belong?
                 ("distributions", [OrderedDict([
                                 ("@type", "DatasetDistribution"),
@@ -172,10 +188,6 @@ def get_dataset_json():
                                             ("landingPage", GTEX_DATASETS_URL)
                                             ]))
                                 ])]),
-
-                # TODO - 'measures' and 'uses' belong in DataAnalysis, not Dataset?
-#                ("measures", measures),
-#                ("uses", uses)
                 ])
         rnaseq_data_subsets.append(subset)
 
