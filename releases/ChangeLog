@@ -1,3 +1,7 @@
+0.2 (May ? 2018)
+ -KC7 internal-only release of KC7 crosscut metadata model for GTEx v7 public RNA-Seq metadata.
+ -RNA extract Materials are now linked to the top-level Dataset via the 'isAbout' attribute.
+	
 0.1 (May 4 2018)
  -Initial KC7 internal-only release of KC7 crosscut metadata model for GTEx v7 public RNA-Seq metadata.
  -DATS JSON files validate against https://github.com/biocaddie/WG3-MetadataSpecifications master branch
