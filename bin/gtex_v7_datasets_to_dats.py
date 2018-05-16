@@ -3,7 +3,7 @@
 # Create DATS JSON description of GTEx v7 DataSets
 
 import argparse
-import gtex.rnaseq_datasets
+import ccmm.gtex.rnaseq_datasets
 import json
 import logging
 import os
@@ -23,7 +23,7 @@ def main():
     logging.basicConfig(level=logging.INFO)
 
     # create top-level dataset
-    rnaseq_dataset = gtex.rnaseq_datasets.get_dataset_json()
+    rnaseq_dataset = ccmm.gtex.rnaseq_datasets.get_dataset_json()
 
     # write Dataset to DATS JSON file
     rnaseq_file = os.path.join(args.output_dir, "rnaseq.json")

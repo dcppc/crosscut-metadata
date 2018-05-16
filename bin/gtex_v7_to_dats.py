@@ -3,7 +3,7 @@
 # Convert GTEx v7 metadata to DATS JSON
 
 import argparse
-import gtex.rna_extracts
+import ccmm.gtex.rna_extracts
 import json
 import logging
 import os
@@ -33,22 +33,22 @@ def main():
     logging.basicConfig(level=logging.INFO)
 
     # read metadata for subjects and samples
-    subjects = gtex.rna_extracts.read_subject_phenotypes_file(V7_SUBJECT_PHENOTYPES_FILE)
-    samples = gtex.rna_extracts.read_sample_attributes_file(V7_SAMPLE_ATTRIBUTES_FILE)
+    subjects = ccmm.gtex.rna_extracts.read_subject_phenotypes_file(V7_SUBJECT_PHENOTYPES_FILE)
+    samples = ccmm.gtex.rna_extracts.read_sample_attributes_file(V7_SAMPLE_ATTRIBUTES_FILE)
 
     # filter subjects by smafrze
-    samples = gtex.rna_extracts.filter_samples(samples, args.smafrze)
+    samples = ccmm.gtex.rna_extracts.filter_samples(samples, args.smafrze)
 
     # link subjects to samples
-    gtex.rna_extracts.link_samples_to_subjects(samples, subjects)
+    ccmm.gtex.rna_extracts.link_samples_to_subjects(samples, subjects)
 
     # print subject sample count histogram
     if args.print_sample_histogram:
-        gtex.rna_extracts.print_subject_sample_count_histogram(samples)
+        ccmm.gtex.rna_extracts.print_subject_sample_count_histogram(samples)
         sys.exit(0)
 
     # produce DATS JSON file for each sample
-    gtex.rna_extracts.write_samples_json(subjects, samples, args.output_dir)
+    ccmm.gtex.rna_extracts.write_samples_json(subjects, samples, args.output_dir)
 
 if __name__ == '__main__':
     main()
