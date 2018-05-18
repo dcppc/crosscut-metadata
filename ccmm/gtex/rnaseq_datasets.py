@@ -1,5 +1,6 @@
 #!/usr/bin/env python3
 
+from ccmm.dats.datsobj import DatsObj
 from collections import OrderedDict
 import logging
 
@@ -27,36 +28,31 @@ RNASEQ_ASSAY_TYPE = OrderedDict([("value", "RNA-seq assay"), ("valueIRI", "http:
 ILLUMINA_TYPE = OrderedDict([("value", "Illumina"), ("valueIRI", "http://purl.obolibrary.org/obo/OBI_0000759")])
 
 # documentation for earlier version at https://data.broadinstitute.org/cancer/cga/tools/rnaseqc/RNA-SeQC_Help_v1.1.2.pdf
-RNA_SEQ_QC = OrderedDict([
-        ("@type", "Software"),
+RNA_SEQ_QC = DatsObj("Software", [
         ("name", "RNASeQC"),
         ("version", "v1.1.8")])
 
 # gene read counts Dimension
-GENE_READ_COUNTS_DIM = OrderedDict([
-        ("@type", "Dimension"),
+GENE_READ_COUNTS_DIM = DatsObj("Dimension", [
         ("name", GENE_READ_COUNT_NAME),
         ("description", "gene read counts"),
         ("types", [COUNT_TYPE])
         ])
 
-TRANSCRIPT_READ_COUNTS_DIM = OrderedDict([
-        ("@type", "Dimension"),
+TRANSCRIPT_READ_COUNTS_DIM = DatsObj("Dimension", [
         ("name", TRANSCRIPT_READ_COUNT_NAME),
         ("description", "transcript read counts"),
         ("types", [COUNT_TYPE])
         ])
 
-EXON_READ_COUNTS_DIM = OrderedDict([
-        ("@type", "Dimension"),
+EXON_READ_COUNTS_DIM = DatsObj("Dimension", [
         ("name", EXON_READ_COUNT_NAME),
         ("description", "exon read counts"),
         ("types", [COUNT_TYPE])
         ])
 
 # junction count Dimension
-JUNCTION_COUNT_DIM = OrderedDict([
-        ("@type", "Dimension"),
+JUNCTION_COUNT_DIM = DatsObj("Dimension", [
         # TODO - is there a more appropriate ontology term for this?
         ("name", JUNCTION_READ_COUNT_NAME),
         ("description", "Junction read counts"),
@@ -65,38 +61,33 @@ JUNCTION_COUNT_DIM = OrderedDict([
 
 # gene TPM Dimension
 # TODO - is this transcripts per _gene_ kilobase million?
-GENE_TPM_DIM = OrderedDict([
-        ("@type", "Dimension"),
+GENE_TPM_DIM = DatsObj("Dimension", [
         ("name", OrderedDict([("value", "Transcripts Per Kilobase Million"), ("valueIRI", "")])),
         ("description", "Transcripts Per Kilobase Million"),
         ("types", [COUNT_TYPE])
         ])
 
-TISSUE_MEDIAN_TPM_DIM = OrderedDict([
-        ("@type", "Dimension"),
+TISSUE_MEDIAN_TPM_DIM = DatsObj("Dimension", [
         ("name", OrderedDict([("value", "Tissue Median Transcripts Per Kilobase Million"), ("valueIRI", "")])),
         ("description", "Tissue Median Transcripts Per Kilobase Million"),
         ("types", [COUNT_TYPE])
         ])
 
 # transcript TPM Dimension
-TRANSCRIPT_TPM_DIM = OrderedDict([
-        ("@type", "Dimension"),
+TRANSCRIPT_TPM_DIM = DatsObj("Dimension", [
         ("name", OrderedDict([("value", "Transcripts Per Kilobase Million"), ("valueIRI", "")])),
         ("description", "Transcripts Per Kilobase Million"),
         ("types", [COUNT_TYPE])
         ])
 
 # STAR Aligner
-STAR = OrderedDict([
-        ("@type", "Software"),
+STAR = DatsObj("Software", [
         ("name", "STAR Aligner"),
         ("version", "v2.4.2a")
         ])
 
 # RSEM Software
-RSEM = OrderedDict([
-        ("@type", "Software"),
+RSEM = DatsObj("Software", [
         ("name", "RSEM"),
         ("version", "1.2.22")
         ])
@@ -120,10 +111,9 @@ RNASEQ_DATASETS = [
       "analysis" : {"name": "Exon read count analysis.", "measures": [EXON_READ_COUNTS_DIM], "uses": [RNA_SEQ_QC]} }
 ]
 
-DB_GAP = OrderedDict([("@type", "DataRepository"), ("name", "dbGaP")])
+DB_GAP = DatsObj("DataRepository", [("name", "dbGaP")])
 
-GTEX_CONSORTIUM = OrderedDict([
-        ("@type", "Organization"),
+GTEX_CONSORTIUM = DatsObj("Organization", [
         ("name", "The Genotype-Tissue Expression (GTEx) Consortium"),
         ("abbreviation", "The GTEx Consortium"),
         ])
@@ -158,8 +148,7 @@ def get_dataset_json():
 #        analysis_descr = analysis["descr"]
 
         # DataAnalysis
-        data_analysis = OrderedDict([
-                ("@type", "DataAnalysis"),
+        data_analysis = DatsObj("DataAnalysis", [
                 ("name", analysis_name),
 #                ("description", analysis_descr),
                 ("measures", measures),
@@ -167,10 +156,8 @@ def get_dataset_json():
                 ])
 
         # Dataset
-        subset = OrderedDict([
-                ("@type", "Dataset"),
-                ("identifier",  OrderedDict([
-                            ("@type", "Identifier"),
+        subset = DatsObj("Dataset", [
+                ("identifier", DatsObj("Identifier", [
                             ("identifier", "GTEx_Analysis_2016-01-15_v7_RNA-SEQ_" + file)
                             ])),
                 ("version", "v7"),
@@ -181,10 +168,8 @@ def get_dataset_json():
                 ("creators", [GTEX_CONSORTIUM]),
                 ("producedBy", data_analysis),
                 # TODO - where does the actual filename belong?
-                ("distributions", [OrderedDict([
-                                ("@type", "DatasetDistribution"),
-                                ("access", OrderedDict([
-                                            ("@type", "Access"),
+                ("distributions", [DatsObj("DatasetDistribution", [
+                                ("access", DatsObj("Access", [
                                             ("landingPage", GTEX_DATASETS_URL)
                                             ]))
                                 ])]),
@@ -192,10 +177,8 @@ def get_dataset_json():
         rnaseq_data_subsets.append(subset)
 
     # parent RNA-Seq dataset
-    parent_rnaseq_dataset = OrderedDict([
-            ("@type", "Dataset"),
-            ("identifier",  OrderedDict([
-                        ("@type", "Identifier"),
+    parent_rnaseq_dataset = DatsObj("Dataset", [
+            ("identifier", DatsObj("Identifier", [
                         ("identifier", "GTEx_Analysis_2016-01-15_v7_RNA-SEQ")
                         ])),
             ("version", "v7"),
@@ -204,17 +187,13 @@ def get_dataset_json():
             ("storedIn", DB_GAP),
             ("types", GTEX_V7_TYPES),
             ("creators", [GTEX_CONSORTIUM]),
-            ("distributions", [OrderedDict([
-                                    ("@type", "DatasetDistribution"),
-                                    ("access", OrderedDict([
-                                                ("@type", "Access"),
+            ("distributions", [DatsObj("DatasetDistribution", [
+                                    ("access", DatsObj("Access", [
                                                 ("landingPage", GTEX_DATASETS_URL)
                                                 ]))
                                     ])]),
-            # TODO - 'measures' and 'uses' belong in DataAnalysis, not Dataset?
-#            ("uses", [RNA_SEQ_QC]),
             ("hasPart", rnaseq_data_subsets)
             ])
 
-    # TODO - add 'licenses', 'availability', 'dimensions', 'primaryPublications', 'isAbout' (linking to ~12K sample materials)
+    # TODO - add 'licenses', 'availability', 'dimensions', 'primaryPublications'?
     return parent_rnaseq_dataset

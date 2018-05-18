@@ -3,6 +3,7 @@
 # Create DATS JSON description of GTEx v7 public RNA-Seq DataSet.
 
 import argparse
+from ccmm.dats.datsobj import DATSEncoder
 import ccmm.gtex.rnaseq_datasets
 import ccmm.gtex.rna_extracts
 import json
@@ -47,11 +48,11 @@ def main():
 
     # add samples to top-level Dataset
     samples_json = ccmm.gtex.rna_extracts.get_samples_json(samples, subjects)
-    rnaseq_dataset['isAbout'] = samples_json
+    rnaseq_dataset.set('isAbout', samples_json)
 
     # write Dataset to DATS JSON file
     with open(args.output_file, mode="w") as jf:
-        jf.write(json.dumps(rnaseq_dataset, indent=2))
+        jf.write(json.dumps(rnaseq_dataset, indent=2, cls=DATSEncoder))
 
 if __name__ == '__main__':
     main()

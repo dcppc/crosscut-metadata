@@ -3,6 +3,7 @@
 # Create DATS JSON description of GTEx v7 DataSets
 
 import argparse
+from ccmm.dats.datsobj import DATSEncoder
 import ccmm.gtex.rnaseq_datasets
 import json
 import logging
@@ -29,7 +30,7 @@ def main():
     rnaseq_file = os.path.join(args.output_dir, "rnaseq.json")
 
     with open(rnaseq_file, mode="w") as jf:
-        jf.write(json.dumps(rnaseq_dataset, indent=2))
+        jf.write(json.dumps(rnaseq_dataset, indent=2, cls=DATSEncoder))
 
 if __name__ == '__main__':
     main()

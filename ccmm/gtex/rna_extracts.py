@@ -1,5 +1,6 @@
 #!/usr/bin/env python3
 
+from ccmm.dats.datsobj import DatsObj
 from collections import OrderedDict
 import csv
 import json
@@ -108,8 +109,7 @@ SAMPLE_ATT_COLS = [
 ]
 
 DATS_TAXON_HUMAN =  [
-    OrderedDict([
-            ("@type", "TaxonomicInformation"),
+    DatsObj("TaxonomicInformation", [
             ("name", "Homo sapiens"),
             ("identifier", OrderedDict([
                         ("identifier", "ncbitax:9606"),
@@ -330,30 +330,26 @@ def get_single_sample_json(sample):
                     ("identifierSource", "UBERON")])]
 
     # anatomical part
-    anatomical_part = OrderedDict([
-            ("@type", "AnatomicalPart"),
+    anatomical_part = DatsObj("AnatomicalPart", [
             ("name", anatomy_name),
             ("identifier", anatomy_identifier),
             ("alternateIdentifiers", anatomy_alt_ids)
             ])
 
     # human experimental subject/patient
-    subject_sex = OrderedDict([
-            ("@type", "Dimension"),
+    subject_sex = DatsObj("Dimension", [
             ("name", { "value": "Gender" }),
             ("description", "Gender of the subject"),
             ("values", ["male", "female"])
             ])
 
-    subject_age = OrderedDict([
-            ("@type", "Dimension"),
+    subject_age = DatsObj("Dimension", [
             ("name", { "value": "Age range" }),
             ("description", "Age range of the subject"),
             ("values", SUBJ_PHEN_COLS[2]['cv'])
             ])
 
-    subject_hardy_scale = OrderedDict([
-            ("@type", "Dimension"),
+    subject_hardy_scale = DatsObj("Dimension", [
             ("name", { "value": "Hardy scale" } ),
             ("description", "Hardy scale death classification for the subject"),
             ("values", [str(x) for x in SUBJ_PHEN_COLS[3]['integer_cv'].values()])
@@ -373,8 +369,7 @@ def get_single_sample_json(sample):
         ]
 
     # human experimental subject/patient
-    subject_material = OrderedDict([
-            ("@type", "Material"),
+    subject_material = DatsObj("Material", [
             ("name", subj_id),
             ("identifier", { "identifier": subj_id }),
             ("description", "GTEx subject " + subj_id),
@@ -386,8 +381,7 @@ def get_single_sample_json(sample):
 
     # biological/tissue sample
     sample_name = samp_id
-    biological_sample_material = OrderedDict([
-            ("@type", "Material"),
+    biological_sample_material = DatsObj("Material", [
             ("name", sample_name),
             ("identifier", { "identifier": samp_id }),
             ("description", anatomy_name + " specimen collected from subject " + subj_id),
@@ -397,8 +391,7 @@ def get_single_sample_json(sample):
             ])
 
     # RNA extracted from tissue sample
-    rna_material = OrderedDict([
-            ("@type", "Material"),
+    rna_material = DatsObj("Material", [
             ("name", "RNA from " + sample_name),
 #            ("identifier", {"identifier": tmpid()}),
             ("description", "total RNA extracted from " + anatomy_name + " specimen collected from subject " + subj_id),
