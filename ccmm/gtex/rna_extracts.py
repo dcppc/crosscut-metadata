@@ -126,6 +126,12 @@ DATS_DONOR_ROLES = [
             ("valueIRI", "")])
     ]
 
+# CVs for Gender, Age Range, and Hardy Scale.
+# Not currently represented in the instance, but could be defined in the accompanying model:
+#            ("values", ["male", "female"])
+#            ("values", SUBJ_PHEN_COLS[2]['cv'])
+#            ("values", [str(x) for x in SUBJ_PHEN_COLS[3]['integer_cv'].values()])
+
 TMPID = 0
 
 # ------------------------------------------------------
@@ -340,19 +346,19 @@ def get_single_sample_json(sample):
     subject_sex = DatsObj("Dimension", [
             ("name", { "value": "Gender" }),
             ("description", "Gender of the subject"),
-            ("values", ["male", "female"])
+            ("values", [ subject['SEX']['mapped_value'] ])
             ])
 
     subject_age = DatsObj("Dimension", [
             ("name", { "value": "Age range" }),
             ("description", "Age range of the subject"),
-            ("values", SUBJ_PHEN_COLS[2]['cv'])
+            ("values", [ subject['AGE']['mapped_value'] ])
             ])
 
     subject_hardy_scale = DatsObj("Dimension", [
             ("name", { "value": "Hardy scale" } ),
             ("description", "Hardy scale death classification for the subject"),
-            ("values", [str(x) for x in SUBJ_PHEN_COLS[3]['integer_cv'].values()])
+            ("values", [ subject['DTHHRDY']['mapped_value'] ])
             ])
 
     subject_characteristics = [
@@ -361,19 +367,11 @@ def get_single_sample_json(sample):
         subject_hardy_scale
         ]
 
-    # TODO - not clear if this is the correct place for the values that correspond to subject_characteristics
-    subject_extra_props = [
-        OrderedDict([("category","Gender"), ("values", [ subject['SEX']['mapped_value'] ])] ),
-        OrderedDict([("category","Age range"), ("values", [ subject['AGE']['mapped_value'] ])] ),
-        OrderedDict([("category","Hardy scale"), ("values", [ subject['DTHHRDY']['mapped_value'] ])] )
-        ]
-
     # human experimental subject/patient
     subject_material = DatsObj("Material", [
             ("name", subj_id),
             ("identifier", { "identifier": subj_id }),
             ("description", "GTEx subject " + subj_id),
-            ("extraProperties", subject_extra_props),
             ("characteristics", subject_characteristics),
             ("taxonomy", DATS_TAXON_HUMAN),
             ("roles", DATS_DONOR_ROLES)
