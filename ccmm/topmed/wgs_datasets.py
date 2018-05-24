@@ -6,6 +6,9 @@ import logging
 import re
 import sys
 
+TOPMED_DESCRIPTION = """TOPMed generates scientific resources related to heart, lung, blood, and sleep disorders (HLBS). It \
+is sponsored by the NIH NHLBI and is part of a broader Precision Medicine Initiative."""
+
 # List of 19 TOPMed studies cut and pasted from https://www.ncbi.nlm.nih.gov/gap/?term=topmed
 TOPMED_STUDIES_STR = """
 phs000946.v3.p1
@@ -214,14 +217,13 @@ def get_dbgap_studies(qterm):
             ("platform", HISEQ_TYPES[s['platform']])
             ])]
 
-        # TODO - specify creators of this particular dataset
+        # TODO - Specify creators and release date(s) of this particular dataset.
+        #  This may require parsing some of the metadata files and/or documents.
         creators = []
 
-        # TODO - find better location for study_type
+        # TODO - find better location for study_type?
         extra_props = [ DatsObj("CategoryValuesPair", [("category", "study_type"), ("values", [s['study_type']])]) ]
 
-        # TODO - add release date(s). May not be feasible since summary page only reports future release/embargo end dates.
-        
         # Dataset
         dataset = DatsObj("Dataset", [
                 ("identifier", DatsObj("Identifier", [("identifier", s['id'])])),
@@ -259,8 +261,7 @@ def get_dataset_json():
                         ("identifier", "TOPMed")
                         ])),
             ("title",  "Trans-Omics for Precision Medicine (TOPMed)"),
-            ("description", """TOPMed generates scientific resources related to heart, lung, blood, and sleep disorders (HLBS). It \
-is sponsored by the NIH NHLBI and is part of a broader Precision Medicine Initiative."""),
+            ("description", TOPMED_DESCRIPTION),
             ("storedIn", DB_GAP),
             ("types", TOPMED_TYPES),
             ("creators", [NIH_NHLBI]),

@@ -14,7 +14,12 @@ mkdir -p $EXTERNAL_ID/metadata
 mkdir -p $EXTERNAL_ID/metadata/annotations/datasets
 
 # convert public GTEx v7 RNA-SEQ metadata to DATS JSON
-./bin/gtex_v7_to_dats.py --output_file=$EXTERNAL_ID/metadata/annotations/datasets/gtex_v7_rnaseq.json
+#./bin/gtex_v7_to_dats.py --output_file=$EXTERNAL_ID/metadata/annotations/datasets/gtex_v7_rnaseq.json
+
+# convert public TopMed metadata for phs000946 to DATS JSON
+
+# retrieve v3 variable summaries from ftp://ftp.ncbi.nlm.nih.gov/dbgap/studies/phs000946/phs000946.v3.p1/pheno_variable_summaries/
+./bin/topmed_to_dats.py --dbgap_public_xml_path=./phs000946.v3 --output_file=$EXTERNAL_ID/metadata/annotations/datasets/topmed_phs000946_wgs.json
 exit
 
 # add documentation files
