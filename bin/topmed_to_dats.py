@@ -4,6 +4,7 @@
 
 import argparse
 from ccmm.dats.datsobj import DATSEncoder
+import ccmm.topmed.dna_extracts
 import ccmm.topmed.wgs_datasets
 import ccmm.topmed.public_metadata
 import json
@@ -38,10 +39,14 @@ def main():
     # process public metadata only (i.e., data dictionaries and variable reports only)
     if priv_mp is None:
         study_md = ccmm.topmed.public_metadata.read_study_metadata(pub_xp)
+#        logging.debug("study_md = " + str(study_md))
 
-        logging.debug("study_md = " + str(study_md))
+        sample_sample = ccmm.topmed.dna_extracts.get_synthetic_single_sample_json_from_public_metadata(study_md)
+
+        print("got sample sample " + json.dumps(sample_sample, indent=2, cls=DATSEncoder))
 
         # TODO - create dummy/representative DATS instance based on variable reports
+        # TODO - signal somewhere directly in the DATS that this is not real subject-level data
 
     # process both public metadata and access-controlled dbGaP metadata
     else:

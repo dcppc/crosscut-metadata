@@ -1,6 +1,7 @@
 #!/usr/bin/env python3
 
 from ccmm.dats.datsobj import DatsObj
+import ccmm.dats.util as util
 from collections import OrderedDict
 import csv
 import json
@@ -107,24 +108,6 @@ SAMPLE_ATT_COLS = [
     {'id': 'SMNUM5CD', 'empty_ok': True },
     {'id': 'SMDPMPRT', 'empty_ok': True }
 ]
-
-DATS_TAXON_HUMAN =  [
-    DatsObj("TaxonomicInformation", [
-            ("name", "Homo sapiens"),
-            ("identifier", OrderedDict([
-                        ("identifier", "ncbitax:9606"),
-                        ("identifierSource", "ncbitax")]))
-            ])
-    ]
-
-DATS_DONOR_ROLES = [
-    OrderedDict([
-            ("value", "patient"),
-            ("valueIRI",  "")]),
-    OrderedDict([
-            ("value", "donor"),
-            ("valueIRI", "")])
-    ]
 
 # CVs for Gender, Age Range, and Hardy Scale.
 # Not currently represented in the instance, but could be defined in the accompanying model:
@@ -365,8 +348,8 @@ def get_single_sample_json(sample):
             ("identifier", { "identifier": subj_id }),
             ("description", "GTEx subject " + subj_id),
             ("characteristics", subject_characteristics),
-            ("taxonomy", DATS_TAXON_HUMAN),
-            ("roles", DATS_DONOR_ROLES)
+            ("taxonomy", util.get_taxon_human()),
+            ("roles", util.get_donor_roles())
             ])
 
     # biological/tissue sample
@@ -375,7 +358,7 @@ def get_single_sample_json(sample):
             ("name", sample_name),
             ("identifier", { "identifier": samp_id }),
             ("description", anatomy_name + " specimen collected from subject " + subj_id),
-            ("taxonomy", DATS_TAXON_HUMAN),
+            ("taxonomy", util.get_taxon_human()),
             ("roles", [ OrderedDict([("value", "specimen"), ("valueIRI", "")]) ]),
             ("derivesFrom", [ subject_material, anatomical_part ])
             ])
@@ -385,7 +368,7 @@ def get_single_sample_json(sample):
             ("name", "RNA from " + sample_name),
 #            ("identifier", {"identifier": tmpid()}),
             ("description", "total RNA extracted from " + anatomy_name + " specimen collected from subject " + subj_id),
-            ("taxonomy", DATS_TAXON_HUMAN),
+            ("taxonomy", util.get_taxon_human()),
             ("roles", [ OrderedDict([("value", "RNA extract"), ("valueIRI", "")])]),
             ("derivesFrom", [ biological_sample_material ])
             ])
