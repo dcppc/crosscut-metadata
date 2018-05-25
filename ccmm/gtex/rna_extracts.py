@@ -132,8 +132,6 @@ DATS_DONOR_ROLES = [
 #            ("values", SUBJ_PHEN_COLS[2]['cv'])
 #            ("values", [str(x) for x in SUBJ_PHEN_COLS[3]['integer_cv'].values()])
 
-TMPID = 0
-
 # ------------------------------------------------------
 # Error handling
 # ------------------------------------------------------
@@ -294,12 +292,6 @@ def print_subject_sample_count_histogram(samples):
 # ------------------------------------------------------
 # DATS JSON Output
 # ------------------------------------------------------
-
-# Generate temporary/nonunique id for DATS 'identifier'
-def tmpid():
-    global TMPID
-    TMPID += 1
-    return "TMPID_" + '%08d' % TMPID
 
 def get_single_sample_json(sample):
 #    print("converting sample to json: " + str(sample))
