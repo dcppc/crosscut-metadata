@@ -10,8 +10,8 @@ import re
 # ------------------------------------------------------
 
 # Location of JSON-LD contexts
-# TODO - replace with stable versioned link prefix (TBD)
-JSON_LD_CONTEXT_URI_PREFIX = 'https://raw.githubusercontent.com/datatagsuite/context/master/sdo/'
+# TODO - these links are stable but not versioned. Replace with stable versioned link prefix when available.
+JSON_LD_CONTEXT_URI_PREFIX = 'https://w3id.org/dats/context/sdo/'
 
 # All known DATS object types
 # from schema dir of https://github.com/datatagsuite/schema.git:
