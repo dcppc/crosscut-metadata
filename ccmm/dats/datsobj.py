@@ -79,9 +79,7 @@ class DatsObj:
 
         # @id
         # TODO - id should be a URI according to dataset_schema.json
-        # HACK - workaround for the fact that the Access JSON schema doesn't declare @id
-        if dats_type != "Access":
-            dats_atts.append(("@id", id))
+        dats_atts.append(("@id", id))
         dats_atts.extend(atts)
         self.data = OrderedDict(dats_atts)
 
