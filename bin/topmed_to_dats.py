@@ -10,6 +10,7 @@ import ccmm.topmed.public_metadata
 import json
 import logging
 import os
+import re
 import sys
 
 # ------------------------------------------------------
@@ -32,6 +33,19 @@ def main():
     # create top-level dataset
     topmed_dataset = ccmm.topmed.wgs_datasets.get_dataset_json()
 
+    # index studies by id
+    studies_by_id = {}
+    for tds in topmed_dataset.get("hasPart"):
+        study_id = tds.get("identifier").get("identifier")
+        if study_id in studies_by_id:
+            logging.fatal("encountered duplicate study_id " + study_id)
+            sys.exit(1)
+        m = re.match(r'^(phs\d+\.v\d+)\.p\d+$', study_id)
+        if m is None:
+            logging.fatal("unable to parse study_id " + study_id)
+            sys.exit(1)
+        studies_by_id[m.group(1)] = tds
+
     # if not processing protected metadata then generate representative DATS JSON using only the public metadata
     pub_xp = args.dbgap_public_xml_path
     priv_mp = args.dbgap_protected_metadata_path
@@ -41,12 +55,15 @@ def main():
         study_md = ccmm.topmed.public_metadata.read_study_metadata(pub_xp)
 #        logging.debug("study_md = " + str(study_md))
 
-        sample_sample = ccmm.topmed.dna_extracts.get_synthetic_single_sample_json_from_public_metadata(study_md)
-
-        print("got sample sample " + json.dumps(sample_sample, indent=2, cls=DATSEncoder))
-
-        # TODO - create dummy/representative DATS instance based on variable reports
-        # TODO - signal somewhere directly in the DATS that this is not real subject-level data
+        # generate sample entry for each study for which we have metadata
+        for study_id in study_md:
+            study = studies_by_id[study_id]
+            # create dummy/representative DATS instance based on variable reports
+            # TODO - signal somewhere directly in the DATS that this is not real subject-level data (subject/sample id may be sufficient)
+            sample_sample = ccmm.topmed.dna_extracts.get_synthetic_single_sample_json_from_public_metadata(study, study_md[study_id])
+#            print("study " + study_id + " sample sample " + json.dumps(sample_sample, indent=2, cls=DATSEncoder))
+            # insert synthetic sample into relevant study/Dataset
+            is_about = study.set("isAbout", [sample_sample])
 
     # process both public metadata and access-controlled dbGaP metadata
     else:
