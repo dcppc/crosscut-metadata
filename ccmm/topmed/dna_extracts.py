@@ -258,14 +258,14 @@ def get_dna_extracts_json_from_restricted_metadata(study, pub_md, restricted_md)
     # e.g., ['dbGaP_Subject_ID', 'SUBJECT_ID', 'CONSENT', 'AFFECTION_STATUS']
     subject_md = restricted_md['Subject']
     # subjects indexed by dbGaP ID
-    logging.info("indexing restricted Subject")
+    logging.debug("indexing restricted Subject")
     subjects = index_dicts(subject_md['data']['rows'], 'dbGaP_Subject_ID')
 
     # Sample
     # e.g., ['dbGaP_Subject_ID', 'dbGaP_Sample_ID', 'BioSample Accession', 'SUBJECT_ID', 'SAMPLE_ID', 'SAMPLE_USE']
     sample_md = restricted_md['Sample']
     # samples indexed by dbGaP ID
-    logging.info("indexing restricted Sample")
+    logging.debug("indexing restricted Sample")
     samples = index_dicts(sample_md['data']['rows'], 'dbGaP_Sample_ID')
 
     # Sample_Attributes
