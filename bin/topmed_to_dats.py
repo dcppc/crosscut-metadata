@@ -28,8 +28,8 @@ def main():
     args = parser.parse_args()
 
     # logging
-#    logging.basicConfig(level=logging.INFO)
-    logging.basicConfig(level=logging.DEBUG)
+    logging.basicConfig(level=logging.INFO)
+#    logging.basicConfig(level=logging.DEBUG)
 
     # create top-level dataset
     topmed_dataset = ccmm.topmed.wgs_datasets.get_dataset_json()
@@ -61,7 +61,7 @@ def main():
             study = studies_by_id[study_id]
             # create dummy/representative DATS instance based on variable reports
             # TODO - signal somewhere directly in the DATS that this is not real subject-level data (subject/sample id may be sufficient)
-            dna_extract = ccmm.topmed.dna_extracts.get_synthetic_single_dna_extract_json_from_public_metadata(study, study_md[study_id])
+            dna_extract = ccmm.topmed.dna_extracts.get_synthetic_single_dna_extract_json_from_public_metadata(study, study_pub_md[study_id])
             # insert synthetic sample into relevant study/Dataset
             study.set("isAbout", [dna_extract])
 
