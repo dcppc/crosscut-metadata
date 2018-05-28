@@ -52,8 +52,8 @@ def pick_var_values(vars):
 
     return res
 
-# Generate DATS JSON for a single sample
-def get_single_sample_json(study, subj_var_values, samp_var_values):
+# Generate DATS JSON for a single sample/DNA extract
+def get_single_dna_extract_json(study, subj_var_values, samp_var_values):
 
     # all samples in TOPMed WGS phase are blood samples
     if samp_var_values['BODY_SITE'] != 'Blood':
@@ -122,9 +122,9 @@ def get_single_sample_json(study, subj_var_values, samp_var_values):
 
     human_t = util.get_taxon_human()
     subj_id = subj_var_values['SUBJECT_ID']
-    dbgap_subj_id = subj_var_values['DBGAP_SUBJECT_ID']
+    dbgap_subj_id = subj_var_values['dbGaP_Subject_ID']
     samp_id = samp_var_values['SAMPLE_ID']
-    dbgap_samp_id = samp_var_values['DBGAP_SAMPLE_ID']
+    dbgap_samp_id = samp_var_values['dbGaP_Sample_ID']
 
     study_title = study.get("title")
 
@@ -165,7 +165,7 @@ def get_single_sample_json(study, subj_var_values, samp_var_values):
     return dna_material
 
 # Generate synthetic data for a single sample based on the public variable summaries.
-def get_synthetic_single_sample_json_from_public_metadata(study, study_md):
+def get_synthetic_single_dna_extract_json_from_public_metadata(study, study_md):
 
     # Subject summary data
     subj_data = study_md['Subject_Phenotypes']['var_report']['data']
@@ -182,10 +182,134 @@ def get_synthetic_single_sample_json_from_public_metadata(study, study_md):
     logging.debug("samp_var_values=" + json.dumps(samp_var_values, indent=2))
 
     # assign dummy ids: subject and sample ids are protected data
-    samp_var_values['DBGAP_SAMPLE_ID'] = "0000000"
+    samp_var_values['dbGaP_Sample_ID'] = "0000000"
     samp_var_values['SAMPLE_ID'] = "SA0000000"
 
-    subj_var_values['DBGAP_SUBJECT_ID'] = "0000000"
+    subj_var_values['dbGaP_Subject_ID'] = "0000000"
     subj_var_values['SUBJECT_ID'] = "SU0000000"
 
-    return get_single_sample_json(study, subj_var_values, samp_var_values)
+    return get_single_dna_extract_json(study, subj_var_values, samp_var_values)
+
+def index_dicts(dict_list, key):
+    index = {}
+    for d in dict_list:
+        keyval = d[key]
+        if keyval in index:
+            logging.fatal("duplicate key value (" + keyval + ") building index")
+        index[keyval] = d
+    return index
+
+def link_samples_to_subjects(samples, subjects):
+    for s in samples:
+        sample = samples[s]
+        dbgap_samp_id = sample['dbGaP_Sample_ID']
+        dbgap_subj_id = sample['dbGaP_Subject_ID']
+        sample['subject'] = subjects[dbgap_subj_id]
+
+# TODO - cut and paste from ccmm.gtex.rna_extracts
+def print_subject_sample_count_histogram(samples):
+    print("Histogram of number of subjects that have a given number of samples")
+
+    # count samples per subject
+    subject_sample_count = {}
+    for s in samples:
+        sample = samples[s]
+        subject = sample['dbGaP_Subject_ID']
+        if subject in subject_sample_count:
+            subject_sample_count[subject] += 1
+        else:
+            subject_sample_count[subject] = 1
+
+    # convert to histogram
+    ssc_hist = {}
+    for s in subject_sample_count:
+        ct = subject_sample_count[s]
+        if ct in ssc_hist:
+            ssc_hist[ct] += 1
+        else:
+            ssc_hist[ct] = 1
+#        print(s + " has " + str(ct) + " sample(s)")
+
+    # print histogram
+    n_total_samples = 0
+    n_total_subjects = 0
+    print("n_samples\tn_subjects")
+    for n_samples in sorted(ssc_hist):
+        n_subjects = ssc_hist[n_samples]
+        print(str(n_samples) + "\t" + str(n_subjects))
+        n_total_subjects += n_subjects
+        n_total_samples += (n_subjects * n_samples)
+    print("n_total_samples=" + str(n_total_samples))
+    print("n_total_subjects=" + str(n_total_subjects))
+
+def add_properties(o1, o2):
+    for p in o2:
+        if p in o1:
+            if o1[p] != o2[p]:
+                logging.fatal("property add/merge failed: o1[p]=" + o1[p] + " o2[p]=" + o2[p])
+                sys.exit(1)
+        else:
+            o1[p] = o2[p]    
+
+def get_dna_extracts_json_from_restricted_metadata(study, pub_md, restricted_md):
+    dna_extracts = []
+
+    # Subject
+    # e.g., ['dbGaP_Subject_ID', 'SUBJECT_ID', 'CONSENT', 'AFFECTION_STATUS']
+    subject_md = restricted_md['Subject']
+    # subjects indexed by dbGaP ID
+    logging.info("indexing restricted Subject")
+    subjects = index_dicts(subject_md['data']['rows'], 'dbGaP_Subject_ID')
+
+    # Sample
+    # e.g., ['dbGaP_Subject_ID', 'dbGaP_Sample_ID', 'BioSample Accession', 'SUBJECT_ID', 'SAMPLE_ID', 'SAMPLE_USE']
+    sample_md = restricted_md['Sample']
+    # samples indexed by dbGaP ID
+    logging.info("indexing restricted Sample")
+    samples = index_dicts(sample_md['data']['rows'], 'dbGaP_Sample_ID')
+
+    # Sample_Attributes
+    # e.g., ['dbGaP_Sample_ID', 'SAMPLE_ID', 'BODY_SITE', 'ANALYTE_TYPE', 'IS_TUMOR', 'SEQUENCING_CENTER', 'Funding_Source', 'TOPMed_Phase', 'TOPMed_Project', 'Study_Name']
+    sample_att_md = restricted_md['Sample_Attributes']
+    logging.debug("indexing restricted Sample_Attributes file")
+    sample_atts = index_dicts(sample_att_md['data']['rows'], 'dbGaP_Sample_ID')
+    
+    # Subject_Phenotypes
+    # e.g., ['dbGaP_Subject_ID', 'SUBJECT_ID', 'GENDER', 'RACE', 'VISIT_AGE', 'DNA_AGE', 'FORMER_SMOKER', 'CURRENT_SMOKER', 'CIGSPERDAY', 'CIGSPERDAY_AVERAGE', 'PACKYEARS', 'PREGNANCY', 'WEIGHT', 'HEIGHT', 'BMI']
+    subject_phen_md = restricted_md['Subject_Phenotypes']
+    logging.debug("indexing restricted Subject_Phenotype file")
+    subject_phens = index_dicts(subject_phen_md['data']['rows'], 'dbGaP_Subject_ID')
+
+    # link subjects and samples
+    link_samples_to_subjects(samples, subjects)
+
+    # merge sample attribute info
+    for dbgap_samp_id in samples:
+        sample = samples[dbgap_samp_id]
+        sample_att = sample_atts[dbgap_samp_id]
+        add_properties(sample, sample_att)
+
+    # merge subject phenotype info
+    for dbgap_subj_id in subjects:
+        subject = subjects[dbgap_subj_id]
+        subject_phen = subject_phens[dbgap_subj_id]
+        add_properties(subject, subject_phen)
+
+    # generate JSON for each sample
+    for dbgap_samp_id in samples:
+        sample = samples[dbgap_samp_id]
+        subject = sample['subject']
+        # filter out any attributes that don't belong in extraProperties
+        sample_atts = {}
+        for sa in sample:
+            if sa != 'subject':
+                sample_atts[sa] = sample[sa]
+
+        subject_atts = {}
+        for sa in subject:
+            subject_atts[sa] = subject[sa]
+
+        dna_extract = get_single_dna_extract_json(study, subject_atts, sample_atts)
+        dna_extracts.append(dna_extract)
+
+    return dna_extracts

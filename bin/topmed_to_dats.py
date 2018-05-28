@@ -7,6 +7,7 @@ from ccmm.dats.datsobj import DATSEncoder
 import ccmm.topmed.dna_extracts
 import ccmm.topmed.wgs_datasets
 import ccmm.topmed.public_metadata
+import ccmm.topmed.restricted_metadata
 import json
 import logging
 import os
@@ -48,26 +49,29 @@ def main():
 
     # if not processing protected metadata then generate representative DATS JSON using only the public metadata
     pub_xp = args.dbgap_public_xml_path
-    priv_mp = args.dbgap_protected_metadata_path
+    restricted_mp = args.dbgap_protected_metadata_path
+    # read public metadata
+    study_pub_md = ccmm.topmed.public_metadata.read_study_metadata(pub_xp)
+#        logging.debug("study_pub_md = " + str(study_pub_md))
 
-    # process public metadata only (i.e., data dictionaries and variable reports only)
-    if priv_mp is None:
-        study_md = ccmm.topmed.public_metadata.read_study_metadata(pub_xp)
-#        logging.debug("study_md = " + str(study_md))
-
+    # case 1: process public metadata only (i.e., data dictionaries and variable reports only)
+    if restricted_mp is None:
         # generate sample entry for each study for which we have metadata
-        for study_id in study_md:
+        for study_id in study_pub_md:
             study = studies_by_id[study_id]
             # create dummy/representative DATS instance based on variable reports
             # TODO - signal somewhere directly in the DATS that this is not real subject-level data (subject/sample id may be sufficient)
-            sample_sample = ccmm.topmed.dna_extracts.get_synthetic_single_sample_json_from_public_metadata(study, study_md[study_id])
+            dna_extract = ccmm.topmed.dna_extracts.get_synthetic_single_dna_extract_json_from_public_metadata(study, study_md[study_id])
             # insert synthetic sample into relevant study/Dataset
-            is_about = study.set("isAbout", [sample_sample])
+            study.set("isAbout", [dna_extract])
 
-    # process both public metadata and access-controlled dbGaP metadata
+    # case 2: process both public metadata and access-controlled dbGaP metadata
     else:
-        logging.fatal("processing access-controlled dbGaP metadata is not yet supported")
-        sys.exit(1)
+        study_restricted_md = ccmm.topmed.restricted_metadata.read_study_metadata(restricted_mp)
+        for study_id in study_pub_md:
+            study = studies_by_id[study_id]
+            dna_extracts = ccmm.topmed.dna_extracts.get_dna_extracts_json_from_restricted_metadata(study, study_pub_md[study_id], study_restricted_md[study_id])
+            study.set("isAbout", dna_extracts)
 
     # write Dataset to DATS JSON file
     with open(args.output_file, mode="w") as jf:

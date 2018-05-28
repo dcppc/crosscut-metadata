@@ -14,13 +14,15 @@ mkdir -p $EXTERNAL_ID/metadata
 mkdir -p $EXTERNAL_ID/metadata/annotations/datasets
 
 # convert public GTEx v7 RNA-SEQ metadata to DATS JSON
-#./bin/gtex_v7_to_dats.py --output_file=$EXTERNAL_ID/metadata/annotations/datasets/gtex_v7_rnaseq.json
+./bin/gtex_v7_to_dats.py --output_file=$EXTERNAL_ID/metadata/annotations/datasets/gtex_v7_rnaseq.json
 
 # convert public TOPMed metadata for phs000946 to DATS JSON
-
-# retrieve v3 variable summaries from ftp://ftp.ncbi.nlm.nih.gov/dbgap/studies/phs000946/phs000946.v3.p1/pheno_variable_summaries/
+# retrieve v3 variable summaries from ftp://ftp.ncbi.nlm.nih.gov/dbgap/studies/phs000946/phs000946.v3.p1/pheno_variable_summaries/ into ./phs000946.v3, then:
 ./bin/topmed_to_dats.py --dbgap_public_xml_path=./phs000946.v3 --output_file=$EXTERNAL_ID/metadata/annotations/datasets/TOPMed_phs000946_wgs.json
-exit
+
+# convert RESTRICTED ACCESS TOPMed metadata for phs000946 to DATS JSON
+# ./bin/topmed_to_dats.py --dbgap_public_xml_path=./phs000946.v3 --dbgap_protected_metadata_path=./phs000946.v3 \
+#  --output_file=$EXTERNAL_ID/metadata/annotations/datasets/TOPMed_phs000946_wgs_RESTRICTED.json
 
 # add documentation files
 cp releases/ChangeLog $EXTERNAL_ID/docs/

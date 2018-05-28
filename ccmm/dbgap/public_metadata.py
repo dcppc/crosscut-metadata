@@ -202,16 +202,16 @@ def make_multilevel_dict(items, keys):
 
     return md
 
-# Find all dbGaP XML metadata files in a given directory.
-def get_study_metadata_files(dir):
+# Find all dbGaP XML or .txt metadata files in a given directory.
+def get_study_metadata_files(dir, suffix):
     filenames = os.listdir(dir)
     files = []
 
     for f in filenames:
-        # ignore anything that doesn't start with a study id
-        if re.match(r'^phs\d+\.', f):
+        # ignore anything that doesn't start with a study id and end with suffix
+        if re.match(r'^phs\d+\..*\.' + suffix + '$', f):
             # list of possible file types (Subject, Sample, etc.) may vary from study to study
-            m = re.match(r'^(phs\d+\.v\d+)\.((\S+)_(Subject|Sample|Sample_Attributes|Subject_Phenotypes)).(data_dict|var_report)\.xml$', f)
+            m = re.match(r'^(phs\d+\.v\d+)\.((\S+)_(Subject|Sample|Sample_Attributes|Subject_Phenotypes)).(data_dict|var_report|MULTI|DS-CS-RD)\.' + suffix + '$', f)
             if m is None:
                 logging.fatal("unable to parse file type and study name from dbGaP file " + f)
                 sys.exit(1)
@@ -231,7 +231,7 @@ def get_study_metadata_files(dir):
 # Read all dbGaP XML metadata files in a given directory and read and parse their contents.
 def read_study_metadata(dir):
     study_md = {}
-    study_files = get_study_metadata_files(dir)
+    study_files = get_study_metadata_files(dir, "xml")
     n_studies = len(study_files)
     logging.info("found metadata file(s) for " + str(n_studies) + " study/studies in " + dir)
 
