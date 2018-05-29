@@ -1,24 +1,40 @@
 
 v0.2 Release Notes
 
-This release is a KC7 internal-only release of the KC7 crosscut metadata model instance for GTEx v7 public RNA-Seq metadata.
+This release is a KC7 internal-only release of the KC7 crosscut metadata model instance for GTEx v7 public RNA-Seq metadata
+and TOPMed public metadata for a single sample study, phs000946.v3. The Python scripts used to generate this release may
+also be run on the dbGAP access restricted metadata for phs000946.v3, in which they will produce DATS JSON for the 
+actual data. In the absence of the access restricted metadata they use the public dbGaP variable summaries to produce
+a single "dummy" subject/sample entry. 
+
 Note that although the DATS JSON files have been validated against the JSON schemas in the master branch of 
 https://github.com/biocaddie/WG3-MetadataSpecifications, they will NOT validate against the current (v2.2) DATS
-release. This is a preview release for internal consumption only and it is subject to change.
+release. This is a preview release for internal consumption only and it is subject to change. A fork of the 
+DATS schemas and JSON-LD context files has been created at the following URI and will be used by this project
+going forward:
 
-The following files can be found in the BDBag:
+https://github.com/datatagsuite
 
-docs/ChangeLog       
+The following files can be found in the v0.2 BDBag:
+
+data/docs/ChangeLog       
   ChangeLog for the crosscut metadata model instance.
 
-docs/RELEASE_NOTES  
+data/docs/RELEASE_NOTES  
   A copy of this file.
 
-metadata/annotations/datasets/gtex_v7_rnaseq.json
+data/datasets/gtex_v7_rnaseq_public.json
   A single DATS JSON file that represents the parent RNA-Seq Dataset (for the public GTEx v7 data only) and 
   the individual sub-Datasets/data files associated with it (e.g., gene read counts, exon read counts, TPMs)
   That Dataset is linked in turn to the RNA extracts (represented by DATS Materials) that were sequenced 
   and analyzed as part of the RNA-Seq analysis protocol.
+
+data/datasets/TOPMed_phs000946_wgs_public.json
+  A single DATS JSON file that represents the parent TOPMed Dataset. Each TOPMed study is represented as a 
+  sub-Dataset of the top-level TOPMed Dataset. For one of the studies, phs000946.v3, a sample encoding for
+  a single subject and DNA extract/sample is provided, based on the public dbGaP variable summary data.
+  In order to obtain the DATS JSON for access restricted data it is necessary to download the Python code
+  and run the DATS conversion script on both the public and access restricted files for phs000946.v3.
 
 
 

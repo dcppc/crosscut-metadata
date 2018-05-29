@@ -1,14 +1,22 @@
-0.2 (May 21 2018)
- -KC7 internal-only v0.2 release of KC7 crosscut metadata model for GTEx v7 public RNA-Seq metadata.
+0.2 (May 29 2018)
+ -KC7 internal-only v0.2 release of KC7 crosscut metadata model for GTEx v7 public RNA-Seq metadata
+   and TOPMed public metadata for a single sample study, phs000946.v3
  -RNA extract Materials are now linked to the top-level Dataset via the 'isAbout' attribute.
  -New DataAnalysis objects are now linked to Datasets via the 'producedBy' attribute.
  -All applicable object types now have @id and @context properties.
-  -Access objects do not have an @id property because it is missing from the JSON schema.
   -JSON-LD contexts have only been defined for a subset of the DATS object types.
   -See https://github.com/datatagsuite/schema and https://github.com/datatagsuite/context
  -GTEx subject Materials now use characteristics, not extraProperties, to store gender, age range, etc.
   -The corresponding CV definitions, which used to be in characteristics, have been removed, 
    as they are arguably part of the crosscut metadata model, but not the metadata _instance_ per se.
+ -The extraProperties property is now used to store the original, un-harmonized metadata.
+ -The public DATS JSON for TOPMed study phs000946.v3 was constructed by picking values from the
+   publicly-available dbGaP variable summaries to produce a single "dummy" subject/sample entry.
+  -For numeric values the median value was picked.
+  -For enumerated types the most common value was picked, with ties broken alphanumerically.
+ -The Python script that produces the TOPMed DATS JSON can also be run on the access restricted
+   metadata (not included in this distribution), in which case it will produce DATS JSON for
+   the actual metadata, and not dummy values based on the variable summaries.
 	
 0.1 (May 4 2018)
  -Initial KC7 internal-only release of KC7 crosscut metadata model for GTEx v7 public RNA-Seq metadata.
