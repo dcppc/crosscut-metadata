@@ -82,7 +82,7 @@ def get_single_dna_extract_json(study, subj_var_values, samp_var_values):
 
     # place original dbGaP subject metadata into extraProperties
     # TODO - consider alternative of doing this only for un-harmonized metadata 
-    subj_extra_props = [DatsObj("CategoryValuesPair", [("category", xp), ("values", subj_var_values[xp])]) for xp in subj_var_values ]
+    subj_extra_props = [DatsObj("CategoryValuesPair", [("category", xp), ("values", [subj_var_values[xp]])]) for xp in subj_var_values ]
 
     # extract sample attributes
     for name in samp_var_values:
@@ -94,7 +94,7 @@ def get_single_dna_extract_json(study, subj_var_values, samp_var_values):
     # e.g., IS_TUMOR -> bearerOfDisease ("the pathology affecting the material...")
 
     # place original dbGaP sample metadata into extraProperties
-    samp_extra_props = [DatsObj("CategoryValuesPair", [("category", xp), ("values", samp_var_values[xp])]) for xp in samp_var_values ]
+    samp_extra_props = [DatsObj("CategoryValuesPair", [("category", xp), ("values", [samp_var_values[xp]])]) for xp in samp_var_values ]
 
     # anatomical part
     anatomical_part = DatsObj("AnatomicalPart", [
