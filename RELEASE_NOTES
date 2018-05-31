@@ -7,7 +7,10 @@ also be run on the dbGAP access restricted metadata for phs000946.v3, in which t
 actual data. In the absence of the access restricted metadata they use the public dbGaP variable summaries to produce
 a single "dummy" subject/sample entry. 
 
-Note that although the DATS JSON files have been validated against the JSON schemas in the master branch of 
+Note that this release does not yet make use of the BDBag Research Object profile to link DATS JSON-LD files to 
+data files. This feature should be added in the next release.
+
+Also note that although the DATS JSON files have been validated against the JSON schemas in the master branch of 
 https://github.com/biocaddie/WG3-MetadataSpecifications, they will NOT validate against the current (v2.2) DATS
 release. This is a preview release for internal consumption only and it is subject to change. A fork of the 
 DATS schemas and JSON-LD context files has been created at the following URI and will be used by this project
