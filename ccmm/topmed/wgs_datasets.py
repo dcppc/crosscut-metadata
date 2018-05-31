@@ -219,7 +219,8 @@ def get_dbgap_studies(qterm):
 
         # TODO - Specify creators and release date(s) of this particular dataset.
         #  This may require parsing some of the metadata files and/or documents.
-        creators = []
+        # TODO - required field - using NIH NHLBI as placeholder, but need to revisit and assign specific study-level creator
+        creators = [NIH_NHLBI]
 
         # TODO - find better location for study_type?
         extra_props = [ DatsObj("CategoryValuesPair", [("category", "study_type"), ("values", [s['study_type']])]) ]
