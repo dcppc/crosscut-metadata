@@ -1,6 +1,6 @@
 0.2 (May 31 2018)
- -KC7 internal-only v0.2 release of KC7 crosscut metadata model for GTEx v7 public RNA-Seq metadata
-   and TOPMed public metadata for a single sample study, phs000946.v3
+ -v0.2 release of KC7 crosscut metadata model for GTEx v7 public RNA-Seq metadata and TOPMed 
+   public metadata for a single sample study, phs000946.v3
  -RNA extract Materials are now linked to the top-level Dataset via the 'isAbout' attribute.
  -New DataAnalysis objects are now linked to Datasets via the 'producedBy' attribute.
  -All applicable object types now have @id and @context properties.
