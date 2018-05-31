@@ -4,8 +4,8 @@ setenv PYTHONPATH ./
 
 # Generate JSON for RNASEQ samples and then create BDBag
 setenv VERSION 0.2
-setenv EXTERNAL_ID "KC7-crosscut-metadata-v${VERSION}-internal"
-setenv EXTERNAL_DESCR "Internal-only v${VERSION} release of the KC7 crosscut metadata model for GTEx v7 and TOPMed public metadata using DATS v2.2+"
+setenv EXTERNAL_ID "KC7-crosscut-metadata-v${VERSION}"
+setenv EXTERNAL_DESCR "v${VERSION} release of the KC7 crosscut metadata model for GTEx v7 and TOPMed public metadata using DATS v2.2+"
 
 # set up internal bag structure
 mkdir -p $EXTERNAL_ID/docs
