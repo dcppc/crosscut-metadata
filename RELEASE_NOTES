@@ -41,9 +41,3 @@ data/datasets/TOPMed_phs000946_wgs_public.json
   In order to obtain the DATS JSON for protected metadata it is necessary to download the Python code
   and run the DATS conversion script on both the public and protected metadata files for phs000946.v3.
 
-
-
-
-
-
-

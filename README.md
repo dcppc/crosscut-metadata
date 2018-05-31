@@ -1,91 +1,44 @@
-# GTEX-ETL
 
-To run the (preliminary) GTEx v7 to DATS converter
-(https://github.com/dcppc-phosphorous/GTEX-ETL/blob/master/bin/gtex_v7_to_dats.py)
-you'll first need to download the two tab-delimited GTEx public
-metadata files. Go to https://www.gtexportal.org/home/datasets and log
-in, then download the following two files, which the conversion script
-will expect to find in the current working directory when it is
-invoked:
+v0.2 Release Notes
 
-* GTEx_v7_Annotations_SampleAttributesDS.txt
-* GTEx_v7_Annotations_SubjectPhenotypesDS.txt
+This is the v0.2 release of the KC7 crosscut metadata model instance for GTEx v7 public RNA-Seq metadata
+and TOPMed public metadata for a single sample study, phs000946.v3. The Python scripts used to generate 
+this release may also be run on the dbGAP protected metadata for phs000946.v3, in which case they 
+will produce DATS JSON for the actual (meta)data. In the absence of the protected metadata files the 
+script will use the public dbGaP variable summaries to produce a single "dummy" subject/sample entry 
+in which attribute values are chosen according to which occurs most commonly in the data (i.e., the
+median for numeric values.) This may result in nonsensical combinations of attribute values, but at 
+least produces a DATS metadata instance that is syntactically correct and may be freely distributed.
 
-Running the conversion script with the `--print_sample_histogram` flag
-will parse the two metadata files and display a histogram showing how
-many subjects/patients (`n_subjects`, column 2) are linked to the
-indicated number of samples (`n_samples`, column 1). For example:
+Note that this release does not yet make use of the BDBag Research Object profile to link DATS JSON-LD 
+files to data files. This will be added in the next release.
 
-    bash-3.2$ ./bin/gtex_v7_to_dats.py --print_sample_histogram
-    INFO:root:Read 752 subject(s) from GTEx_v7_Annotations_SubjectPhenotypesDS.txt
-    INFO:root:Read 15598 sample(s) from GTEx_v7_Annotations_SampleAttributesDS.txt
-    Histogram of number of subjects that have a given number of samples
-    n_samples	n_subjects
-    1	14
-    2	13
-    3	11
-    4	2
-    5	9
-    6	7
-    8	8
-    7	10
-    9	14
-    10	12
-    11	13
-    12	19
-    13	21
-    14	31
-    15	21
-    16	18
-    17	28
-    18	24
-    19	32
-    20	48
-    21	27
-    22	35
-    23	43
-    24	39
-    25	44
-    26	33
-    27	30
-    28	34
-    29	22
-    30	24
-    31	12
-    32	5
-    33	9
-    34	7
-    35	7
-    36	1
-    37	3
-    38	3
-    39	3
-    40	3
-    41	1
-    43	1
-    44	5
-    45	1
-    53	1
-    56	1
-    57	1
-    68	1
-    160	1
-    n_total_samples=15598
-    n_total_subjects=752
-    bash-3.2$ 
+Also note that although the DATS JSON files have been validated against the JSON schemas in the master 
+branch of https://github.com/biocaddie/WG3-MetadataSpecifications, they will NOT validate against the 
+current (v2.2) DATS release. A fork of the DATS schemas and JSON-LD context files has been created at 
+the following URI and will be used by this project going forward:
 
-The outlier "subject" linked to 160 samples is a leukemia cell line (`K-562`) and is also the only subject
-with an id not of the form `GTEX-XXXX`. Note that this histogram includes all of the samples from the metadata
-file, not all of which were used for RNA-Seq (and some of which are marked as excluded ("EXCLUDE") from the 
-analysis freeze.)
+https://github.com/datatagsuite
 
-Running the conversion script as follows will (currently) generate a single JSON file for each RNA-Seq 
-sample in GTEx v7:
+The following files can be found in the v0.2 BDBag (in the releases/ subdir):
 
-    mkdir -p gtex_rnaseq_json
-    ./bin/gtex_v7_to_dats.py --smafrze=RNASEQ --output_dir=gtex_rnaseq_json
+data/docs/ChangeLog       
+  ChangeLog for the crosscut metadata model instance.
 
-One of the example JSON output files can be found here:
+data/docs/RELEASE_NOTES  
+  A copy of this file.
 
-  https://github.com/dcppc-phosphorous/GTEX-ETL/tree/master/dats-json-output
+data/datasets/gtex_v7_rnaseq_public.json
+  A single DATS JSON file that represents the parent RNA-Seq Dataset (for the public GTEx v7 data only) and 
+  the individual sub-Datasets/data files associated with it (e.g., gene read counts, exon read counts, TPMs)
+  That Dataset is linked in turn to the RNA extracts (represented by DATS Materials) that were sequenced 
+  and analyzed as part of the RNA-Seq analysis protocol.
+
+data/datasets/TOPMed_phs000946_wgs_public.json
+  A single DATS JSON file that represents the parent TOPMed Dataset. Each TOPMed study is represented as a 
+  sub-Dataset of the top-level TOPMed Dataset. For one of the studies, phs000946.v3, a sample encoding for
+  a single subject and DNA extract/sample is provided, based on the public dbGaP variable summary data.
+  In order to obtain the DATS JSON for protected metadata it is necessary to download the Python code
+  and run the DATS conversion script on both the public and protected metadata files for phs000946.v3.
+
 
