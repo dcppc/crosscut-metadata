@@ -76,7 +76,7 @@
                         "@type": "AnatomicalPart",
                         "name": "adipose subcutaneous tissue",
                         "identifier": {
-                            "identifier": "UBERON:2190",
+                            "identifier": "UBERON:0002190",
                             "identifierIRI": "http://purl.obolibrary.org/obo/UBERON_0002190"
                         }
                     }
