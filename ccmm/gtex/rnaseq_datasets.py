@@ -2,10 +2,16 @@
 
 from ccmm.dats.datsobj import DatsObj
 from collections import OrderedDict
+import json
 import logging
+import sys
+import urllib.request
 
 # landing page for public RNA-Seq datasets
 GTEX_DATASETS_URL = "https://www.gtexportal.org/home/datasets"
+
+# KC2-generated GUIDs for the public RNA-Seq datasets
+GTEX_DATASETS_GUIDS_URL = "https://api.datacite.org/works?data-center-id=datacite.gtex"
 
 ## Statistical Methods Ontology
 # "count"
@@ -93,14 +99,17 @@ RSEM = DatsObj("Software", [
         ])
 
 # Public RNA-Seq datasets listed at https://www.gtexportal.org/home/datasets
+#  doi_descr gives a dataset title that can be linked to a Datacite doi from GTEX_DATASETS_GUIDS_URL
+#  doi_descr is assumed to be the same as descr if not specified
 RNASEQ_DATASETS = [
     { "descr": "Gene read counts.", "file": "GTEx_Analysis_2016-01-15_v7_RNASeQCv1.1.8_gene_reads.gct.gz", 
       "analysis" : {"name": "Gene read count analysis.", "measures": [GENE_READ_COUNTS_DIM], "uses": [RNA_SEQ_QC]} },
     { "descr": "Gene TPMs.", "file": "GTEx_Analysis_2016-01-15_v7_RNASeQCv1.1.8_gene_tpm.gct.gz", 
-      "analysis" : {"name": "Gene TMP analysis.", "measures": [GENE_TPM_DIM], "uses": [RNA_SEQ_QC]} },
+      "analysis" : {"name": "Gene TPM analysis.", "measures": [GENE_TPM_DIM], "uses": [RNA_SEQ_QC]} },
     # TODO - this file was derived directly from the preceding one
     { "descr": "Tissue median TPMs.", "file": "GTEx_Analysis_2016-01-15_v7_RNASeQCv1.1.8_gene_median_tpm.gct.gz", 
-      "analysis" : {"name": "Tissue median TPM analysis.", "measures": [TISSUE_MEDIAN_TPM_DIM], "uses": [RNA_SEQ_QC]} },
+      "analysis" : {"name": "Tissue median TPM analysis.", "measures": [TISSUE_MEDIAN_TPM_DIM], "uses": [RNA_SEQ_QC]},
+      "doi_descr": 'This file contains the median TPM by tissue.' },
     { "descr": "Junction read counts.", "file": "GTEx_Analysis_2016-01-15_v7_STARv2.4.2a_junctions.gct.gz", 
       "analysis" : {"name": "Junction read count analysis.", "measures": [JUNCTION_COUNT_DIM], "uses": [STAR]} },
     { "descr": "Transcript read counts.", "file": "GTEx_Analysis_2016-01-15_v7_RSEMv1.2.22_transcript_expected_count.txt.gz", 
@@ -130,7 +139,53 @@ GTEX_V7_TYPES = [OrderedDict([
             ("platform", ILLUMINA_TYPE)
             ])]
 
+# parse dataset GUIDs from GTEX_DATASETS_GUIDS_URL
+def set_dataset_guids():
+    guid_data = None
+
+    # read Datacite JSON
+    with urllib.request.urlopen(GTEX_DATASETS_GUIDS_URL) as response:
+        guid_data = response.read()
+    guid_json = json.loads(guid_data.decode('utf-8'))
+    
+    # build mapping from title to DOI
+    title2doi = {}
+    for d in guid_json["data"]:
+        # doi
+        id = d['id']
+        atts = d['attributes']
+        title = atts['title']
+        url = atts['url']
+        version = atts['version']
+
+        # everything should be tagged as v7 except for DroNc-seq data (?) and Biobank Inventory
+        if version != "v7" and not title.startswith("DroNc-seq") and not title.startswith("Biobank Inventory"):
+            logging.fatal("found GTEx version other than v7 (" + version + ") in '" + title + "' from " + GTEX_DATASETS_GUIDS_URL)
+            sys.exit(1)
+
+        # title (and resource-type-subtype) are the only fields that map (indirectly) to data file
+        if title in title2doi:
+            logging.fatal("duplicate entry for GTEx dataset with title '" + title + "' from " + GTEX_DATASETS_GUIDS_URL)
+            sys.exit(1)
+
+        title2doi[title + "."] = id
+        logging.debug("mapped dataset title '" + title + "' to DOI/GUID " + id)
+
+    # look up DOI for each dataset
+    for ds in RNASEQ_DATASETS:
+        descr = ds["descr"]
+        if "doi_descr" in ds:
+            descr = ds["doi_descr"]
+
+        if descr not in title2doi:
+            logging.fatal("couldn't find dataset with title = '" + descr + "' in " + GTEX_DATASETS_GUIDS_URL)
+            sys.exit(1)            
+
+        doi = title2doi[descr]
+        ds["doi"] = doi
+
 def get_dataset_json():
+    set_dataset_guids()
     # individual RNA-Seq datasets/files
     rnaseq_data_subsets = [];
 
@@ -156,7 +211,7 @@ def get_dataset_json():
                 ])
 
         # Dataset
-        subset = DatsObj("Dataset", [
+        subset = DatsObj("Dataset", id=dss["doi"], atts=[
                 ("identifier", DatsObj("Identifier", [
                             ("identifier", "GTEx_Analysis_2016-01-15_v7_RNA-SEQ_" + file)
                             ])),
