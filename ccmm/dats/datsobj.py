@@ -4,6 +4,7 @@ from collections import OrderedDict
 import json
 import logging
 import re
+import sys
 
 # ------------------------------------------------------
 # Global variables
