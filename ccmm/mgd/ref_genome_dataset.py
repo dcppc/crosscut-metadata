@@ -1,6 +1,7 @@
 #!/usr/bin/env python3
 
 from ccmm.dats.datsobj import DatsObj
+import ccmm.mgd.human_homologs
 from collections import OrderedDict
 import csv
 import gzip
@@ -25,7 +26,7 @@ DNA_SEQUENCING_TYPE = OrderedDict([("value", "DNA sequencing"), ("valueIRI", "ht
 
 MGD_TYPES = [
     DatsObj("DataType", [("information", DNA_SEQUENCING_TYPE)])
-    # TODO - add other types e.g., genes, orthologs, other feature types
+    # TODO - add other types e.g., genes, human homologs, other feature types
     ]
 
 # SO term lookup 
@@ -37,7 +38,8 @@ SO_TERMS = {
     'gene': DatsObj("Annotation", [("value", "gene"), ("valueIRI", "http://purl.obolibrary.org/obo/SO_0000704")]),
     'gene_segment': DatsObj("Annotation", [("value", "gene_segment"), ("valueIRI", "http://purl.obolibrary.org/obo/SO_3000000")]),
     'pseudogene': DatsObj("Annotation", [("value", "pseudogene"), ("valueIRI", "http://purl.obolibrary.org/obo/SO_0000336")]),
-    'pseudogenic_gene_segment': DatsObj("Annotation", [("value", "pseudogenic_gene_segment"), ("valueIRI", "http://purl.obolibrary.org/obo/SO_0001741")])
+    'pseudogenic_gene_segment': DatsObj("Annotation", [("value", "pseudogenic_gene_segment"), ("valueIRI", "http://purl.obolibrary.org/obo/SO_0001741")]),
+    'homologous_region': DatsObj("Annotation", [("value", "homologous_region"), ("valueIRI", "http://purl.obolibrary.org/obo/SO_0000853")])
 }
 
 STRAND_CHADO2SO = {
@@ -46,6 +48,38 @@ STRAND_CHADO2SO = {
 }
 
 MGD_SEQ_DOWNLOAD_URL = "http://www.informatics.jax.org/downloads/reports/index.html#seq"
+
+# Alternate and related identifiers
+# TODO - move this into dats/datsobj and standardize list of possible databases with a CV
+ID_URL_PREFIXES = {
+    "NCBI_Gene": "https://www.ncbi.nlm.nih.gov/gene/?term=",
+    "NCBI_HomoloGene": "https://www.ncbi.nlm.nih.gov/homologene/?term=",
+    "ENSEMBL": "http://www.ensembl.org/Mus_musculus/Gene/Summary?db=core;g=",
+    "VEGA": "http://vega.archive.ensembl.org/Mus_musculus/Gene/Summary?db=core;g=",
+    "miRBase": "http://www.mirbase.org/cgi-bin/mirna_entry.pl?acc=",
+    "GenBank": "https://www.ncbi.nlm.nih.gov/nuccore/",
+    "RefSeq": "https://www.ncbi.nlm.nih.gov/refseq/?term=",
+    # assumes that appended id already includes "MGI:"
+    "MGI": "http://www.informatics.jax.org/marker/"
+}
+
+def get_dats_id_aux(id_type, source, id, rel_type):
+    url_prefix = ID_URL_PREFIXES[source]
+    atts = [("identifier", url_prefix + id)]
+    atts.append(("identifierSource", source))
+    if rel_type is not None:
+        atts.append(("relationType", rel_type))
+    return DatsObj(id_type, atts)
+
+def get_dats_id(source, id):
+    return get_dats_id_aux("Identifier", source, id, None)
+
+def get_dats_related_id(source, id, rel_type):
+    return get_dats_id_aux("RelatedIdentifier", source, id, rel_type)
+
+def get_dats_alternate_id(source, id):
+    # AlternateIdentifiers have no relationType
+    return get_dats_id_aux("AlternateIdentifier", source, id, None)
 
 # TODO - replace this with a proper validating GFF3 parser (from Biocode?)
 #  but note that MGI GFF3 may not validate due to:
@@ -164,11 +198,23 @@ def read_mgd_gff3(gff3_path):
 
     return data
     
-def get_dataset_json(gff3_path):
+def get_dataset_json(gff3_path, human_homologs_path):
+    # read human homologs from MGI human/mouse sequence file
+    mgi2hgene_h = ccmm.mgd.human_homologs.read_mgd_mouse_human_seq_file(human_homologs_path)
+
+    # read mouse features/genes from GFF3
     data = read_mgd_gff3(gff3_path)
 
     # molecular entities that represent genes and other top-level features of interest
     entities = []
+
+    # number of mouse genes/features with no human homolog
+    n_homolog = 0
+    n_no_homolog = 0
+    n_genes = 0
+
+    # relationType is a string/uri
+    h_region = SO_TERMS['homologous_region'].get('valueIRI')
 
     # TODO - add taxonomy, either in 'isAbout' or in each individual gene (or both)
 
@@ -178,6 +224,10 @@ def get_dataset_json(gff3_path):
                 id = f['ID']
                 id = re.sub(r'MGI:MGI:', 'MGI:', id)
                 roles = None
+                # is this a gene or a gene segment
+                is_gene = re.match(r'gene', f['type']) or re.match(r'gene', f['bioType'])
+                if is_gene:
+                    n_genes += 1
 
                 # specify/map GFF3 feature type to role
                 if f['type'] == 'sequence_feature':
@@ -215,7 +265,7 @@ def get_dataset_json(gff3_path):
                     dbxrefs = dbxref.rsplit(',')
                     for dbx in dbxrefs:
                         (src, delim, src_id) = dbx.partition(':')
-                        alt_ids.append(DatsObj("AlternateIdentifier", [("identifier", src_id), ("identifierSource", src)]))
+                        alt_ids.append(get_dats_alternate_id(src, src_id)) 
 
                 # unharmonized data/anything that doesn't map anywhere else
                 extra_props = [
@@ -225,22 +275,42 @@ def get_dataset_json(gff3_path):
                     DatsObj("CategoryValuesPair", [("category", "strand"), ("values", [ f['strand'] ])])
                     ]
 
+                # human homologs
+                related_ids = []
+                has_homolog = False
+
+                if id in mgi2hgene_h:
+                    hgene = mgi2hgene_h[id]
+                    homologene_id = hgene['id']
+                    human_genes = []
+
+                    # add HomoloGene reference
+                    related_ids.append(get_dats_related_id("NCBI_HomoloGene", homologene_id, h_region))
+
+                    if 'human' in hgene:
+                        human_genes = hgene['human']
+                        has_homolog = True
+                    for human_gene in human_genes:
+                        entrez_gene_id = human_gene['EntrezGene ID']
+                        related_ids.append(get_dats_related_id("NCBI_Gene", entrez_gene_id, h_region))
+
+                if is_gene:
+                    if has_homolog:
+                        n_homolog += 1
+                    else:
+                        n_no_homolog += 1
 
                 me = DatsObj('MolecularEntity', [
                         ("name", f['Name']),
-                        ("identifier", DatsObj("Identifier", [("identifier", id), ("identifierSource", "MGI")])),
+                        ("identifier", get_dats_id("MGI", id)),
                         ("alternateIdentifiers", alt_ids),
-                        # TODO - add human orthologs to relatedIdentifiers
-                        ("relatedIdentifiers", []),
+                        ("relatedIdentifiers", related_ids),
                         ("characteristics", characteristics),
                         ("roles", roles),
                         ("extraProperties", extra_props),
                         ])
 
                 entities.append(me)
-
-                # DEBUG
-                break
 
             else:
                 logging.debug("skipped feature of type " + f['type'] + " at line " + str(f['lnum']) + ": mgiName=" + f['mgiName'] + ", bioType=" + f['bioType'])
@@ -269,4 +339,6 @@ def get_dataset_json(gff3_path):
     # TODO - add sub-Datasets for the individual MGI files that contributed to the DATS encoding?
     #   metadata['URL'] gives the FTP URI of the source data file
 
+    logging.debug("human homolog found for " + str(n_homolog) + "/" + str(n_genes) + " mouse (pseudo)genes")
+    logging.debug("no human homolog found for " + str(n_no_homolog) + "/" + str(n_genes) + " mouse (pseudo)genes")
     return parent_mgd_dataset
