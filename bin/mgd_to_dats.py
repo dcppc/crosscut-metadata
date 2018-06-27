@@ -26,8 +26,7 @@ def main():
     args = parser.parse_args()
 
     # logging
-#    logging.basicConfig(level=logging.INFO)
-    logging.basicConfig(level=logging.DEBUG)
+    logging.basicConfig(level=logging.INFO)
 
     # create top-level dataset
     mgd_dataset = ccmm.mgd.ref_genome_dataset.get_dataset_json(args.gff3_path, args.human_homologs_path)
