@@ -45,7 +45,7 @@ x KC7-crosscut-metadata-v0.3/data/docs/
 x KC7-crosscut-metadata-v0.3/data/docs/RELEASE_NOTES
 x KC7-crosscut-metadata-v0.3/data/docs/ChangeLog
 x KC7-crosscut-metadata-v0.3/manifest-sha256.txt
-```
+````
 
 After uncompressing the DATS JSON-LD files can be found in `KC7-crosscut-metadata-v0.3/data/datasets`:
 
