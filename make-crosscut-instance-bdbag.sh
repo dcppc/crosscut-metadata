@@ -72,12 +72,14 @@ mkdir -p $EXTERNAL_ID/datasets
 ## -----------------------------------------------
 ## Add documentation
 ## -----------------------------------------------
+
 cp releases/ChangeLog $EXTERNAL_ID/docs/
 cp RELEASE_NOTES $EXTERNAL_ID/docs/
 
 ## -----------------------------------------------
 ## Create BDBag
 ## -----------------------------------------------
+
 bdbag --archive tgz \
  --source-organization 'NIH DCPPC KC7 Working Group' \
  --contact-name 'Jonathan Crabtree' \
