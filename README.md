@@ -13,15 +13,16 @@ from the following DCPPC data sources:
 
 The metadata _model_ specifies _how_ the various metadata will be transformed into a uniform representation,
 whereas the metadata model _instance_ is the transformed representation itself. The metadata model is based
-on a JSON-LD encoding of DATS, the DatA Tag Suite data model developed through the Big Data To Knowledge (BD2K)
-initiative to support dataset discoverability. See below for a description of how each of the 3 main data 
-sets' metadata are encoded in DATS.
+on a JSON-LD encoding of [DATS](https://www.nature.com/articles/sdata201759), the DatA Tag Suite data model 
+developed through the Big Data To Knowledge (BD2K) initiative to support dataset discoverability. See below 
+for a description of how each of the 3 main datasets' metadata are encoded in DATS.
 
 
 ## Downloading the Crosscut Metadata Model Instance
 
 The crosscut metadata model instance, which is essentially a small set of JSON-LD files, is distributed as a
-BDBag. BDBags for all current releases can be found in the [releases/](https://github.com/dcppc/crosscut-metadata/tree/master/releases)
+[BDBag](http://bd2k.ini.usc.edu/tools/bdbag/). BDBags for all current releases can be found in the 
+[releases/](https://github.com/dcppc/crosscut-metadata/tree/master/releases)
 subdirectory. Each BDBag is a gzipped tar file that can be retrieved, extracted and uncompressed with 
 standard Unix or Mac OS command line utilities. On a Mac, for example, the latest (as of this writing) 
 v0.3 release can be retrieved and uncompressed with the following commands:
@@ -125,8 +126,8 @@ to find them, as in the example command:
 ## DATS-JSON validation
 
 All of the DATS JSON-LD files produced by the scripts have been validated using the validator provided
-in the main DATS repository, https://github.com/datatagsuite. Any changes to the DATS JSON should be 
-checked against the validator before making a new release.
+in the main DATS repository, https://github.com/datatagsuite/WG3-MetadataSpecifications. Any changes to 
+the DATS JSON should be checked against the validator before making a new release.
 
 
 ## Model Description
