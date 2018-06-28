@@ -134,7 +134,9 @@ following example command:
 All of the DATS JSON-LD files produced by the scripts have been validated using the validator provided
 in the main DATS repository, https://github.com/datatagsuite/WG3-MetadataSpecifications. Any changes to 
 the DATS JSON should be checked against the validator before creating a new release of the metadata 
-model instance.
+model instance. Note that although the DATS JSON files have been validated against the JSON schemas in 
+the aforementioned `datatagsuite` repository, they will NOT validate against the current (v2.2) DATS 
+release from the bioCADDIE project.
 
 
 ## Model Description
@@ -180,9 +182,65 @@ found or 2. Represent human homologs as full-fledged `MolecularEntity`s in their
 
 ### GTEx encoding
 
-TODO
+At the top level of the GTEx encoding is a DATS `Dataset` that represents the GTEx v7 RNA-Seq analysis.
+This top level `Dataset` is linked by the `hasPart` property to an array of DATS `Dataset`s, each of 
+which represents one of the public RNA-Seq data files available from https://www.gtexportal.org/home/datasets 
+These sub-`Dataset`s make use of the KC2-provided DataCite GUIDs as their JSON-LD ids. For example, note 
+the `doi.org` URL in the JSON snippet below:
+
+```
+      "@type": "Dataset",
+      "@context": "https://w3id.org/dats/context/sdo/dataset_context.jsonld",
+      "@id": "https://doi.org/10.25491/zzv1-xb48",
+      "identifier": {
+        "@type": "Identifier",
+        "@id": "",
+        "identifier": "GTEx_Analysis_2016-01-15_v7_RNA-SEQ_GTEx_Analysis_2016-01-15_v7_RNASeQCv1.1.8_gene_reads.gct.gz"
+      },
+```
+
+Each of the second level DATS `Dataset` objects is in turn linked to an array of DATS `Material` objects
+by the `isAbout` property. Each of those `Material`s represents an RNA extract used in the RNA-Seq protocol.
+In DATS a `Material` may be linked one or more other `Material` objects via the `derivesFrom` property. In
+the GTEx encoding each RNA extract `Material` is linked first (via `derivesFrom`) to a `Material` that 
+represents a biological sample from a particular body site. That biological sample `Material` is further
+linked (also via `derivesFrom`) to a `Material` that represents the individual human donor/subject.
+
+In the public version of the GTEx DATS encoding all of the human subjects, samples, and RNA extracts are
+represented, but some the phenotype and/or sample data may be limited. For example, instead of specifying
+each subject's exact age, only an "Age range" (e.g,. "60-69") is provided.
+
+
+Notes/Comments on GTEx encoding:
+
+* There is a significant amount of redundancy in this encoding. Each RNA extract `Material`, along with its
+associated biological sample and subject, is repeated for each and every one of the second-level `Dataset` 
+objects. An alternative would be to link only the top-level RNA-Seq `Dataset` to the array of `Materials` and
+say that the sub-`Dataset`s are implicitly "about" those `Material`s by dint of their relationship to the
+parent `Dataset`. To our knowledge DATS itself does not require one or the other representation.
+* The gross structure of the GTEx encoding differs from that of the TOPMed encoding in the following way:
+in GTEx we have a single `Dataset` representing the GTEx v7 RNA-Seq data with a set of sub-`Dataset`s that
+represent the individual analysis products produced by analyzing the RNA-Seq data. For TOPMed, on the other 
+hand, there is a single top-level `Dataset` that represents the umbrella TOPMed project, below which 
+there is a second level `Dataset` for each individual study within TOPMed. There are no third level 
+`Dataset` objects that represent the datasets produced within each study. Therefore in a future release it
+is likely that both the GTEx and TOPMed encodings may standardize on a 3-level `Dataset` structure at the 
+top.
+
 
 ### TOPMed encoding
 
-TODO
+At the top level of the TOPMed encoding is an umbrella DATS `Dataset` that represents the overarching
+TOPMed project. That `Dataset` links to one or more sub-`Dataset`s via the `hasPart` property. These
+second level `Dataset`s represent the individual studies that comprise TOPMed. In the current instance
+only one example TOPMed study is present at the second level, namely phs000946, the "Boston Early-Onset 
+COPD Study in the TOPMed Program"  Within those second level `Dataset`s the organization is similar to
+that used in GTEx, with each `Dataset` linked to an array of DATS `Material` objects by the `isAbout`
+property. Each of those `Material`s represents a DNA extract and is linked (via `derivesFrom`) first 
+to a biological sample and then (again via `derivesFrom`) to the human subject/donor.
 
+
+Notes/Comments on TOPMed encoding:
+
+* See the GTEx notes for a description of the inconsistency between the two levels of `Dataset` used at
+the top of the GTEx encoding versus the two levels used at the top of the TOPMed encoding.
