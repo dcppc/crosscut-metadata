@@ -18,7 +18,7 @@ developed through the Big Data To Knowledge (BD2K) initiative to support dataset
 for a description of how each of the 3 main datasets' metadata are encoded in DATS.
 
 
-## Downloading the Crosscut Metadata Model Instance
+## Downloading the Public Crosscut Metadata Model Instance
 
 The crosscut metadata model instance, which is essentially a small set of JSON-LD files, is distributed as a
 [BDBag](http://bd2k.ini.usc.edu/tools/bdbag/). BDBags for all current releases can be found in the 
@@ -27,7 +27,7 @@ subdirectory. Each BDBag is a gzipped tar file that can be retrieved, extracted 
 standard Unix or Mac OS command line utilities. On a Mac, for example, the latest (as of this writing) 
 v0.3 release can be retrieved and uncompressed with the following commands:
 
-````
+```
 $ curl -s -O 'https://raw.githubusercontent.com/dcppc/crosscut-metadata/master/releases/KC7-crosscut-metadata-v0.3.tgz'
 $ tar xzvf KC7-crosscut-metadata-v0.3.tgz 
 x KC7-crosscut-metadata-v0.3/
@@ -45,7 +45,7 @@ x KC7-crosscut-metadata-v0.3/data/docs/
 x KC7-crosscut-metadata-v0.3/data/docs/RELEASE_NOTES
 x KC7-crosscut-metadata-v0.3/data/docs/ChangeLog
 x KC7-crosscut-metadata-v0.3/manifest-sha256.txt
-````
+```
 
 After uncompressing the DATS JSON-LD files can be found in `KC7-crosscut-metadata-v0.3/data/datasets`:
 
@@ -60,19 +60,20 @@ drwxr-xr-x  4 jcrabtree  staff        128 Jun 27 15:35 ..
 ```
 
 If this sounds like too much work (it isn't), the most recent raw JSON files can also be found in the 
-[dats-json/](https://github.com/dcppc/crosscut-metadata/tree/master/dats-json) subdirectory.
+[dats-json/](https://github.com/dcppc/crosscut-metadata/tree/master/dats-json) subdirectory of this
+repository, in gzipped format.
 
 
-## Building the Crosscut Metadata Model Instance (on strictly public metadata)
+## Building the Public Crosscut Metadata Model Instance
 
 The script to build the public crosscut metadata model instance is called `make-crosscut-instance-bdbag.sh`
-and can be found in the top level of this repo:
+and can be found in the top level of this repository:
 
 https://github.com/dcppc/crosscut-metadata/blob/master/make-crosscut-instance-bdbag.sh
 
 The script contains the commands to perform the DATS metadata conversion for each of the currently supported
-data (sub)sets, but as the comments in the file indicate, you will first have to download a couple of 
-plain text and/or tab-delimited metadata files for each of them:
+data (sub)sets, but as the comments in the file indicate, the metadata flat files for each of the data
+sources must first be downloaded to the current directory:
 
 ### AGR/MGI
 
@@ -91,33 +92,38 @@ cd ..
 
 For GTEx the following two files are needed from https://www.gtexportal.org/home/datasets:
 
-* GTEx_v7_Annotations_SubjectPhenotypesDS.txt
-* GTEx_v7_Annotations_SampleAttributesDS.txt
+```
+GTEx_v7_Annotations_SubjectPhenotypesDS.txt
+GTEx_v7_Annotations_SampleAttributesDS.txt
+```
 
 ### TOPMed
 
 For the example TOPMed study, phs000946, the public TOPMed metadata/variable summaries should be
-downloaded from the following URL into a local directory named phs000946.v3:
+downloaded from the following URL into a local directory named `phs000946.v3`:
 
+```
 ftp://ftp.ncbi.nlm.nih.gov/dbgap/studies/phs000946/phs000946.v3.p1/pheno_variable_summaries/
+```
 
-### Other prerequisites
+### Other Prerequisites
 
-In order to run the command to create the BDBag, which is also in the script, you will need to 
-install the bdbag command-line utility if you do not already have it:
+In order to run the part of the script that creates the BDBag, the `bdbag` command-line utility
+must be installed:
 
 ```
 pip install bdbag
 ```
 
 
-## Building the Crosscut Metadata Model Instance on access-restricted metadata
+## Building the Access-Restricted Crosscut Metadata Model Instance
 
 The script mentioned above, `make-crosscut-instance-bdbag.sh`, also contains an example command showing
 how to generate DATS JSON for the access-restricted metadata associated with the example TOPMed study,
 phs000946. Simply add the access-restricted dbGaP files to the same local directory as the public 
-files (or, even better, place them in a separate directory) and then tell the conversion script where
-to find them, as in the example command:
+files (or, even better, place them in a separate directory with appropriate access controls) and then 
+tell the conversion script where to find the public and access-restricted metadata files, as in the 
+following example command:
 
 ./bin/topmed_to_dats.py --dbgap_public_xml_path=./phs000946.v3 --dbgap_protected_metadata_path=./phs000946.v3 \
  --output_file=$EXTERNAL_ID/metadata/annotations/datasets/TOPMed_phs000946_wgs_RESTRICTED.json
@@ -127,13 +133,17 @@ to find them, as in the example command:
 
 All of the DATS JSON-LD files produced by the scripts have been validated using the validator provided
 in the main DATS repository, https://github.com/datatagsuite/WG3-MetadataSpecifications. Any changes to 
-the DATS JSON should be checked against the validator before making a new release.
+the DATS JSON should be checked against the validator before creating a new release of the metadata 
+model instance.
 
 
 ## Model Description
 
 This section describes how the three datasets are currently encoded in DATS and discusses some of the tradeoffs
-and shortcomings inherent in the encoding. 
+and shortcomings of the encoding. The encoding is by no means set in stone and the process of refining and
+improving it is still ongoing. Concomitant adjustments are also being made to the DATS model in some cases to
+facilitate the encoding of some aspects of the metadata.
+
 
 ### GTEx encoding
 
