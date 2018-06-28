@@ -144,6 +144,39 @@ and shortcomings of the encoding. The encoding is by no means set in stone and t
 improving it is still ongoing. Concomitant adjustments are also being made to the DATS model in some cases to
 facilitate the encoding of some aspects of the metadata.
 
+### AGR/MGI encoding
+
+The preliminary encoding for the MGI mouse reference genome annotation is quite simple. At the top level of the
+DATS JSON is a DATS `Dataset` object that represents the C57BL/6J reference genome and MGI gene annotation. 
+That top-level `Dataset` is linked by the `isAbout` property to an array of DATS `MolecularEntity` objects.
+Each of those `MolecularEntity`s corresponds to an MGI gene, pseudogene, or gene/pseudogene segment. Within
+each `MolecularEntity` the DATS properties are used as follows:
+
+* `characteristics` - encodes the chromosome on which the gene is located as a DATS `Dimension`
+* `alternateIdentifiers` - lists alternate (non-MGI) ids for the gene e.g., NCBI_Gene or ENSEMBL
+* `relatedIdentifiers` - lists the HomoloGene id and any human genes linked via HomoloGene
+* `extraProperties` - contains the reference sequence id, gene coordinates, and gene strand
+
+Note that the `extraProperties` attribute in DATS is intended as a catch-all list for any properties that
+cannot be represented in a more structure way elsewhere in the DATS entity. In general we have adopted the
+position and approach that it can also be used as a place to store minimally-modified (aka "raw" or 
+"unharmonized") metadata from the original data source. As we improve the DATS encoding and metadata 
+harmonization and as the DATS model itself evolves we expect more information to appear both in "raw"
+form in `extraProperties` and also in DATS-compliant form elsewhere in the object. A simple example of 
+this in the AGR/MGI encoding is the gene's reference sequence, which is encoded both in the `extraProperties`
+(as a DATS `CategoryValuesPair` with category = "reference sequence") and also in the `characteristics` 
+as a DATS `Dimension` with a structured `Annotation` type drawn from a controlled vocabulary (the SO
+term for "chromosome", SO_0000340.)
+
+Notes/Comments on AGR/MGI encoding:
+
+* The HomoloGene ids and HomoloGene-derived human gene ids in `relatedIdentifiers` have DATS 
+`relationType` = http://purl.obolibrary.org/obo/SO_0000853. This is the SO term for "homologous_region".
+DATS only allows an IRI here, not a human-readable name and corresponding IRI, as is the case in some
+other places. This is perhaps not ideal because it detracts somewhat from the readability of the instance.
+* DATS wil soon be extended to allow a `MolecularEntity` to be related to other `MolecularEntity` objects.
+This could be used in the MGI encoding to: 1. Directly relate genes to the chromosome on which they are
+found or 2. Represent human homologs as full-fledged `MolecularEntity`s in their own right.
 
 ### GTEx encoding
 
@@ -153,6 +186,3 @@ TODO
 
 TODO
 
-### MGI encoding
-
-TODO
