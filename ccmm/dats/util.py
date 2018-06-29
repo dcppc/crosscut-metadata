@@ -33,7 +33,7 @@ DATS_DONOR_ROLES = [
 # ------------------------------------------------------
 
 def get_alt_id(id, source):
-    return DatsObj("AlternateIdentifier", [ {"identifier": id, "identifierSource": source } ])
+    return DatsObj("AlternateIdentifier", [ ("identifier", id), ("identifierSource", source) ])
 
 def get_taxon_human():
     return DATS_TAXON_HUMAN
