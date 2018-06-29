@@ -176,7 +176,7 @@ Notes/Comments on AGR/MGI encoding:
 `relationType` = http://purl.obolibrary.org/obo/SO_0000853. This is the SO term for "homologous_region".
 DATS only allows an IRI here, not a human-readable name and corresponding IRI, as is the case in some
 other places. This is perhaps not ideal because it detracts somewhat from the readability of the instance.
-* DATS wil soon be extended to allow a `MolecularEntity` to be related to other `MolecularEntity` objects.
+* DATS will soon be extended to allow a `MolecularEntity` to be related to other `MolecularEntity` objects.
 This could be used in the MGI encoding to: 1. Directly relate genes to the chromosome on which they are
 found or 2. Represent human homologs as full-fledged `MolecularEntity`s in their own right.
 
