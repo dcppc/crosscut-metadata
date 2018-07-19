@@ -18,40 +18,40 @@ JSON_LD_CONTEXT_URI_PREFIX = 'https://w3id.org/dats/context/sdo/'
 # from schema dir of https://github.com/datatagsuite/schema.git:
 # egrep '@type' *.json | perl -ne 'if (/^(\S+):.*\"enum\":\s*\[\s*\"([^\"]+)\"/) { print "\"$2\": { \"name\": \"$2\", \"schema\": \"$1\", \"has_context\": False },\n"; }' | sort | uniq
 DATS_TYPES = {
-    "Access": { "name": "Access", "schema": "access_schema.json", "has_context": False },
-    "Activity": { "name": "Activity", "schema": "activity_schema.json", "has_context": False },
-    "AlternateIdentifier": { "name": "AlternateIdentifier", "schema": "alternate_identifier_info_schema.json", "has_context": False },
-    "AnatomicalPart": { "name": "AnatomicalPart", "schema": "anatomical_part_schema.json", "has_context": False },
-    "Annotation": { "name": "Annotation", "schema": "annotation_schema.json", "has_context": False },
-    "BiologicalEntity": { "name": "BiologicalEntity", "schema": "biological_entity_schema.json", "has_context": False },
-    "CategoryValuesPair": { "name": "CategoryValuesPair", "schema": "category_values_pair_schema.json", "has_context": False },
-    "DataAcquisition": { "name": "DataAcquisition", "schema": "data_acquisition_schema.json", "has_context": False },
-    "DataAnalysis": { "name": "DataAnalysis", "schema": "data_analysis_schema.json", "has_context": False },
+    "Access": { "name": "Access", "schema": "access_schema.json", "has_context": True },
+    "Activity": { "name": "Activity", "schema": "activity_schema.json", "has_context": True },
+    "AlternateIdentifier": { "name": "AlternateIdentifier", "schema": "alternate_identifier_info_schema.json", "has_context": True },
+    "AnatomicalPart": { "name": "AnatomicalPart", "schema": "anatomical_part_schema.json", "has_context": True },
+    "Annotation": { "name": "Annotation", "schema": "annotation_schema.json", "has_context": True },
+    "BiologicalEntity": { "name": "BiologicalEntity", "schema": "biological_entity_schema.json", "has_context": True },
+    "CategoryValuesPair": { "name": "CategoryValuesPair", "schema": "category_values_pair_schema.json", "has_context": True },
+    "DataAcquisition": { "name": "DataAcquisition", "schema": "data_acquisition_schema.json", "has_context": True },
+    "DataAnalysis": { "name": "DataAnalysis", "schema": "data_analysis_schema.json", "has_context": True },
     "DataRepository": { "name": "DataRepository", "schema": "data_repository_schema.json", "has_context": True },
     "DataStandard": { "name": "DataStandard", "schema": "data_standard_schema.json", "has_context": True },
-    "DataType": { "name": "DataType", "schema": "data_type_schema.json", "has_context": False },
+    "DataType": { "name": "DataType", "schema": "data_type_schema.json", "has_context": True },
     "Dataset": { "name": "Dataset", "schema": "dataset_schema.json", "has_context": True },
     "DatasetDistribution": { "name": "DatasetDistribution", "schema": "dataset_distribution_schema.json", "has_context": True },
-    "Date": { "name": "Date", "schema": "date_info_schema.json", "has_context": False },
-    "Dimension": { "name": "Dimension", "schema": "dimension_schema.json", "has_context": False },
-    "Disease": { "name": "Disease", "schema": "disease_schema.json", "has_context": False },
+    "Date": { "name": "Date", "schema": "date_info_schema.json", "has_context": True },
+    "Dimension": { "name": "Dimension", "schema": "dimension_schema.json", "has_context": True },
+    "Disease": { "name": "Disease", "schema": "disease_schema.json", "has_context": True },
     "Grant": { "name": "Grant", "schema": "grant_schema.json", "has_context": True },
-    "Identifier": { "name": "Identifier", "schema": "identifier_info_schema.json", "has_context": False },
-    "Instrument": { "name": "Instrument", "schema": "instrument_schema.json", "has_context": False },
+    "Identifier": { "name": "Identifier", "schema": "identifier_info_schema.json", "has_context": True },
+    "Instrument": { "name": "Instrument", "schema": "instrument_schema.json", "has_context": True },
     "License": { "name": "License", "schema": "license_schema.json", "has_context": False },
     "Material": { "name": "Material", "schema": "material_schema.json", "has_context": True },
-    "MolecularEntity": { "name": "MolecularEntity", "schema": "molecular_entity_schema.json", "has_context": False },
+    "MolecularEntity": { "name": "MolecularEntity", "schema": "molecular_entity_schema.json", "has_context": True },
     "Organization": { "name": "Organization", "schema": "organization_schema.json", "has_context": True },
     "Person": { "name": "Person", "schema": "person_schema.json", "has_context": True },
-    "Place": { "name": "Place", "schema": "place_schema.json", "has_context": False },
-    "Provenance": { "name": "Provenance", "schema": "provenance_schema.json", "has_context": False },
+    "Place": { "name": "Place", "schema": "place_schema.json", "has_context": True },
+    "Provenance": { "name": "Provenance", "schema": "provenance_schema.json", "has_context": True },
     "Publication": { "name": "Publication", "schema": "publication_schema.json", "has_context": True },
-    "RelatedIdentifier": { "name": "RelatedIdentifier", "schema": "related_identifier_info_schema.json", "has_context": False },
+    "RelatedIdentifier": { "name": "RelatedIdentifier", "schema": "related_identifier_info_schema.json", "has_context": True },
     "Software": { "name": "Software", "schema": "software_schema.json", "has_context": True },
-    "Study": { "name": "Study", "schema": "study_schema.json", "has_context": False },
-    "StudyGroup": { "name": "StudyGroup", "schema": "study_group_schema.json", "has_context": False },
-    "TaxonomicInformation": { "name": "TaxonomicInformation", "schema": "taxonomic_info_schema.json", "has_context": False },
-    "Treatment": { "name": "Treatment", "schema": "treatment_schema.json", "has_context": False }
+    "Study": { "name": "Study", "schema": "study_schema.json", "has_context": True },
+    "StudyGroup": { "name": "StudyGroup", "schema": "study_group_schema.json", "has_context": True },
+    "TaxonomicInformation": { "name": "TaxonomicInformation", "schema": "taxonomic_info_schema.json", "has_context": True },
+    "Treatment": { "name": "Treatment", "schema": "treatment_schema.json", "has_context": True }
     }
 
 # ------------------------------------------------------
@@ -74,7 +74,7 @@ class DatsObj:
         # @context
         if dt['has_context']:
             json_ld_file = dt['schema']
-            context_file = re.sub(r'_schema.json$', '_context.jsonld', json_ld_file)
+            context_file = re.sub(r'_schema.json$', 'sdo_context.jsonld', json_ld_file)
             json_ld_context = JSON_LD_CONTEXT_URI_PREFIX + context_file
             dats_atts.append(("@context", json_ld_context))
 
