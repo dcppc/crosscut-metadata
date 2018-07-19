@@ -125,9 +125,10 @@ files (or, even better, place them in a separate directory with appropriate acce
 tell the conversion script where to find the public and access-restricted metadata files, as in the 
 following example command:
 
+```
 ./bin/topmed_to_dats.py --dbgap_public_xml_path=./phs000946.v3 --dbgap_protected_metadata_path=./phs000946.v3 \
  --output_file=$EXTERNAL_ID/metadata/annotations/datasets/TOPMed_phs000946_wgs_RESTRICTED.json
-
+```
 
 ## DATS-JSON validation
 
@@ -158,6 +159,10 @@ each `MolecularEntity` the DATS properties are used as follows:
 * `alternateIdentifiers` - lists alternate (non-MGI) ids for the gene e.g., NCBI_Gene or ENSEMBL
 * `relatedIdentifiers` - lists the HomoloGene id and any human genes linked via HomoloGene
 * `extraProperties` - contains the reference sequence id, gene coordinates, and gene strand
+
+The following simplified ER diagram illustrates this structure:
+
+![MGI-v0.3](er-diagrams/MGI-v0.3.png)
 
 Note that the `extraProperties` attribute in DATS is intended as a catch-all list for any properties that
 cannot be represented in a more structure way elsewhere in the DATS entity. In general we have adopted the
