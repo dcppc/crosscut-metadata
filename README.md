@@ -165,7 +165,7 @@ The following simplified ER diagram illustrates this structure:
 ![MGI-v0.3](er-diagrams/MGI-v0.3.png)
 
 Note that the `extraProperties` attribute in DATS is intended as a catch-all list for any properties that
-cannot be represented in a more structure way elsewhere in the DATS entity. In general we have adopted the
+cannot be represented in a more structured way elsewhere in the DATS entity. In general we have adopted the
 position and approach that it can also be used as a place to store minimally-modified (aka "raw" or 
 "unharmonized") metadata from the original data source. As we improve the DATS encoding and metadata 
 harmonization and as the DATS model itself evolves we expect more information to appear both in "raw"
@@ -180,10 +180,11 @@ Notes/Comments on AGR/MGI encoding:
 * The HomoloGene ids and HomoloGene-derived human gene ids in `relatedIdentifiers` have DATS 
 `relationType` = http://purl.obolibrary.org/obo/SO_0000853. This is the SO term for "homologous_region".
 DATS only allows an IRI here, not a human-readable name and corresponding IRI, as is the case in some
-other places. This is perhaps not ideal because it detracts somewhat from the readability of the instance.
+other places. This is perhaps not ideal because it detracts somewhat from the readability of the instance 
+for those who don't spend their days wrangling SO terms.
 * DATS will soon be extended to allow a `MolecularEntity` to be related to other `MolecularEntity` objects.
 This could be used in the MGI encoding to: 1. Directly relate genes to the chromosome on which they are
-found or 2. Represent human homologs as full-fledged `MolecularEntity`s in their own right.
+found or 2. Represent human homologs as full-fledged `MolecularEntity` objects in their own right.
 
 ### GTEx encoding
 
@@ -215,7 +216,7 @@ shown in the following ER diagram:
 ![GTEx-v0.3](er-diagrams/GTEx-v0.3.png)
 
 In the public version of the GTEx DATS encoding all of the human subjects, samples, and RNA extracts are
-represented, but some the phenotype and/or sample data may be limited. For example, instead of specifying
+represented, but some of the phenotype and/or sample data may be limited. For example, instead of specifying
 each subject's exact age, only an "Age range" (e.g,. "60-69") is provided.
 
 
@@ -223,9 +224,11 @@ Notes/Comments on GTEx encoding:
 
 * There is a significant amount of redundancy in this encoding. Each RNA extract `Material`, along with its
 associated biological sample and subject, is repeated for each and every one of the second-level `Dataset` 
-objects. An alternative would be to link only the top-level RNA-Seq `Dataset` to the array of `Materials` and
+objects. One alternative would be to link only the top-level RNA-Seq `Dataset` to the array of `Materials` and
 say that the sub-`Dataset`s are implicitly "about" those `Material`s by dint of their relationship to the
-parent `Dataset`. To our knowledge DATS itself does not require one or the other representation.
+parent `Dataset`. To our knowledge DATS itself does not require one or the other representation. Another 
+option would be to keep the existing structure but make use of the JSON-LD ids to replace any duplicated
+`Material` elements with references back to the first occurrence of each.
 * The gross structure of the GTEx encoding differs from that of the TOPMed encoding in the following way:
 in GTEx we have a single `Dataset` representing the GTEx v7 RNA-Seq data with a set of sub-`Dataset`s that
 represent the individual analysis products produced by analyzing the RNA-Seq data. For TOPMed, on the other 
