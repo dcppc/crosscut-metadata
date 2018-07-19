@@ -209,7 +209,10 @@ by the `isAbout` property. Each of those `Material`s represents an RNA extract u
 In DATS a `Material` may be linked one or more other `Material` objects via the `derivesFrom` property. In
 the GTEx encoding each RNA extract `Material` is linked first (via `derivesFrom`) to a `Material` that 
 represents a biological sample from a particular body site. That biological sample `Material` is further
-linked (also via `derivesFrom`) to a `Material` that represents the individual human donor/subject.
+linked (also via `derivesFrom`) to a `Material` that represents the individual human donor/subject, as
+shown in the following ER diagram:
+
+![GTEx-v0.3](er-diagrams/GTEx-v0.3.png)
 
 In the public version of the GTEx DATS encoding all of the human subjects, samples, and RNA extracts are
 represented, but some the phenotype and/or sample data may be limited. For example, instead of specifying
@@ -242,8 +245,10 @@ only one example TOPMed study is present at the second level, namely phs000946, 
 COPD Study in the TOPMed Program"  Within those second level `Dataset`s the organization is similar to
 that used in GTEx, with each `Dataset` linked to an array of DATS `Material` objects by the `isAbout`
 property. Each of those `Material`s represents a DNA extract and is linked (via `derivesFrom`) first 
-to a biological sample and then (again via `derivesFrom`) to the human subject/donor.
+to a biological sample and then (again via `derivesFrom`) to the human subject/donor. The following 
+simplified ER diagram illustrates this structure:
 
+![TOPMed-v0.3](er-diagrams/TOPMed-v0.3.png)
 
 Notes/Comments on TOPMed encoding:
 
