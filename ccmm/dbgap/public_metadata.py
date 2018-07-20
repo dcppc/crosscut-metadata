@@ -96,7 +96,7 @@ def parse_var_report_stats(et):
 
     return stats
 
-# parse <total> section of variable report e.g., 
+# parse <total>, <cases>, or <controls> subsection of variable report e.g., 
 #
 # <total>
 #   <subject_profile>
@@ -113,7 +113,7 @@ def parse_var_report_stats(et):
 #  </stats>
 # </total>
 #
-def parse_var_report_total(et):
+def parse_var_report_subsection(et, subsection):
     res = {}
     for child in et:
         if child.tag == "subject_profile":
@@ -122,7 +122,7 @@ def parse_var_report_total(et):
         elif child.tag == "stats":
             res['stats'] = parse_var_report_stats(child)
         else:
-            logging.fatal("unexpected child.tag = " + child.tag + " under var_report <total>")
+            logging.fatal("unexpected child.tag = " + child.tag + " under var_report <" + subsection + ">")
     return res
 
 # read dbGaP XML data_dict or var_report XML file
@@ -161,11 +161,15 @@ def read_dbgap_data_dict_or_var_report_xml(xml_file):
                     value = gchild.text
                     cv_values.append({ 'code': code, 'value': value })
                 elif gchild.tag == "total":
-                    var['total'] = parse_var_report_total(gchild)
+                    var['total'] = parse_var_report_subsection(gchild, "total")
+                elif gchild.tag == "cases":
+                    var['cases'] = parse_var_report_subsection(gchild, "cases")
+                elif gchild.tag == "controls":
+                    var['controls'] = parse_var_report_subsection(gchild, "controls")
                 elif gchild.tag in VARIABLE_TAGS:
                     var[gchild.tag] = gchild.text
                 else:
-                    logging.fatal("unexpected child tag = " + gchild.tag)
+                    logging.fatal("unexpected child tag under variable " + child.attrib['id']  + " = " + gchild.tag)
                     sys.exit(1)
 
             if var['type'] == "encoded value":
@@ -244,9 +248,15 @@ def read_study_metadata(dir):
         
         # each study should have a data_dict and var_report for each of the following:
         for datatype in ('Subject', 'Sample', 'Sample_Attributes', 'Subject_Phenotypes'):
-            md[datatype] = {}
-
             for filetype in ('data_dict', 'var_report'):
+                # Subject_Phenotypes is not always present
+                if datatype not in sd:
+                    logging.info("no XML found for " + datatype + "." + filetype)
+                    continue
+
+                if datatype not in md:
+                    md[datatype] = {}
+
                 file_path = sd[datatype][filetype]['path']
                 xml_data = read_dbgap_data_dict_or_var_report_xml(file_path)
                 md[datatype][filetype] = { 'file': file_path, 'data': xml_data }

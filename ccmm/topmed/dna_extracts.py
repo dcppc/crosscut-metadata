@@ -103,23 +103,24 @@ def get_single_dna_extract_json(study, subj_var_values, samp_var_values):
             ("alternateIdentifiers", anatomy_alt_ids)
             ])
 
-    subject_sex = DatsObj("Dimension", [
-            ("name", { "value": "Gender" }),
-            ("description", "Gender of the subject"),
-            ("values", [ gender ])
-            ])
+    subject_characteristics = []
 
-    subject_age = DatsObj("Dimension", [
-            ("name", { "value": "Age" }),
-            ("description", "Age of the subject"),
-            ("values", [ age ])
-            ])
+    if gender is not None:
+        subject_sex = DatsObj("Dimension", [
+                ("name", { "value": "Gender" }),
+                ("description", "Gender of the subject"),
+                ("values", [ gender ])
+                ])
+        subject_characteristics.append(subject_sex)
+
+    if age is not None:
+        subject_age = DatsObj("Dimension", [
+                ("name", { "value": "Age" }),
+                ("description", "Age of the subject"),
+                ("values", [ age ])
+                ])
+        subject_characteristics.append(subject_age)
     
-    subject_characteristics = [
-        subject_sex,
-        subject_age
-        ]
-
     human_t = util.get_taxon_human()
     subj_id = subj_var_values['SUBJECT_ID']
     dbgap_subj_id = subj_var_values['dbGaP_Subject_ID']
@@ -168,11 +169,14 @@ def get_single_dna_extract_json(study, subj_var_values, samp_var_values):
 def get_synthetic_single_dna_extract_json_from_public_metadata(study, study_md):
 
     # Subject summary data
-    subj_data = study_md['Subject_Phenotypes']['var_report']['data']
-    subj_vars = subj_data['vars']
-    # pick representative and/or legal value for each variable
-    subj_var_values = pick_var_values(subj_vars)
-    logging.debug("subj_var_values=" + json.dumps(subj_var_values, indent=2))
+    if 'Subject_Phenotypes' in study_md:
+        subj_data = study_md['Subject_Phenotypes']['var_report']['data']
+        subj_vars = subj_data['vars']
+        # pick representative and/or legal value for each variable
+        subj_var_values = pick_var_values(subj_vars)
+        logging.debug("subj_var_values=" + json.dumps(subj_var_values, indent=2))
+    else:
+        subj_var_values = {}
 
     # Sample summary data
     samp_data = study_md['Sample_Attributes']['var_report']['data']

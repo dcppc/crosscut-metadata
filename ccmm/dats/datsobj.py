@@ -74,7 +74,7 @@ class DatsObj:
         # @context
         if dt['has_context']:
             json_ld_file = dt['schema']
-            context_file = re.sub(r'_schema.json$', 'sdo_context.jsonld', json_ld_file)
+            context_file = re.sub(r'_schema.json$', '_sdo_context.jsonld', json_ld_file)
             json_ld_context = JSON_LD_CONTEXT_URI_PREFIX + context_file
             dats_atts.append(("@context", json_ld_context))
 
