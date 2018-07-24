@@ -1,0 +1,1876 @@
+{
+  "@type": "Dataset",
+  "@context": "https://w3id.org/dats/context/sdo/dataset_sdo_context.jsonld",
+  "@id": "dfc0517c-1e81-4c73-9f78-952616bfffd9",
+  "identifier": {
+    "@type": "Identifier",
+    "@context": "https://w3id.org/dats/context/sdo/identifier_info_sdo_context.jsonld",
+    "@id": "40aab09d-bed6-4d94-9e5f-6fc367dc9bc3",
+    "identifier": "TOPMed"
+  },
+  "title": "Trans-Omics for Precision Medicine (TOPMed)",
+  "description": "TOPMed generates scientific resources related to heart, lung, blood, and sleep disorders (HLBS). It is sponsored by the NIH NHLBI and is part of a broader Precision Medicine Initiative.",
+  "storedIn": {
+    "@type": "DataRepository",
+    "@context": "https://w3id.org/dats/context/sdo/data_repository_sdo_context.jsonld",
+    "@id": "8fbadcbf-db0c-4814-8c03-1f7d7ff832cf",
+    "name": "dbGaP"
+  },
+  "types": [
+    {
+      "information": {
+        "value": "DNA sequencing",
+        "valueIRI": "http://purl.obolibrary.org/obo/OBI_0000626"
+      },
+      "method": {
+        "value": "whole genome sequencing assay",
+        "valueIRI": "http://purl.obolibrary.org/obo/OBI_0002117"
+      },
+      "platform": {
+        "value": "Illumina",
+        "valueIRI": "http://purl.obolibrary.org/obo/OBI_0000759"
+      }
+    }
+  ],
+  "creators": [
+    {
+      "@type": "Organization",
+      "@context": "https://w3id.org/dats/context/sdo/organization_sdo_context.jsonld",
+      "@id": "4132392b-3b8d-4c2c-8ad1-46cfbecaf8fb",
+      "name": "The National Institute of Health's National Heart, Lung and Blood Institute",
+      "abbreviation": "NHLBI"
+    }
+  ],
+  "distributions": [
+    {
+      "@type": "DatasetDistribution",
+      "@context": "https://w3id.org/dats/context/sdo/dataset_distribution_sdo_context.jsonld",
+      "@id": "5881a425-6ac0-4cb5-8882-a1108150007f",
+      "access": {
+        "@type": "Access",
+        "@context": "https://w3id.org/dats/context/sdo/access_sdo_context.jsonld",
+        "@id": "f15ab079-003f-459b-91bf-7ca21d902203",
+        "landingPage": "https://www.ncbi.nlm.nih.gov/gap/?term=topmed"
+      }
+    }
+  ],
+  "hasPart": [
+    {
+      "@type": "Dataset",
+      "@context": "https://w3id.org/dats/context/sdo/dataset_sdo_context.jsonld",
+      "@id": "1a744148-495b-45d1-b69a-894591df20a9",
+      "identifier": {
+        "@type": "Identifier",
+        "@context": "https://w3id.org/dats/context/sdo/identifier_info_sdo_context.jsonld",
+        "@id": "b8923126-64eb-471b-aa54-6f088a14e75f",
+        "identifier": "phs000946.v3.p1"
+      },
+      "version": "v3",
+      "title": "Boston Early-Onset COPD Study in the TOPMed Program",
+      "storedIn": {
+        "@type": "DataRepository",
+        "@context": "https://w3id.org/dats/context/sdo/data_repository_sdo_context.jsonld",
+        "@id": "8fbadcbf-db0c-4814-8c03-1f7d7ff832cf",
+        "name": "dbGaP"
+      },
+      "types": [
+        {
+          "information": {
+            "value": "DNA sequencing",
+            "valueIRI": "http://purl.obolibrary.org/obo/OBI_0000626"
+          },
+          "method": {
+            "value": "whole genome sequencing assay",
+            "valueIRI": "http://purl.obolibrary.org/obo/OBI_0002117"
+          },
+          "platform": {
+            "value": "Illumina HiSeq X Ten",
+            "valueIRI": "http://purl.obolibrary.org/obo/OBI_0002129"
+          }
+        }
+      ],
+      "creators": [
+        {
+          "@type": "Organization",
+          "@context": "https://w3id.org/dats/context/sdo/organization_sdo_context.jsonld",
+          "@id": "4132392b-3b8d-4c2c-8ad1-46cfbecaf8fb",
+          "name": "The National Institute of Health's National Heart, Lung and Blood Institute",
+          "abbreviation": "NHLBI"
+        }
+      ],
+      "dimensions": [
+        {
+          "@type": "Dimension",
+          "@context": "https://w3id.org/dats/context/sdo/dimension_sdo_context.jsonld",
+          "@id": "7828ab7b-a2ba-488d-a050-d0b9c2e1ab6e",
+          "name": {
+            "value": "Actual Subject Count"
+          },
+          "description": "The actual number of subjects entered into a clinical trial.",
+          "types": [
+            {
+              "value": "Actual Subject Number",
+              "valueIRI": "http://purl.obolibrary.org/obo/NCIT_C98703"
+            }
+          ],
+          "values": [
+            80
+          ]
+        }
+      ],
+      "extraProperties": [
+        {
+          "@type": "CategoryValuesPair",
+          "@context": "https://w3id.org/dats/context/sdo/category_values_pair_sdo_context.jsonld",
+          "@id": "c5abd68e-3b25-431e-8ea2-4ced1d307252",
+          "category": "study_type",
+          "values": [
+            "Pedigree Whole Genome Sequencing"
+          ]
+        }
+      ],
+      "isAbout": [
+        {
+          "@type": "Material",
+          "@context": "https://w3id.org/dats/context/sdo/material_sdo_context.jsonld",
+          "@id": "544f59d0-1027-401f-820e-f1032bd01ebc",
+          "name": "DNA from SA0000000",
+          "description": "DNA extracted from blood specimen collected from subject SU0000000",
+          "taxonomy": [
+            {
+              "@type": "TaxonomicInformation",
+              "@context": "https://w3id.org/dats/context/sdo/taxonomic_info_sdo_context.jsonld",
+              "@id": "9418ddab-4799-4ca0-b23d-4f48cb2b12bc",
+              "name": "Homo sapiens",
+              "identifier": {
+                "identifier": "ncbitax:9606",
+                "identifierSource": "ncbitax"
+              }
+            }
+          ],
+          "roles": [
+            {
+              "@type": "Annotation",
+              "@context": "https://w3id.org/dats/context/sdo/annotation_sdo_context.jsonld",
+              "@id": "f4b3e95e-64fc-40a6-b19a-69769569f9c2",
+              "value": "DNA extract",
+              "valueIRI": "http://purl.obolibrary.org/obo/OBI_0001051"
+            }
+          ],
+          "derivesFrom": [
+            {
+              "@type": "Material",
+              "@context": "https://w3id.org/dats/context/sdo/material_sdo_context.jsonld",
+              "@id": "e58a883e-b24f-44b3-a1a7-4e6e817cfe1e",
+              "name": "SA0000000",
+              "identifier": {
+                "identifier": "SA0000000"
+              },
+              "alternateIdentifiers": [
+                {
+                  "@type": "AlternateIdentifier",
+                  "@context": "https://w3id.org/dats/context/sdo/alternate_identifier_info_sdo_context.jsonld",
+                  "@id": "6aaa91d8-7583-4bf5-87c5-200200cd6c5a",
+                  "identifier": "0000000",
+                  "identifierSource": "dbGaP"
+                }
+              ],
+              "description": "blood specimen collected from subject SU0000000",
+              "taxonomy": [
+                {
+                  "@type": "TaxonomicInformation",
+                  "@context": "https://w3id.org/dats/context/sdo/taxonomic_info_sdo_context.jsonld",
+                  "@id": "9418ddab-4799-4ca0-b23d-4f48cb2b12bc",
+                  "name": "Homo sapiens",
+                  "identifier": {
+                    "identifier": "ncbitax:9606",
+                    "identifierSource": "ncbitax"
+                  }
+                }
+              ],
+              "roles": [
+                {
+                  "@type": "Annotation",
+                  "@context": "https://w3id.org/dats/context/sdo/annotation_sdo_context.jsonld",
+                  "@id": "22aee990-e668-44a9-99c9-c95651a82d2a",
+                  "value": "specimen",
+                  "valueIRI": "http://purl.obolibrary.org/obo/OBI_0100051"
+                }
+              ],
+              "derivesFrom": [
+                {
+                  "@type": "Material",
+                  "@context": "https://w3id.org/dats/context/sdo/material_sdo_context.jsonld",
+                  "@id": "a69bfafd-3fc5-439c-85f1-9363d0fd89dd",
+                  "name": "SU0000000",
+                  "identifier": {
+                    "identifier": "SU0000000"
+                  },
+                  "alternateIdentifiers": [
+                    {
+                      "@type": "AlternateIdentifier",
+                      "@context": "https://w3id.org/dats/context/sdo/alternate_identifier_info_sdo_context.jsonld",
+                      "@id": "981d19c0-ca7b-46ea-b927-e50e78847825",
+                      "identifier": "0000000",
+                      "identifierSource": "dbGaP"
+                    }
+                  ],
+                  "description": "Boston Early-Onset COPD Study in the TOPMed Program subject SU0000000",
+                  "characteristics": [
+                    {
+                      "@type": "Dimension",
+                      "@context": "https://w3id.org/dats/context/sdo/dimension_sdo_context.jsonld",
+                      "@id": "6dde5de8-3402-46ca-8967-34de0b8b7390",
+                      "name": {
+                        "value": "Gender"
+                      },
+                      "description": "Gender of the subject",
+                      "values": [
+                        "female"
+                      ]
+                    },
+                    {
+                      "@type": "Dimension",
+                      "@context": "https://w3id.org/dats/context/sdo/dimension_sdo_context.jsonld",
+                      "@id": "2ffa42b6-e2e1-420c-8a43-bc429a5f11b1",
+                      "name": {
+                        "value": "Age"
+                      },
+                      "description": "Age of the subject",
+                      "values": [
+                        "46.76"
+                      ]
+                    }
+                  ],
+                  "taxonomy": [
+                    {
+                      "@type": "TaxonomicInformation",
+                      "@context": "https://w3id.org/dats/context/sdo/taxonomic_info_sdo_context.jsonld",
+                      "@id": "9418ddab-4799-4ca0-b23d-4f48cb2b12bc",
+                      "name": "Homo sapiens",
+                      "identifier": {
+                        "identifier": "ncbitax:9606",
+                        "identifierSource": "ncbitax"
+                      }
+                    }
+                  ],
+                  "roles": [
+                    {
+                      "@type": "Annotation",
+                      "@context": "https://w3id.org/dats/context/sdo/annotation_sdo_context.jsonld",
+                      "@id": "e3a4e21d-6f10-4b68-8f62-7e65b7475858",
+                      "value": "patient",
+                      "valueIRI": "http://purl.obolibrary.org/obo/OBI_0000093"
+                    },
+                    {
+                      "@type": "Annotation",
+                      "@context": "https://w3id.org/dats/context/sdo/annotation_sdo_context.jsonld",
+                      "@id": "b48c840c-c9b2-49dd-ae33-6a9a4ef76fde",
+                      "value": "donor",
+                      "valueIRI": "http://purl.obolibrary.org/obo/OBI_1110087"
+                    }
+                  ],
+                  "extraProperties": [
+                    {
+                      "@type": "CategoryValuesPair",
+                      "@context": "https://w3id.org/dats/context/sdo/category_values_pair_sdo_context.jsonld",
+                      "@id": "eec4b813-98bd-440d-a933-46f9ef5a2ab4",
+                      "category": "BMI",
+                      "values": [
+                        "23.71"
+                      ]
+                    },
+                    {
+                      "@type": "CategoryValuesPair",
+                      "@context": "https://w3id.org/dats/context/sdo/category_values_pair_sdo_context.jsonld",
+                      "@id": "00d09a06-c8cc-433f-afc7-b249e85f3018",
+                      "category": "CIGSPERDAY",
+                      "values": [
+                        "5"
+                      ]
+                    },
+                    {
+                      "@type": "CategoryValuesPair",
+                      "@context": "https://w3id.org/dats/context/sdo/category_values_pair_sdo_context.jsonld",
+                      "@id": "4ad025c4-6019-41f9-9e2e-b9174179288d",
+                      "category": "CIGSPERDAY_AVERAGE",
+                      "values": [
+                        "25"
+                      ]
+                    },
+                    {
+                      "@type": "CategoryValuesPair",
+                      "@context": "https://w3id.org/dats/context/sdo/category_values_pair_sdo_context.jsonld",
+                      "@id": "6b0e25f1-e350-4146-bd46-d1e1b64d56b3",
+                      "category": "CURRENT_SMOKER",
+                      "values": [
+                        "No"
+                      ]
+                    },
+                    {
+                      "@type": "CategoryValuesPair",
+                      "@context": "https://w3id.org/dats/context/sdo/category_values_pair_sdo_context.jsonld",
+                      "@id": "0d66886f-584a-4df2-987b-327e7cbe101a",
+                      "category": "DNA_AGE",
+                      "values": [
+                        "48.75"
+                      ]
+                    },
+                    {
+                      "@type": "CategoryValuesPair",
+                      "@context": "https://w3id.org/dats/context/sdo/category_values_pair_sdo_context.jsonld",
+                      "@id": "177d1e6d-632e-4f65-80c2-bf2aee221a8e",
+                      "category": "FORMER_SMOKER",
+                      "values": [
+                        "No"
+                      ]
+                    },
+                    {
+                      "@type": "CategoryValuesPair",
+                      "@context": "https://w3id.org/dats/context/sdo/category_values_pair_sdo_context.jsonld",
+                      "@id": "8a946faf-a143-45d0-a565-ad829fbe46de",
+                      "category": "GENDER",
+                      "values": [
+                        "Female"
+                      ]
+                    },
+                    {
+                      "@type": "CategoryValuesPair",
+                      "@context": "https://w3id.org/dats/context/sdo/category_values_pair_sdo_context.jsonld",
+                      "@id": "0188f6f4-0505-4f60-ab41-4808ff36b714",
+                      "category": "HEIGHT",
+                      "values": [
+                        "161.3"
+                      ]
+                    },
+                    {
+                      "@type": "CategoryValuesPair",
+                      "@context": "https://w3id.org/dats/context/sdo/category_values_pair_sdo_context.jsonld",
+                      "@id": "e7ae1c0e-c6bb-4146-8b35-5f0423969841",
+                      "category": "PACKYEARS",
+                      "values": [
+                        "32.25"
+                      ]
+                    },
+                    {
+                      "@type": "CategoryValuesPair",
+                      "@context": "https://w3id.org/dats/context/sdo/category_values_pair_sdo_context.jsonld",
+                      "@id": "381b3601-8c36-426d-8703-fcd3488a72b1",
+                      "category": "PREGNANCY",
+                      "values": [
+                        "No"
+                      ]
+                    },
+                    {
+                      "@type": "CategoryValuesPair",
+                      "@context": "https://w3id.org/dats/context/sdo/category_values_pair_sdo_context.jsonld",
+                      "@id": "ce79b47b-09be-4e64-b4b2-785fb986ac5e",
+                      "category": "RACE",
+                      "values": [
+                        "Caucasian"
+                      ]
+                    },
+                    {
+                      "@type": "CategoryValuesPair",
+                      "@context": "https://w3id.org/dats/context/sdo/category_values_pair_sdo_context.jsonld",
+                      "@id": "f0b979f3-1644-4072-97a4-c7dd87c26922",
+                      "category": "SUBJECT_ID",
+                      "values": [
+                        "SU0000000"
+                      ]
+                    },
+                    {
+                      "@type": "CategoryValuesPair",
+                      "@context": "https://w3id.org/dats/context/sdo/category_values_pair_sdo_context.jsonld",
+                      "@id": "89fadb7d-670c-40e7-bb10-37e87eba2f26",
+                      "category": "VISIT_AGE",
+                      "values": [
+                        "46.76"
+                      ]
+                    },
+                    {
+                      "@type": "CategoryValuesPair",
+                      "@context": "https://w3id.org/dats/context/sdo/category_values_pair_sdo_context.jsonld",
+                      "@id": "001e8ec5-3379-49b2-a778-374d2eefd089",
+                      "category": "WEIGHT",
+                      "values": [
+                        "63.64"
+                      ]
+                    },
+                    {
+                      "@type": "CategoryValuesPair",
+                      "@context": "https://w3id.org/dats/context/sdo/category_values_pair_sdo_context.jsonld",
+                      "@id": "d2449b7c-78c3-4a27-8577-502da0b538c0",
+                      "category": "dbGaP_Subject_ID",
+                      "values": [
+                        "0000000"
+                      ]
+                    }
+                  ]
+                },
+                {
+                  "@type": "AnatomicalPart",
+                  "@context": "https://w3id.org/dats/context/sdo/anatomical_part_sdo_context.jsonld",
+                  "@id": "e98c4e86-2952-433d-8bdc-57da3a6859ae",
+                  "name": "blood",
+                  "identifier": {
+                    "identifier": "UBERON:0000178",
+                    "identifierSource": "UBERON"
+                  },
+                  "alternateIdentifiers": [
+                    {
+                      "identifier": "http://purl.obolibrary.org/obo/UBERON_0000178",
+                      "identifierSource": "UBERON"
+                    }
+                  ]
+                }
+              ],
+              "extraProperties": [
+                {
+                  "@type": "CategoryValuesPair",
+                  "@context": "https://w3id.org/dats/context/sdo/category_values_pair_sdo_context.jsonld",
+                  "@id": "3ef2d61c-651a-452d-8ea0-828a7150f5c3",
+                  "category": "ANALYTE_TYPE",
+                  "values": [
+                    "DNA"
+                  ]
+                },
+                {
+                  "@type": "CategoryValuesPair",
+                  "@context": "https://w3id.org/dats/context/sdo/category_values_pair_sdo_context.jsonld",
+                  "@id": "299b5edd-bda7-4a93-925b-5e5f0d45ffb6",
+                  "category": "BODY_SITE",
+                  "values": [
+                    "Blood"
+                  ]
+                },
+                {
+                  "@type": "CategoryValuesPair",
+                  "@context": "https://w3id.org/dats/context/sdo/category_values_pair_sdo_context.jsonld",
+                  "@id": "f0703348-df61-46c2-87cd-d49a981f5e4f",
+                  "category": "Funding_Source",
+                  "values": [
+                    "TOPMed"
+                  ]
+                },
+                {
+                  "@type": "CategoryValuesPair",
+                  "@context": "https://w3id.org/dats/context/sdo/category_values_pair_sdo_context.jsonld",
+                  "@id": "eb23f2c7-5020-4469-a9d0-a10182eb9b89",
+                  "category": "IS_TUMOR",
+                  "values": [
+                    "Is not a tumor"
+                  ]
+                },
+                {
+                  "@type": "CategoryValuesPair",
+                  "@context": "https://w3id.org/dats/context/sdo/category_values_pair_sdo_context.jsonld",
+                  "@id": "922d0854-f96d-4525-9c54-124f5ca500b2",
+                  "category": "SAMPLE_ID",
+                  "values": [
+                    "SA0000000"
+                  ]
+                },
+                {
+                  "@type": "CategoryValuesPair",
+                  "@context": "https://w3id.org/dats/context/sdo/category_values_pair_sdo_context.jsonld",
+                  "@id": "3605be4a-4d57-4f11-b8b4-265bc5429a92",
+                  "category": "SEQUENCING_CENTER",
+                  "values": [
+                    "UW"
+                  ]
+                },
+                {
+                  "@type": "CategoryValuesPair",
+                  "@context": "https://w3id.org/dats/context/sdo/category_values_pair_sdo_context.jsonld",
+                  "@id": "8f4e47d8-9253-4a68-b1d7-b5dccd100b9e",
+                  "category": "Study_Name",
+                  "values": [
+                    "EOCOPD"
+                  ]
+                },
+                {
+                  "@type": "CategoryValuesPair",
+                  "@context": "https://w3id.org/dats/context/sdo/category_values_pair_sdo_context.jsonld",
+                  "@id": "c0bacc61-89a7-476c-a714-320abfa0871f",
+                  "category": "TOPMed_Phase",
+                  "values": [
+                    "1"
+                  ]
+                },
+                {
+                  "@type": "CategoryValuesPair",
+                  "@context": "https://w3id.org/dats/context/sdo/category_values_pair_sdo_context.jsonld",
+                  "@id": "29e3f8dc-e171-4f87-a7a0-400438a9ac3c",
+                  "category": "TOPMed_Project",
+                  "values": [
+                    "COPD"
+                  ]
+                },
+                {
+                  "@type": "CategoryValuesPair",
+                  "@context": "https://w3id.org/dats/context/sdo/category_values_pair_sdo_context.jsonld",
+                  "@id": "86ce6584-d5e6-4bd6-b222-b24eb03647fd",
+                  "category": "dbGaP_Sample_ID",
+                  "values": [
+                    "0000000"
+                  ]
+                }
+              ]
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "@type": "Dataset",
+      "@context": "https://w3id.org/dats/context/sdo/dataset_sdo_context.jsonld",
+      "@id": "c5829761-52ac-422d-aa68-a23ec327f06b",
+      "identifier": {
+        "@type": "Identifier",
+        "@context": "https://w3id.org/dats/context/sdo/identifier_info_sdo_context.jsonld",
+        "@id": "542eb336-7c7f-4c6d-919e-b39f0c44a24f",
+        "identifier": "phs001024.v3.p1"
+      },
+      "version": "v3",
+      "title": "Partners HealthCare Biobank",
+      "storedIn": {
+        "@type": "DataRepository",
+        "@context": "https://w3id.org/dats/context/sdo/data_repository_sdo_context.jsonld",
+        "@id": "8fbadcbf-db0c-4814-8c03-1f7d7ff832cf",
+        "name": "dbGaP"
+      },
+      "types": [
+        {
+          "information": {
+            "value": "DNA sequencing",
+            "valueIRI": "http://purl.obolibrary.org/obo/OBI_0000626"
+          },
+          "method": {
+            "value": "whole genome sequencing assay",
+            "valueIRI": "http://purl.obolibrary.org/obo/OBI_0002117"
+          },
+          "platform": {
+            "value": "Illumina HiSeq X Ten",
+            "valueIRI": "http://purl.obolibrary.org/obo/OBI_0002129"
+          }
+        }
+      ],
+      "creators": [
+        {
+          "@type": "Organization",
+          "@context": "https://w3id.org/dats/context/sdo/organization_sdo_context.jsonld",
+          "@id": "4132392b-3b8d-4c2c-8ad1-46cfbecaf8fb",
+          "name": "The National Institute of Health's National Heart, Lung and Blood Institute",
+          "abbreviation": "NHLBI"
+        }
+      ],
+      "dimensions": [
+        {
+          "@type": "Dimension",
+          "@context": "https://w3id.org/dats/context/sdo/dimension_sdo_context.jsonld",
+          "@id": "82b60b39-e03b-4224-9be3-e4818a32741b",
+          "name": {
+            "value": "Actual Subject Count"
+          },
+          "description": "The actual number of subjects entered into a clinical trial.",
+          "types": [
+            {
+              "value": "Actual Subject Number",
+              "valueIRI": "http://purl.obolibrary.org/obo/NCIT_C98703"
+            }
+          ],
+          "values": [
+            128
+          ]
+        }
+      ],
+      "extraProperties": [
+        {
+          "@type": "CategoryValuesPair",
+          "@context": "https://w3id.org/dats/context/sdo/category_values_pair_sdo_context.jsonld",
+          "@id": "e2eacdcc-e01f-4bcf-950c-4bf55e52f910",
+          "category": "study_type",
+          "values": [
+            "Case Set"
+          ]
+        }
+      ]
+    },
+    {
+      "@type": "Dataset",
+      "@context": "https://w3id.org/dats/context/sdo/dataset_sdo_context.jsonld",
+      "@id": "3ea118d9-91c5-4adb-891f-4ef795bf436f",
+      "identifier": {
+        "@type": "Identifier",
+        "@context": "https://w3id.org/dats/context/sdo/identifier_info_sdo_context.jsonld",
+        "@id": "fdce7f6d-70d0-4968-9362-69206991c886",
+        "identifier": "phs000964.v3.p1"
+      },
+      "version": "v3",
+      "title": "The Jackson Heart Study",
+      "storedIn": {
+        "@type": "DataRepository",
+        "@context": "https://w3id.org/dats/context/sdo/data_repository_sdo_context.jsonld",
+        "@id": "8fbadcbf-db0c-4814-8c03-1f7d7ff832cf",
+        "name": "dbGaP"
+      },
+      "types": [
+        {
+          "information": {
+            "value": "DNA sequencing",
+            "valueIRI": "http://purl.obolibrary.org/obo/OBI_0000626"
+          },
+          "method": {
+            "value": "whole genome sequencing assay",
+            "valueIRI": "http://purl.obolibrary.org/obo/OBI_0002117"
+          },
+          "platform": {
+            "value": "Illumina HiSeq X Ten",
+            "valueIRI": "http://purl.obolibrary.org/obo/OBI_0002129"
+          }
+        }
+      ],
+      "creators": [
+        {
+          "@type": "Organization",
+          "@context": "https://w3id.org/dats/context/sdo/organization_sdo_context.jsonld",
+          "@id": "4132392b-3b8d-4c2c-8ad1-46cfbecaf8fb",
+          "name": "The National Institute of Health's National Heart, Lung and Blood Institute",
+          "abbreviation": "NHLBI"
+        }
+      ],
+      "dimensions": [
+        {
+          "@type": "Dimension",
+          "@context": "https://w3id.org/dats/context/sdo/dimension_sdo_context.jsonld",
+          "@id": "8fb64a19-b0d7-470b-bac6-e4e8677e9db2",
+          "name": {
+            "value": "Actual Subject Count"
+          },
+          "description": "The actual number of subjects entered into a clinical trial.",
+          "types": [
+            {
+              "value": "Actual Subject Number",
+              "valueIRI": "http://purl.obolibrary.org/obo/NCIT_C98703"
+            }
+          ],
+          "values": [
+            3596
+          ]
+        }
+      ],
+      "extraProperties": [
+        {
+          "@type": "CategoryValuesPair",
+          "@context": "https://w3id.org/dats/context/sdo/category_values_pair_sdo_context.jsonld",
+          "@id": "e1a3b0f5-5b90-4fda-b740-fa9c98308643",
+          "category": "study_type",
+          "values": [
+            "Longitudinal Cohort"
+          ]
+        }
+      ]
+    },
+    {
+      "@type": "Dataset",
+      "@context": "https://w3id.org/dats/context/sdo/dataset_sdo_context.jsonld",
+      "@id": "dba30eca-ff0d-47f5-9a9f-3ce016fba657",
+      "identifier": {
+        "@type": "Identifier",
+        "@context": "https://w3id.org/dats/context/sdo/identifier_info_sdo_context.jsonld",
+        "@id": "011345c6-3a2e-4b8c-a289-3503cc5354eb",
+        "identifier": "phs000956.v3.p1"
+      },
+      "version": "v3",
+      "title": "Genetics of Cardiometabolic Health in the Amish",
+      "storedIn": {
+        "@type": "DataRepository",
+        "@context": "https://w3id.org/dats/context/sdo/data_repository_sdo_context.jsonld",
+        "@id": "8fbadcbf-db0c-4814-8c03-1f7d7ff832cf",
+        "name": "dbGaP"
+      },
+      "types": [
+        {
+          "information": {
+            "value": "DNA sequencing",
+            "valueIRI": "http://purl.obolibrary.org/obo/OBI_0000626"
+          },
+          "method": {
+            "value": "whole genome sequencing assay",
+            "valueIRI": "http://purl.obolibrary.org/obo/OBI_0002117"
+          },
+          "platform": {
+            "value": "Illumina HiSeq X Ten",
+            "valueIRI": "http://purl.obolibrary.org/obo/OBI_0002129"
+          }
+        }
+      ],
+      "creators": [
+        {
+          "@type": "Organization",
+          "@context": "https://w3id.org/dats/context/sdo/organization_sdo_context.jsonld",
+          "@id": "4132392b-3b8d-4c2c-8ad1-46cfbecaf8fb",
+          "name": "The National Institute of Health's National Heart, Lung and Blood Institute",
+          "abbreviation": "NHLBI"
+        }
+      ],
+      "dimensions": [
+        {
+          "@type": "Dimension",
+          "@context": "https://w3id.org/dats/context/sdo/dimension_sdo_context.jsonld",
+          "@id": "2ee756cb-b849-43af-a9c6-32c22f587af2",
+          "name": {
+            "value": "Actual Subject Count"
+          },
+          "description": "The actual number of subjects entered into a clinical trial.",
+          "types": [
+            {
+              "value": "Actual Subject Number",
+              "valueIRI": "http://purl.obolibrary.org/obo/NCIT_C98703"
+            }
+          ],
+          "values": [
+            1123
+          ]
+        }
+      ],
+      "extraProperties": [
+        {
+          "@type": "CategoryValuesPair",
+          "@context": "https://w3id.org/dats/context/sdo/category_values_pair_sdo_context.jsonld",
+          "@id": "0b5629e0-f429-44ce-a72f-519fc77e9526",
+          "category": "study_type",
+          "values": [
+            "Family"
+          ]
+        }
+      ]
+    },
+    {
+      "@type": "Dataset",
+      "@context": "https://w3id.org/dats/context/sdo/dataset_sdo_context.jsonld",
+      "@id": "b28fd1b6-3fad-4268-94fd-0c09e129a664",
+      "identifier": {
+        "@type": "Identifier",
+        "@context": "https://w3id.org/dats/context/sdo/identifier_info_sdo_context.jsonld",
+        "@id": "abd77344-0186-40f7-adff-cbe768936746",
+        "identifier": "phs000954.v2.p1"
+      },
+      "version": "v2",
+      "title": "The Cleveland Family Study (WGS)",
+      "storedIn": {
+        "@type": "DataRepository",
+        "@context": "https://w3id.org/dats/context/sdo/data_repository_sdo_context.jsonld",
+        "@id": "8fbadcbf-db0c-4814-8c03-1f7d7ff832cf",
+        "name": "dbGaP"
+      },
+      "types": [
+        {
+          "information": {
+            "value": "DNA sequencing",
+            "valueIRI": "http://purl.obolibrary.org/obo/OBI_0000626"
+          },
+          "method": {
+            "value": "whole genome sequencing assay",
+            "valueIRI": "http://purl.obolibrary.org/obo/OBI_0002117"
+          },
+          "platform": {
+            "value": "Illumina HiSeq X Ten",
+            "valueIRI": "http://purl.obolibrary.org/obo/OBI_0002129"
+          }
+        }
+      ],
+      "creators": [
+        {
+          "@type": "Organization",
+          "@context": "https://w3id.org/dats/context/sdo/organization_sdo_context.jsonld",
+          "@id": "4132392b-3b8d-4c2c-8ad1-46cfbecaf8fb",
+          "name": "The National Institute of Health's National Heart, Lung and Blood Institute",
+          "abbreviation": "NHLBI"
+        }
+      ],
+      "dimensions": [
+        {
+          "@type": "Dimension",
+          "@context": "https://w3id.org/dats/context/sdo/dimension_sdo_context.jsonld",
+          "@id": "239bf7d5-c4d8-401e-8d80-b09c4ce5399a",
+          "name": {
+            "value": "Actual Subject Count"
+          },
+          "description": "The actual number of subjects entered into a clinical trial.",
+          "types": [
+            {
+              "value": "Actual Subject Number",
+              "valueIRI": "http://purl.obolibrary.org/obo/NCIT_C98703"
+            }
+          ],
+          "values": [
+            994
+          ]
+        }
+      ],
+      "extraProperties": [
+        {
+          "@type": "CategoryValuesPair",
+          "@context": "https://w3id.org/dats/context/sdo/category_values_pair_sdo_context.jsonld",
+          "@id": "adfcc11e-1923-486e-8233-a152685de7ab",
+          "category": "study_type",
+          "values": [
+            "Longitudinal"
+          ]
+        }
+      ]
+    },
+    {
+      "@type": "Dataset",
+      "@context": "https://w3id.org/dats/context/sdo/dataset_sdo_context.jsonld",
+      "@id": "35c45068-523c-4156-8fee-54b34f92d639",
+      "identifier": {
+        "@type": "Identifier",
+        "@context": "https://w3id.org/dats/context/sdo/identifier_info_sdo_context.jsonld",
+        "@id": "e067bf00-4629-4dc0-b6b0-68cd7cd5d36c",
+        "identifier": "phs000921.v2.p1"
+      },
+      "version": "v2",
+      "title": "Study of African Americans, Asthma, Genes and Environment (SAGE) Study",
+      "storedIn": {
+        "@type": "DataRepository",
+        "@context": "https://w3id.org/dats/context/sdo/data_repository_sdo_context.jsonld",
+        "@id": "8fbadcbf-db0c-4814-8c03-1f7d7ff832cf",
+        "name": "dbGaP"
+      },
+      "types": [
+        {
+          "information": {
+            "value": "DNA sequencing",
+            "valueIRI": "http://purl.obolibrary.org/obo/OBI_0000626"
+          },
+          "method": {
+            "value": "whole genome sequencing assay",
+            "valueIRI": "http://purl.obolibrary.org/obo/OBI_0002117"
+          },
+          "platform": {
+            "value": "Illumina HiSeq X Ten",
+            "valueIRI": "http://purl.obolibrary.org/obo/OBI_0002129"
+          }
+        }
+      ],
+      "creators": [
+        {
+          "@type": "Organization",
+          "@context": "https://w3id.org/dats/context/sdo/organization_sdo_context.jsonld",
+          "@id": "4132392b-3b8d-4c2c-8ad1-46cfbecaf8fb",
+          "name": "The National Institute of Health's National Heart, Lung and Blood Institute",
+          "abbreviation": "NHLBI"
+        }
+      ],
+      "dimensions": [
+        {
+          "@type": "Dimension",
+          "@context": "https://w3id.org/dats/context/sdo/dimension_sdo_context.jsonld",
+          "@id": "a3546e2c-6202-45e4-98b6-b2ba5ce07bd6",
+          "name": {
+            "value": "Actual Subject Count"
+          },
+          "description": "The actual number of subjects entered into a clinical trial.",
+          "types": [
+            {
+              "value": "Actual Subject Number",
+              "valueIRI": "http://purl.obolibrary.org/obo/NCIT_C98703"
+            }
+          ],
+          "values": [
+            500
+          ]
+        }
+      ],
+      "extraProperties": [
+        {
+          "@type": "CategoryValuesPair",
+          "@context": "https://w3id.org/dats/context/sdo/category_values_pair_sdo_context.jsonld",
+          "@id": "8440e02f-939c-44f6-9d16-cf40f7155fec",
+          "category": "study_type",
+          "values": [
+            "Case Set"
+          ]
+        }
+      ]
+    },
+    {
+      "@type": "Dataset",
+      "@context": "https://w3id.org/dats/context/sdo/dataset_sdo_context.jsonld",
+      "@id": "58c376a4-9733-4579-8f8c-eb5a41951676",
+      "identifier": {
+        "@type": "Identifier",
+        "@context": "https://w3id.org/dats/context/sdo/identifier_info_sdo_context.jsonld",
+        "@id": "eb100f17-f97f-4747-9679-ef6abcad4156",
+        "identifier": "phs001040.v2.p1"
+      },
+      "version": "v2",
+      "title": "Novel Risk Factors for the Development of Atrial Fibrillation in Women",
+      "storedIn": {
+        "@type": "DataRepository",
+        "@context": "https://w3id.org/dats/context/sdo/data_repository_sdo_context.jsonld",
+        "@id": "8fbadcbf-db0c-4814-8c03-1f7d7ff832cf",
+        "name": "dbGaP"
+      },
+      "types": [
+        {
+          "information": {
+            "value": "DNA sequencing",
+            "valueIRI": "http://purl.obolibrary.org/obo/OBI_0000626"
+          },
+          "method": {
+            "value": "whole genome sequencing assay",
+            "valueIRI": "http://purl.obolibrary.org/obo/OBI_0002117"
+          },
+          "platform": {
+            "value": "Illumina HiSeq X Ten",
+            "valueIRI": "http://purl.obolibrary.org/obo/OBI_0002129"
+          }
+        }
+      ],
+      "creators": [
+        {
+          "@type": "Organization",
+          "@context": "https://w3id.org/dats/context/sdo/organization_sdo_context.jsonld",
+          "@id": "4132392b-3b8d-4c2c-8ad1-46cfbecaf8fb",
+          "name": "The National Institute of Health's National Heart, Lung and Blood Institute",
+          "abbreviation": "NHLBI"
+        }
+      ],
+      "dimensions": [
+        {
+          "@type": "Dimension",
+          "@context": "https://w3id.org/dats/context/sdo/dimension_sdo_context.jsonld",
+          "@id": "7d3186b0-06ce-4589-a314-97283b5ad99b",
+          "name": {
+            "value": "Actual Subject Count"
+          },
+          "description": "The actual number of subjects entered into a clinical trial.",
+          "types": [
+            {
+              "value": "Actual Subject Number",
+              "valueIRI": "http://purl.obolibrary.org/obo/NCIT_C98703"
+            }
+          ],
+          "values": [
+            118
+          ]
+        }
+      ],
+      "extraProperties": [
+        {
+          "@type": "CategoryValuesPair",
+          "@context": "https://w3id.org/dats/context/sdo/category_values_pair_sdo_context.jsonld",
+          "@id": "a48f51e2-e6dd-41ac-9b1a-484df32197f7",
+          "category": "study_type",
+          "values": [
+            "Case Set"
+          ]
+        }
+      ]
+    },
+    {
+      "@type": "Dataset",
+      "@context": "https://w3id.org/dats/context/sdo/dataset_sdo_context.jsonld",
+      "@id": "dfc00d32-23c3-4a0e-996c-92f6d0546f04",
+      "identifier": {
+        "@type": "Identifier",
+        "@context": "https://w3id.org/dats/context/sdo/identifier_info_sdo_context.jsonld",
+        "@id": "ca29dba9-f90b-4688-9a7f-a566842dafbf",
+        "identifier": "phs000993.v2.p2"
+      },
+      "version": "v2",
+      "title": "Heart and Vascular Health Study (HVH)",
+      "storedIn": {
+        "@type": "DataRepository",
+        "@context": "https://w3id.org/dats/context/sdo/data_repository_sdo_context.jsonld",
+        "@id": "8fbadcbf-db0c-4814-8c03-1f7d7ff832cf",
+        "name": "dbGaP"
+      },
+      "types": [
+        {
+          "information": {
+            "value": "DNA sequencing",
+            "valueIRI": "http://purl.obolibrary.org/obo/OBI_0000626"
+          },
+          "method": {
+            "value": "whole genome sequencing assay",
+            "valueIRI": "http://purl.obolibrary.org/obo/OBI_0002117"
+          },
+          "platform": {
+            "value": "Illumina HiSeq X Ten",
+            "valueIRI": "http://purl.obolibrary.org/obo/OBI_0002129"
+          }
+        }
+      ],
+      "creators": [
+        {
+          "@type": "Organization",
+          "@context": "https://w3id.org/dats/context/sdo/organization_sdo_context.jsonld",
+          "@id": "4132392b-3b8d-4c2c-8ad1-46cfbecaf8fb",
+          "name": "The National Institute of Health's National Heart, Lung and Blood Institute",
+          "abbreviation": "NHLBI"
+        }
+      ],
+      "dimensions": [
+        {
+          "@type": "Dimension",
+          "@context": "https://w3id.org/dats/context/sdo/dimension_sdo_context.jsonld",
+          "@id": "dd0bb79a-1adc-4ef6-8e27-8b2facea71dc",
+          "name": {
+            "value": "Actual Subject Count"
+          },
+          "description": "The actual number of subjects entered into a clinical trial.",
+          "types": [
+            {
+              "value": "Actual Subject Number",
+              "valueIRI": "http://purl.obolibrary.org/obo/NCIT_C98703"
+            }
+          ],
+          "values": [
+            709
+          ]
+        }
+      ],
+      "extraProperties": [
+        {
+          "@type": "CategoryValuesPair",
+          "@context": "https://w3id.org/dats/context/sdo/category_values_pair_sdo_context.jsonld",
+          "@id": "029eab1c-5606-429e-a5b6-8ac55e2143be",
+          "category": "study_type",
+          "values": [
+            "Case Set"
+          ]
+        }
+      ]
+    },
+    {
+      "@type": "Dataset",
+      "@context": "https://w3id.org/dats/context/sdo/dataset_sdo_context.jsonld",
+      "@id": "4b966f08-e3e2-49a8-b887-538a4d1a5298",
+      "identifier": {
+        "@type": "Identifier",
+        "@context": "https://w3id.org/dats/context/sdo/identifier_info_sdo_context.jsonld",
+        "@id": "56038562-5ebc-4a84-bbce-aad78faeec5f",
+        "identifier": "phs000997.v2.p2"
+      },
+      "version": "v2",
+      "title": "The Vanderbilt AF Ablation Registry",
+      "storedIn": {
+        "@type": "DataRepository",
+        "@context": "https://w3id.org/dats/context/sdo/data_repository_sdo_context.jsonld",
+        "@id": "8fbadcbf-db0c-4814-8c03-1f7d7ff832cf",
+        "name": "dbGaP"
+      },
+      "types": [
+        {
+          "information": {
+            "value": "DNA sequencing",
+            "valueIRI": "http://purl.obolibrary.org/obo/OBI_0000626"
+          },
+          "method": {
+            "value": "whole genome sequencing assay",
+            "valueIRI": "http://purl.obolibrary.org/obo/OBI_0002117"
+          },
+          "platform": {
+            "value": "Illumina HiSeq X Ten",
+            "valueIRI": "http://purl.obolibrary.org/obo/OBI_0002129"
+          }
+        }
+      ],
+      "creators": [
+        {
+          "@type": "Organization",
+          "@context": "https://w3id.org/dats/context/sdo/organization_sdo_context.jsonld",
+          "@id": "4132392b-3b8d-4c2c-8ad1-46cfbecaf8fb",
+          "name": "The National Institute of Health's National Heart, Lung and Blood Institute",
+          "abbreviation": "NHLBI"
+        }
+      ],
+      "dimensions": [
+        {
+          "@type": "Dimension",
+          "@context": "https://w3id.org/dats/context/sdo/dimension_sdo_context.jsonld",
+          "@id": "123a85e1-8544-4de0-a96f-5c392ed1bc1c",
+          "name": {
+            "value": "Actual Subject Count"
+          },
+          "description": "The actual number of subjects entered into a clinical trial.",
+          "types": [
+            {
+              "value": "Actual Subject Number",
+              "valueIRI": "http://purl.obolibrary.org/obo/NCIT_C98703"
+            }
+          ],
+          "values": [
+            171
+          ]
+        }
+      ],
+      "extraProperties": [
+        {
+          "@type": "CategoryValuesPair",
+          "@context": "https://w3id.org/dats/context/sdo/category_values_pair_sdo_context.jsonld",
+          "@id": "c0f429c9-2f34-405c-8b73-2c7d94e3f6c2",
+          "category": "study_type",
+          "values": [
+            "Case Set"
+          ]
+        }
+      ]
+    },
+    {
+      "@type": "Dataset",
+      "@context": "https://w3id.org/dats/context/sdo/dataset_sdo_context.jsonld",
+      "@id": "7248a51e-02ce-4274-b209-ee9e2b08f552",
+      "identifier": {
+        "@type": "Identifier",
+        "@context": "https://w3id.org/dats/context/sdo/identifier_info_sdo_context.jsonld",
+        "@id": "2f0186b4-0f2a-4c66-b7d8-128f5f22e9be",
+        "identifier": "phs001032.v3.p2"
+      },
+      "version": "v3",
+      "title": "The Vanderbilt Atrial Fibrillation Registry",
+      "storedIn": {
+        "@type": "DataRepository",
+        "@context": "https://w3id.org/dats/context/sdo/data_repository_sdo_context.jsonld",
+        "@id": "8fbadcbf-db0c-4814-8c03-1f7d7ff832cf",
+        "name": "dbGaP"
+      },
+      "types": [
+        {
+          "information": {
+            "value": "DNA sequencing",
+            "valueIRI": "http://purl.obolibrary.org/obo/OBI_0000626"
+          },
+          "method": {
+            "value": "whole genome sequencing assay",
+            "valueIRI": "http://purl.obolibrary.org/obo/OBI_0002117"
+          },
+          "platform": {
+            "value": "Illumina HiSeq X Ten",
+            "valueIRI": "http://purl.obolibrary.org/obo/OBI_0002129"
+          }
+        }
+      ],
+      "creators": [
+        {
+          "@type": "Organization",
+          "@context": "https://w3id.org/dats/context/sdo/organization_sdo_context.jsonld",
+          "@id": "4132392b-3b8d-4c2c-8ad1-46cfbecaf8fb",
+          "name": "The National Institute of Health's National Heart, Lung and Blood Institute",
+          "abbreviation": "NHLBI"
+        }
+      ],
+      "dimensions": [
+        {
+          "@type": "Dimension",
+          "@context": "https://w3id.org/dats/context/sdo/dimension_sdo_context.jsonld",
+          "@id": "d6cb9be1-938a-452c-9b4f-9c01fc16e580",
+          "name": {
+            "value": "Actual Subject Count"
+          },
+          "description": "The actual number of subjects entered into a clinical trial.",
+          "types": [
+            {
+              "value": "Actual Subject Number",
+              "valueIRI": "http://purl.obolibrary.org/obo/NCIT_C98703"
+            }
+          ],
+          "values": [
+            1134
+          ]
+        }
+      ],
+      "extraProperties": [
+        {
+          "@type": "CategoryValuesPair",
+          "@context": "https://w3id.org/dats/context/sdo/category_values_pair_sdo_context.jsonld",
+          "@id": "0b6381fb-2e63-4419-b7c1-09ef204beb89",
+          "category": "study_type",
+          "values": [
+            "Case Set"
+          ]
+        }
+      ]
+    },
+    {
+      "@type": "Dataset",
+      "@context": "https://w3id.org/dats/context/sdo/dataset_sdo_context.jsonld",
+      "@id": "b04ad7f5-5b7f-4e23-bfaa-fd5b0e190f65",
+      "identifier": {
+        "@type": "Identifier",
+        "@context": "https://w3id.org/dats/context/sdo/identifier_info_sdo_context.jsonld",
+        "@id": "cc2eb113-a9e2-484c-8edc-1d7799f147c6",
+        "identifier": "phs001062.v2.p2"
+      },
+      "version": "v2",
+      "title": "MGH Atrial Fibrillation Study",
+      "storedIn": {
+        "@type": "DataRepository",
+        "@context": "https://w3id.org/dats/context/sdo/data_repository_sdo_context.jsonld",
+        "@id": "8fbadcbf-db0c-4814-8c03-1f7d7ff832cf",
+        "name": "dbGaP"
+      },
+      "types": [
+        {
+          "information": {
+            "value": "DNA sequencing",
+            "valueIRI": "http://purl.obolibrary.org/obo/OBI_0000626"
+          },
+          "method": {
+            "value": "whole genome sequencing assay",
+            "valueIRI": "http://purl.obolibrary.org/obo/OBI_0002117"
+          },
+          "platform": {
+            "value": "Illumina HiSeq X Ten",
+            "valueIRI": "http://purl.obolibrary.org/obo/OBI_0002129"
+          }
+        }
+      ],
+      "creators": [
+        {
+          "@type": "Organization",
+          "@context": "https://w3id.org/dats/context/sdo/organization_sdo_context.jsonld",
+          "@id": "4132392b-3b8d-4c2c-8ad1-46cfbecaf8fb",
+          "name": "The National Institute of Health's National Heart, Lung and Blood Institute",
+          "abbreviation": "NHLBI"
+        }
+      ],
+      "dimensions": [
+        {
+          "@type": "Dimension",
+          "@context": "https://w3id.org/dats/context/sdo/dimension_sdo_context.jsonld",
+          "@id": "fcf8908e-1715-40f9-bef0-5a586049b158",
+          "name": {
+            "value": "Actual Subject Count"
+          },
+          "description": "The actual number of subjects entered into a clinical trial.",
+          "types": [
+            {
+              "value": "Actual Subject Number",
+              "valueIRI": "http://purl.obolibrary.org/obo/NCIT_C98703"
+            }
+          ],
+          "values": [
+            999
+          ]
+        }
+      ],
+      "extraProperties": [
+        {
+          "@type": "CategoryValuesPair",
+          "@context": "https://w3id.org/dats/context/sdo/category_values_pair_sdo_context.jsonld",
+          "@id": "c1700108-3cf4-47d3-b680-6ecdc7e2d390",
+          "category": "study_type",
+          "values": [
+            "Case Set"
+          ]
+        }
+      ]
+    },
+    {
+      "@type": "Dataset",
+      "@context": "https://w3id.org/dats/context/sdo/dataset_sdo_context.jsonld",
+      "@id": "2ee8d2c1-62bc-411a-a7d7-12d3e586781a",
+      "identifier": {
+        "@type": "Identifier",
+        "@context": "https://w3id.org/dats/context/sdo/identifier_info_sdo_context.jsonld",
+        "@id": "49921ddf-8668-4a0f-b152-811b1b2e4353",
+        "identifier": "phs000920.v2.p2"
+      },
+      "version": "v2",
+      "title": "Genes-environments and Admixture in Latino Asthmatics (GALA II) Study",
+      "storedIn": {
+        "@type": "DataRepository",
+        "@context": "https://w3id.org/dats/context/sdo/data_repository_sdo_context.jsonld",
+        "@id": "8fbadcbf-db0c-4814-8c03-1f7d7ff832cf",
+        "name": "dbGaP"
+      },
+      "types": [
+        {
+          "information": {
+            "value": "DNA sequencing",
+            "valueIRI": "http://purl.obolibrary.org/obo/OBI_0000626"
+          },
+          "method": {
+            "value": "whole genome sequencing assay",
+            "valueIRI": "http://purl.obolibrary.org/obo/OBI_0002117"
+          },
+          "platform": {
+            "value": "Illumina HiSeq X Ten",
+            "valueIRI": "http://purl.obolibrary.org/obo/OBI_0002129"
+          }
+        }
+      ],
+      "creators": [
+        {
+          "@type": "Organization",
+          "@context": "https://w3id.org/dats/context/sdo/organization_sdo_context.jsonld",
+          "@id": "4132392b-3b8d-4c2c-8ad1-46cfbecaf8fb",
+          "name": "The National Institute of Health's National Heart, Lung and Blood Institute",
+          "abbreviation": "NHLBI"
+        }
+      ],
+      "dimensions": [
+        {
+          "@type": "Dimension",
+          "@context": "https://w3id.org/dats/context/sdo/dimension_sdo_context.jsonld",
+          "@id": "1b5f82a1-9623-4e0d-9416-5912f616d03a",
+          "name": {
+            "value": "Actual Subject Count"
+          },
+          "description": "The actual number of subjects entered into a clinical trial.",
+          "types": [
+            {
+              "value": "Actual Subject Number",
+              "valueIRI": "http://purl.obolibrary.org/obo/NCIT_C98703"
+            }
+          ],
+          "values": [
+            999
+          ]
+        }
+      ],
+      "extraProperties": [
+        {
+          "@type": "CategoryValuesPair",
+          "@context": "https://w3id.org/dats/context/sdo/category_values_pair_sdo_context.jsonld",
+          "@id": "d87edaa9-5c85-4c52-9f32-0355ac243936",
+          "category": "study_type",
+          "values": [
+            "Case Set"
+          ]
+        }
+      ]
+    },
+    {
+      "@type": "Dataset",
+      "@context": "https://w3id.org/dats/context/sdo/dataset_sdo_context.jsonld",
+      "@id": "7eee4ef2-4c81-4543-b0f0-835e8c08b446",
+      "identifier": {
+        "@type": "Identifier",
+        "@context": "https://w3id.org/dats/context/sdo/identifier_info_sdo_context.jsonld",
+        "@id": "6d485821-0818-4c41-b429-9dd40fa9f26c",
+        "identifier": "phs000974.v2.p2"
+      },
+      "version": "v2",
+      "title": "Whole Genome Sequencing and Related Phenotypes in the Framingham Heart Study",
+      "storedIn": {
+        "@type": "DataRepository",
+        "@context": "https://w3id.org/dats/context/sdo/data_repository_sdo_context.jsonld",
+        "@id": "8fbadcbf-db0c-4814-8c03-1f7d7ff832cf",
+        "name": "dbGaP"
+      },
+      "types": [
+        {
+          "information": {
+            "value": "DNA sequencing",
+            "valueIRI": "http://purl.obolibrary.org/obo/OBI_0000626"
+          },
+          "method": {
+            "value": "whole genome sequencing assay",
+            "valueIRI": "http://purl.obolibrary.org/obo/OBI_0002117"
+          },
+          "platform": {
+            "value": "Illumina HiSeq X Ten",
+            "valueIRI": "http://purl.obolibrary.org/obo/OBI_0002129"
+          }
+        }
+      ],
+      "creators": [
+        {
+          "@type": "Organization",
+          "@context": "https://w3id.org/dats/context/sdo/organization_sdo_context.jsonld",
+          "@id": "4132392b-3b8d-4c2c-8ad1-46cfbecaf8fb",
+          "name": "The National Institute of Health's National Heart, Lung and Blood Institute",
+          "abbreviation": "NHLBI"
+        }
+      ],
+      "dimensions": [
+        {
+          "@type": "Dimension",
+          "@context": "https://w3id.org/dats/context/sdo/dimension_sdo_context.jsonld",
+          "@id": "a38c0174-7012-47fb-b757-e0347b5431f8",
+          "name": {
+            "value": "Actual Subject Count"
+          },
+          "description": "The actual number of subjects entered into a clinical trial.",
+          "types": [
+            {
+              "value": "Actual Subject Number",
+              "valueIRI": "http://purl.obolibrary.org/obo/NCIT_C98703"
+            }
+          ],
+          "values": [
+            4154
+          ]
+        }
+      ],
+      "extraProperties": [
+        {
+          "@type": "CategoryValuesPair",
+          "@context": "https://w3id.org/dats/context/sdo/category_values_pair_sdo_context.jsonld",
+          "@id": "a61526f9-1d92-4678-9d1b-15729bb42993",
+          "category": "study_type",
+          "values": [
+            "Cohort"
+          ]
+        }
+      ]
+    },
+    {
+      "@type": "Dataset",
+      "@context": "https://w3id.org/dats/context/sdo/dataset_sdo_context.jsonld",
+      "@id": "bda44fd0-dff1-4d12-a081-44d23e96453c",
+      "identifier": {
+        "@type": "Identifier",
+        "@context": "https://w3id.org/dats/context/sdo/identifier_info_sdo_context.jsonld",
+        "@id": "4e0a906f-a8cd-474b-8d2b-5a5309b785ea",
+        "identifier": "phs000951.v2.p2"
+      },
+      "version": "v2",
+      "title": "Genetic Epidemiology of COPD (COPDGene) in the TOPMed Program",
+      "storedIn": {
+        "@type": "DataRepository",
+        "@context": "https://w3id.org/dats/context/sdo/data_repository_sdo_context.jsonld",
+        "@id": "8fbadcbf-db0c-4814-8c03-1f7d7ff832cf",
+        "name": "dbGaP"
+      },
+      "types": [
+        {
+          "information": {
+            "value": "DNA sequencing",
+            "valueIRI": "http://purl.obolibrary.org/obo/OBI_0000626"
+          },
+          "method": {
+            "value": "whole genome sequencing assay",
+            "valueIRI": "http://purl.obolibrary.org/obo/OBI_0002117"
+          },
+          "platform": {
+            "value": "Illumina HiSeq X Ten",
+            "valueIRI": "http://purl.obolibrary.org/obo/OBI_0002129"
+          }
+        }
+      ],
+      "creators": [
+        {
+          "@type": "Organization",
+          "@context": "https://w3id.org/dats/context/sdo/organization_sdo_context.jsonld",
+          "@id": "4132392b-3b8d-4c2c-8ad1-46cfbecaf8fb",
+          "name": "The National Institute of Health's National Heart, Lung and Blood Institute",
+          "abbreviation": "NHLBI"
+        }
+      ],
+      "dimensions": [
+        {
+          "@type": "Dimension",
+          "@context": "https://w3id.org/dats/context/sdo/dimension_sdo_context.jsonld",
+          "@id": "367afab1-6876-499d-808f-5a0c93797113",
+          "name": {
+            "value": "Actual Subject Count"
+          },
+          "description": "The actual number of subjects entered into a clinical trial.",
+          "types": [
+            {
+              "value": "Actual Subject Number",
+              "valueIRI": "http://purl.obolibrary.org/obo/NCIT_C98703"
+            }
+          ],
+          "values": [
+            10229
+          ]
+        }
+      ],
+      "extraProperties": [
+        {
+          "@type": "CategoryValuesPair",
+          "@context": "https://w3id.org/dats/context/sdo/category_values_pair_sdo_context.jsonld",
+          "@id": "0fbc2311-df28-4009-bd67-cc4a1c1d3447",
+          "category": "study_type",
+          "values": [
+            "Case-Control"
+          ]
+        }
+      ]
+    },
+    {
+      "@type": "Dataset",
+      "@context": "https://w3id.org/dats/context/sdo/dataset_sdo_context.jsonld",
+      "@id": "59b611f6-c0d0-464d-a79d-a36c6c8b4ce3",
+      "identifier": {
+        "@type": "Identifier",
+        "@context": "https://w3id.org/dats/context/sdo/identifier_info_sdo_context.jsonld",
+        "@id": "be6ed434-2ad9-4beb-8d12-74e95c99cf79",
+        "identifier": "phs000988.v2.p1"
+      },
+      "version": "v2",
+      "title": "The Genetic Epidemiology of Asthma in Costa Rica",
+      "storedIn": {
+        "@type": "DataRepository",
+        "@context": "https://w3id.org/dats/context/sdo/data_repository_sdo_context.jsonld",
+        "@id": "8fbadcbf-db0c-4814-8c03-1f7d7ff832cf",
+        "name": "dbGaP"
+      },
+      "types": [
+        {
+          "information": {
+            "value": "DNA sequencing",
+            "valueIRI": "http://purl.obolibrary.org/obo/OBI_0000626"
+          },
+          "method": {
+            "value": "whole genome sequencing assay",
+            "valueIRI": "http://purl.obolibrary.org/obo/OBI_0002117"
+          },
+          "platform": {
+            "value": "Illumina HiSeq X Ten",
+            "valueIRI": "http://purl.obolibrary.org/obo/OBI_0002129"
+          }
+        }
+      ],
+      "creators": [
+        {
+          "@type": "Organization",
+          "@context": "https://w3id.org/dats/context/sdo/organization_sdo_context.jsonld",
+          "@id": "4132392b-3b8d-4c2c-8ad1-46cfbecaf8fb",
+          "name": "The National Institute of Health's National Heart, Lung and Blood Institute",
+          "abbreviation": "NHLBI"
+        }
+      ],
+      "dimensions": [
+        {
+          "@type": "Dimension",
+          "@context": "https://w3id.org/dats/context/sdo/dimension_sdo_context.jsonld",
+          "@id": "c1c5d1fa-b5ee-4b04-b8e5-f0e6654fe499",
+          "name": {
+            "value": "Actual Subject Count"
+          },
+          "description": "The actual number of subjects entered into a clinical trial.",
+          "types": [
+            {
+              "value": "Actual Subject Number",
+              "valueIRI": "http://purl.obolibrary.org/obo/NCIT_C98703"
+            }
+          ],
+          "values": [
+            1533
+          ]
+        }
+      ],
+      "extraProperties": [
+        {
+          "@type": "CategoryValuesPair",
+          "@context": "https://w3id.org/dats/context/sdo/category_values_pair_sdo_context.jsonld",
+          "@id": "6e54650f-b70c-404d-bffe-3cec96568084",
+          "category": "study_type",
+          "values": [
+            "Parent-Offspring Trios"
+          ]
+        }
+      ]
+    },
+    {
+      "@type": "Dataset",
+      "@context": "https://w3id.org/dats/context/sdo/dataset_sdo_context.jsonld",
+      "@id": "ee3934ea-e916-426e-a488-9ea27e81a782",
+      "identifier": {
+        "@type": "Identifier",
+        "@context": "https://w3id.org/dats/context/sdo/identifier_info_sdo_context.jsonld",
+        "@id": "3029d22e-9580-42bf-9563-614a6639a18f",
+        "identifier": "phs000972.v2.p1"
+      },
+      "version": "v2",
+      "title": "Genome-wide Association Study of Adiposity in Samoans",
+      "storedIn": {
+        "@type": "DataRepository",
+        "@context": "https://w3id.org/dats/context/sdo/data_repository_sdo_context.jsonld",
+        "@id": "8fbadcbf-db0c-4814-8c03-1f7d7ff832cf",
+        "name": "dbGaP"
+      },
+      "types": [
+        {
+          "information": {
+            "value": "DNA sequencing",
+            "valueIRI": "http://purl.obolibrary.org/obo/OBI_0000626"
+          },
+          "method": {
+            "value": "whole genome sequencing assay",
+            "valueIRI": "http://purl.obolibrary.org/obo/OBI_0002117"
+          },
+          "platform": {
+            "value": "Illumina HiSeq X Ten",
+            "valueIRI": "http://purl.obolibrary.org/obo/OBI_0002129"
+          }
+        }
+      ],
+      "creators": [
+        {
+          "@type": "Organization",
+          "@context": "https://w3id.org/dats/context/sdo/organization_sdo_context.jsonld",
+          "@id": "4132392b-3b8d-4c2c-8ad1-46cfbecaf8fb",
+          "name": "The National Institute of Health's National Heart, Lung and Blood Institute",
+          "abbreviation": "NHLBI"
+        }
+      ],
+      "dimensions": [
+        {
+          "@type": "Dimension",
+          "@context": "https://w3id.org/dats/context/sdo/dimension_sdo_context.jsonld",
+          "@id": "6fe033f9-9e06-4053-9396-39695754e8ca",
+          "name": {
+            "value": "Actual Subject Count"
+          },
+          "description": "The actual number of subjects entered into a clinical trial.",
+          "types": [
+            {
+              "value": "Actual Subject Number",
+              "valueIRI": "http://purl.obolibrary.org/obo/NCIT_C98703"
+            }
+          ],
+          "values": [
+            1332
+          ]
+        }
+      ],
+      "extraProperties": [
+        {
+          "@type": "CategoryValuesPair",
+          "@context": "https://w3id.org/dats/context/sdo/category_values_pair_sdo_context.jsonld",
+          "@id": "38a27b65-b6be-4b03-aa5d-e766be7c5262",
+          "category": "study_type",
+          "values": [
+            "Cross-Sectional, Population"
+          ]
+        }
+      ]
+    },
+    {
+      "@type": "Dataset",
+      "@context": "https://w3id.org/dats/context/sdo/dataset_sdo_context.jsonld",
+      "@id": "6930dee0-8af0-4373-9d13-41c673fa0453",
+      "identifier": {
+        "@type": "Identifier",
+        "@context": "https://w3id.org/dats/context/sdo/identifier_info_sdo_context.jsonld",
+        "@id": "5aadc232-612f-44d2-9690-325a80a7ea49",
+        "identifier": "phs001211.v1.p1"
+      },
+      "version": "v1",
+      "title": "Trans-Omics for Precision Medicine Whole Genome Sequencing Project: ARICVersion 1: passed embargo",
+      "storedIn": {
+        "@type": "DataRepository",
+        "@context": "https://w3id.org/dats/context/sdo/data_repository_sdo_context.jsonld",
+        "@id": "8fbadcbf-db0c-4814-8c03-1f7d7ff832cf",
+        "name": "dbGaP"
+      },
+      "types": [
+        {
+          "information": {
+            "value": "DNA sequencing",
+            "valueIRI": "http://purl.obolibrary.org/obo/OBI_0000626"
+          },
+          "method": {
+            "value": "whole genome sequencing assay",
+            "valueIRI": "http://purl.obolibrary.org/obo/OBI_0002117"
+          },
+          "platform": {
+            "value": "Illumina HiSeq X Ten",
+            "valueIRI": "http://purl.obolibrary.org/obo/OBI_0002129"
+          }
+        }
+      ],
+      "creators": [
+        {
+          "@type": "Organization",
+          "@context": "https://w3id.org/dats/context/sdo/organization_sdo_context.jsonld",
+          "@id": "4132392b-3b8d-4c2c-8ad1-46cfbecaf8fb",
+          "name": "The National Institute of Health's National Heart, Lung and Blood Institute",
+          "abbreviation": "NHLBI"
+        }
+      ],
+      "dimensions": [
+        {
+          "@type": "Dimension",
+          "@context": "https://w3id.org/dats/context/sdo/dimension_sdo_context.jsonld",
+          "@id": "3f82e484-a7f0-45e3-905a-0f65514bc5dd",
+          "name": {
+            "value": "Actual Subject Count"
+          },
+          "description": "The actual number of subjects entered into a clinical trial.",
+          "types": [
+            {
+              "value": "Actual Subject Number",
+              "valueIRI": "http://purl.obolibrary.org/obo/NCIT_C98703"
+            }
+          ],
+          "values": [
+            4230
+          ]
+        }
+      ],
+      "extraProperties": [
+        {
+          "@type": "CategoryValuesPair",
+          "@context": "https://w3id.org/dats/context/sdo/category_values_pair_sdo_context.jsonld",
+          "@id": "01dcf8aa-fe5b-4955-ae73-dd0895494ebe",
+          "category": "study_type",
+          "values": [
+            "Case-Control"
+          ]
+        }
+      ]
+    },
+    {
+      "@type": "Dataset",
+      "@context": "https://w3id.org/dats/context/sdo/dataset_sdo_context.jsonld",
+      "@id": "bb91e660-ba8d-4d77-8589-abcc0f75efd3",
+      "identifier": {
+        "@type": "Identifier",
+        "@context": "https://w3id.org/dats/context/sdo/identifier_info_sdo_context.jsonld",
+        "@id": "2779b3ff-5a1d-46ca-ad91-85e547ac92d3",
+        "identifier": "phs001189.v1.p1"
+      },
+      "version": "v1",
+      "title": "Cleveland Clinic Atrial Fibrillation StudyVersion 1: passed embargo",
+      "storedIn": {
+        "@type": "DataRepository",
+        "@context": "https://w3id.org/dats/context/sdo/data_repository_sdo_context.jsonld",
+        "@id": "8fbadcbf-db0c-4814-8c03-1f7d7ff832cf",
+        "name": "dbGaP"
+      },
+      "types": [
+        {
+          "information": {
+            "value": "DNA sequencing",
+            "valueIRI": "http://purl.obolibrary.org/obo/OBI_0000626"
+          },
+          "method": {
+            "value": "whole genome sequencing assay",
+            "valueIRI": "http://purl.obolibrary.org/obo/OBI_0002117"
+          },
+          "platform": {
+            "value": "Illumina HiSeq X Ten",
+            "valueIRI": "http://purl.obolibrary.org/obo/OBI_0002129"
+          }
+        }
+      ],
+      "creators": [
+        {
+          "@type": "Organization",
+          "@context": "https://w3id.org/dats/context/sdo/organization_sdo_context.jsonld",
+          "@id": "4132392b-3b8d-4c2c-8ad1-46cfbecaf8fb",
+          "name": "The National Institute of Health's National Heart, Lung and Blood Institute",
+          "abbreviation": "NHLBI"
+        }
+      ],
+      "dimensions": [
+        {
+          "@type": "Dimension",
+          "@context": "https://w3id.org/dats/context/sdo/dimension_sdo_context.jsonld",
+          "@id": "283109ca-a21e-4801-a685-7d8dfbf4d481",
+          "name": {
+            "value": "Actual Subject Count"
+          },
+          "description": "The actual number of subjects entered into a clinical trial.",
+          "types": [
+            {
+              "value": "Actual Subject Number",
+              "valueIRI": "http://purl.obolibrary.org/obo/NCIT_C98703"
+            }
+          ],
+          "values": [
+            362
+          ]
+        }
+      ],
+      "extraProperties": [
+        {
+          "@type": "CategoryValuesPair",
+          "@context": "https://w3id.org/dats/context/sdo/category_values_pair_sdo_context.jsonld",
+          "@id": "060e26f4-f4c3-4303-95cf-e072d139b455",
+          "category": "study_type",
+          "values": [
+            "Case Set"
+          ]
+        }
+      ]
+    },
+    {
+      "@type": "Dataset",
+      "@context": "https://w3id.org/dats/context/sdo/dataset_sdo_context.jsonld",
+      "@id": "2cd5fae0-ca0e-42ba-be74-14ab3b141897",
+      "identifier": {
+        "@type": "Identifier",
+        "@context": "https://w3id.org/dats/context/sdo/identifier_info_sdo_context.jsonld",
+        "@id": "7ce88357-3a2a-4d27-a097-3490454e46a8",
+        "identifier": "phs001143.v1.p1"
+      },
+      "version": "v1",
+      "title": "The Genetics and Epidemiology of Asthma in BarbadosVersion 1: passed embargo",
+      "storedIn": {
+        "@type": "DataRepository",
+        "@context": "https://w3id.org/dats/context/sdo/data_repository_sdo_context.jsonld",
+        "@id": "8fbadcbf-db0c-4814-8c03-1f7d7ff832cf",
+        "name": "dbGaP"
+      },
+      "types": [
+        {
+          "information": {
+            "value": "DNA sequencing",
+            "valueIRI": "http://purl.obolibrary.org/obo/OBI_0000626"
+          },
+          "method": {
+            "value": "whole genome sequencing assay",
+            "valueIRI": "http://purl.obolibrary.org/obo/OBI_0002117"
+          },
+          "platform": {
+            "value": "Illumina HiSeq 2000",
+            "valueIRI": "http://purl.obolibrary.org/obo/OBI_0002001"
+          }
+        }
+      ],
+      "creators": [
+        {
+          "@type": "Organization",
+          "@context": "https://w3id.org/dats/context/sdo/organization_sdo_context.jsonld",
+          "@id": "4132392b-3b8d-4c2c-8ad1-46cfbecaf8fb",
+          "name": "The National Institute of Health's National Heart, Lung and Blood Institute",
+          "abbreviation": "NHLBI"
+        }
+      ],
+      "dimensions": [
+        {
+          "@type": "Dimension",
+          "@context": "https://w3id.org/dats/context/sdo/dimension_sdo_context.jsonld",
+          "@id": "c7982302-a3b6-4b7f-bf69-fb339a251358",
+          "name": {
+            "value": "Actual Subject Count"
+          },
+          "description": "The actual number of subjects entered into a clinical trial.",
+          "types": [
+            {
+              "value": "Actual Subject Number",
+              "valueIRI": "http://purl.obolibrary.org/obo/NCIT_C98703"
+            }
+          ],
+          "values": [
+            1527
+          ]
+        }
+      ],
+      "extraProperties": [
+        {
+          "@type": "CategoryValuesPair",
+          "@context": "https://w3id.org/dats/context/sdo/category_values_pair_sdo_context.jsonld",
+          "@id": "0ccf7357-d4f5-49b4-926c-bfed0e61aa0e",
+          "category": "study_type",
+          "values": [
+            "Family"
+          ]
+        }
+      ]
+    }
+  ]
+}
