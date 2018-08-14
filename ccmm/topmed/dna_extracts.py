@@ -35,8 +35,12 @@ def pick_var_values(vars):
             values = var['total']['stats']['values']
         elif (var['reported_type'] == 'string') or (var['calculated_type'] == 'string'):
             values = var['total']['stats']['values']
+        elif (var['reported_type'] == 'encoded value') or (var['calculated_type'] == 'enum_integer'):
+            values = var['total']['stats']['values']
         # take the median if defined
         elif (var['reported_type'] == 'integer') or (var['calculated_type'] == 'integer'):
+            value = var['total']['stats']['median']
+        elif (var['reported_type'] == 'decimal') or (var['calculated_type'] == 'decimal'):
             value = var['total']['stats']['median']
         else:
             logging.fatal("unexpected variable reported_type=" + var['reported_type'])
@@ -47,7 +51,10 @@ def pick_var_values(vars):
             sorted_values = sorted(values, key=lambda x: int(x['count']), reverse=True)
             sorted_values.sort(key=lambda x: x['name'])
             value = sorted_values[0]['name']
-
+        
+        if vname.upper() == 'BODY_SITE':
+            vname = 'BODY_SITE'
+        
         res[vname] = value
 
     return res
@@ -55,8 +62,8 @@ def pick_var_values(vars):
 # Generate DATS JSON for a single sample/DNA extract
 def get_single_dna_extract_json(study, subj_var_values, samp_var_values):
 
-    # all samples in TOPMed WGS phase are blood samples
-    if samp_var_values['BODY_SITE'] != 'Blood':
+    # all samples in TOPMed WGS phase are blood samples, named "Blood", "Peripheral Blood"...
+    if "blood" not in samp_var_values['BODY_SITE'].lower():
         logging.fatal("encountered BODY_SITE other than 'Blood' in TOPMed sample metadata - " + samp_var_values['BODY_SITE'])
         sys.exit(1)
 
@@ -73,11 +80,30 @@ def get_single_dna_extract_json(study, subj_var_values, samp_var_values):
     # extract subject attributes
     gender = None
     age = None
+    visit_year = None
+    sys_bp = None
+    dias_bp = None
+    disease = {}
+    disease['hypertension'] = "unknown"
+    
     for name in subj_var_values:
-        if name == "GENDER":
+        name_upper = name.upper()
+        if name_upper == "GENDER" or name_upper == "SEX":
             gender = subj_var_values[name].lower()
-        elif name == "VISIT_AGE":
+        elif name_upper == "VISIT_AGE" or name_upper == "AGE" or name_upper == "AGE_ENROLL": #need to confirm that these  allmean the same thing
             age = subj_var_values[name]
+        elif name_upper == "VISIT_YEAR":
+            visit_year =  subj_var_values[name]
+        elif name_upper == "SYSBP":
+            sys_bp = subj_var_values[name]  
+        elif name_upper == "DIASBP":
+            dias_bp = subj_var_values[name]         
+        elif name_upper == "HYPERTENSION" or name_upper == "HIGHBLOODPRES":
+            if subj_var_values[name].lower() == "yes" or subj_var_values[name] == 1:
+                disease['hypertension'] = "yes"
+            else:
+                disease['hypertension'] = "no"
+    
     # TODO - determine what other subject attributes can be mapped directly to core DATS objects
 
     # place original dbGaP subject metadata into extraProperties
@@ -104,6 +130,7 @@ def get_single_dna_extract_json(study, subj_var_values, samp_var_values):
             ])
 
     subject_characteristics = []
+    subject_bearerOfDisease = []
 
     if gender is not None:
         subject_sex = DatsObj("Dimension", [
@@ -121,6 +148,48 @@ def get_single_dna_extract_json(study, subj_var_values, samp_var_values):
                 ])
         subject_characteristics.append(subject_age)
     
+    if visit_year is not None:
+        subject_visitYear = DatsObj("Dimension", [
+                ("name", { "value": "Visit year" }),
+                ("description", "Year of visit, to use for longitudinal analysis"),
+                ("values", [ visit_year ])
+                ])
+        subject_characteristics.append(subject_visitYear)
+    
+    if sys_bp is not None:
+        subject_sysBP = DatsObj("Dimension", [
+                ("name", { "value": "Systolic blood pressure" }),
+                ("description", "Systolic blood pressure of subject, measured in mmHg"),
+                ("values", [ sys_bp ])
+                ])
+        subject_characteristics.append(subject_sysBP)
+        
+    if dias_bp is not None:
+        subject_diasBP = DatsObj("Dimension", [
+                ("name", { "value": "Diastolic blood pressure" }),
+                ("description", "Diastolic blood pressure of subject, measured in mmHg"),
+                ("values", [ dias_bp ])
+                ])
+        subject_characteristics.append(subject_diasBP)                                      
+    
+    if disease['hypertension'] != "unknown":
+        disease_name = "hypertension"
+        disease_id = "10763"
+        disease_identifier = OrderedDict([
+            ("identifier",  "DOID:" + str(disease_id)),
+            ("identifierSource", "Disease Ontology")])
+        disease_alt_ids = [OrderedDict([
+            ("identifier", "http://purl.obolibrary.org/obo/DOID_" + str(disease_id)),
+            ("identifierSource", "Disease Ontology")])]
+        subject_hypertension = DatsObj("Disease", [
+            ("name", "Hypertension"),
+            ("identifier", disease_identifier),
+            ("alternateIdentifiers", disease_alt_ids),
+            ("diseaseStatus", [ OrderedDict([("value", disease['hypertension'] ), ("valueIRI", "")])]), 
+            ])
+        subject_bearerOfDisease.append(subject_hypertension)
+    
+    
     human_t = util.get_taxon_human()
     subj_id = subj_var_values['SUBJECT_ID']
     dbgap_subj_id = subj_var_values['dbGaP_Subject_ID']
@@ -136,6 +205,7 @@ def get_single_dna_extract_json(study, subj_var_values, samp_var_values):
             ("alternateIdentifiers", [ util.get_alt_id(dbgap_subj_id, "dbGaP") ]),
             ("description", study_title + " subject " + subj_id),
             ("characteristics", subject_characteristics),
+            ("bearerOfDisease", subject_bearerOfDisease),
             ("taxonomy", human_t),
             ("roles", util.get_donor_roles()),
             ("extraProperties", subj_extra_props)
