@@ -9,7 +9,7 @@ import sys
 TOPMED_DESCRIPTION = """TOPMed generates scientific resources related to heart, lung, blood, and sleep disorders (HLBS). It \
 is sponsored by the NIH NHLBI and is part of a broader Precision Medicine Initiative."""
 
-# List of 19 TOPMed studies cut and pasted from https://www.ncbi.nlm.nih.gov/gap/?term=topmed
+# List of TOPMed studies cut and pasted from https://www.ncbi.nlm.nih.gov/gap/?term=topmed + more
 TOPMED_STUDIES_STR = """
 phs000946.v3.p1
 NHLBI TOPMed: Boston Early-Onset COPD Study in the TOPMed ProgramVersions 1-2: passed embargo
@@ -35,11 +35,11 @@ phs000954.v2.p1
 NHLBI TOPMed: The Cleveland Family Study (WGS)Versions 1-2: passed embargo
 VDAS994LongitudinalLinks
 HiSeq X Ten
-phs000921.v2.p1
-NHLBI TOPMed: Study of African Americans, Asthma, Genes and Environment (SAGE) StudyVersions 1-2: passed embargo
-VDAS500Case SetLinks
+phs000921.v3.p1
+NHLBI TOPMed: Study of African Americans, Asthma, Genes and Environment (SAGE) StudyVersions 1-3: passed embargo
+VDAS2106Case SetLinks
 HiSeq X Ten
-phs001040.v2.p1
+phs001040.v3.p1
 NHLBI TOPMed: Novel Risk Factors for the Development of Atrial Fibrillation in WomenVersions 1-2: passed embargo
 VDAS118Case SetLinks
 HiSeq X Ten
@@ -47,15 +47,15 @@ phs000993.v2.p2
 NHLBI TOPMed: Heart and Vascular Health Study (HVH)Versions 1-2: passed embargo
 VDAS709Case SetLinks
 HiSeq X Ten
-phs000997.v2.p2
-NHLBI TOPMed: The Vanderbilt AF Ablation RegistryVersions 1-2: passed embargo
-VDAS171Case SetLinks
+phs000997.v3.p2
+NHLBI TOPMed: The Vanderbilt AF Ablation RegistryVersions 1-3: passed embargo
+VDAS173Case SetLinks
 HiSeq X Ten
 phs001032.v3.p2
 NHLBI TOPMed: The Vanderbilt Atrial Fibrillation RegistryVersions 1-3: passed embargo
 VDAS1134Case SetLinks
 HiSeq X Ten
-phs001062.v2.p2
+phs001062.v3.p2
 NHLBI TOPMed: MGH Atrial Fibrillation StudyVersions 1-2: passed embargo
 VDAS999Case SetLinks
 HiSeq X Ten
@@ -63,8 +63,8 @@ phs000920.v2.p2
 NHLBI TOPMed: Genes-environments and Admixture in Latino Asthmatics (GALA II) StudyVersions 1-2: passed embargo
 VDAS999Case SetLinks
 HiSeq X Ten
-phs000974.v2.p2
-NHLBI TOPMed: Whole Genome Sequencing and Related Phenotypes in the Framingham Heart StudyVersions 1-2: passed embargo
+phs000974.v3.p2
+NHLBI TOPMed: Whole Genome Sequencing and Related Phenotypes in the Framingham Heart StudyVersions 1-3: passed embargo
 VDAS4154CohortLinks
 HiSeq X Ten
 phs000951.v2.p2
@@ -91,7 +91,17 @@ phs001143.v1.p1
 NHLBI TOPMed: The Genetics and Epidemiology of Asthma in BarbadosVersion 1: passed embargo
 VDAS1527FamilyLinks
 HiSeq 2000
+phs001368.v1.p1
+NHLBI TOPMed: Cardiovascular Health StudyVersion 1: passed embargo
+VDAS3622LongitudinalLinks
+HiSeq X Ten
+phs000179.v5.p2
+NHLBI TOPMed: Genetic Epidemiology of COPD (COPDGene)Versions 1-5: passed embargo
+VDAS10371Case-ControlLinks
+HiSeq X Ten
 """
+#To do: For phs000179.v5.p2, use "SeqCap EZ Human Exome Library v2.0 HumanOmni1-Quad_v1-0_B" not HiSeq
+
 
 DBGAP_QUERY_URL_PREFIX = 'https://www.ncbi.nlm.nih.gov/gap/?term='
 DBGAP_TOPMED_QUERY_URL = DBGAP_QUERY_URL_PREFIX + 'topmed'
@@ -107,6 +117,8 @@ ILLUMINA_TYPE = OrderedDict([("value", "Illumina"), ("valueIRI", "http://purl.ob
 HISEQ_2000_TYPE = OrderedDict([("value", "Illumina HiSeq 2000"), ("valueIRI", "http://purl.obolibrary.org/obo/OBI_0002001")])
 # "Illumina HiSeq X Ten"
 HISEQ_X10_TYPE = OrderedDict([("value", "Illumina HiSeq X Ten"), ("valueIRI", "http://purl.obolibrary.org/obo/OBI_0002129")])
+# "exome sequencing assay"
+#EXOME_ASSAY_TYPE = OrderedDict([("value", "exome sequencing assay"), ("valueIRI", "http://purl.obolibrary.org/obo/OBI_0002118")])
 
 HISEQ_TYPES = {
     "HiSeq 2000": HISEQ_2000_TYPE,
