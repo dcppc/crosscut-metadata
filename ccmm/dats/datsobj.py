@@ -103,6 +103,10 @@ class DatsObj:
     def set(self, name, value):
         self.setProperty(name, value)
 
+    # return object id in form suitable for use as JSON-LD id reference
+    def getIdRef(self):
+        return { "@id": self.data["@id"] }
+
 # JSONEncoder for data structures that use DatsObj
 
 class DATSEncoder(json.JSONEncoder):
