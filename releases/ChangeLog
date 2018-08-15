@@ -11,6 +11,9 @@
  -Added missing OBO IRIs for several terms.
  -Updated/corrected list of TOPMed studies.
  -Added bearerOfDisease for hypertension status, using new diseaseStatus property.
+ -Moved GTEx subject/sample Materials from top-level Dataset to 2nd-level Datasets
+   for consistency with TOPMed DATS JSON encoding and published ER diagrams.
+ -Used JSON-LD id references to reduce redundancy in GTEx instance.
 	
 0.3 (June 29 2018)
  -v0.3 release of KC7 crosscut metadata model instance for the following datasets:
