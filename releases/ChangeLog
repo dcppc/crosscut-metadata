@@ -9,6 +9,8 @@
  -Fixed broken JSON-LD context file references (issue #17)
  -Added ER diagrams for the three current JSON LD files.
  -Added missing OBO IRIs for several terms.
+ -Updated/corrected list of TOPMed studies.
+ -Added bearerOfDisease for hypertension status, using new diseaseStatus property.
 	
 0.3 (June 29 2018)
  -v0.3 release of KC7 crosscut metadata model instance for the following datasets:
