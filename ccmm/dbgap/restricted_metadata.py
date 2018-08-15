@@ -54,6 +54,7 @@ def read_dbgap_restricted_metadata_txt(txt_file):
 
 def read_study_metadata(dir):
     study_md = {}
+    fileype = []
     study_files = ccmm.dbgap.public_metadata.get_study_metadata_files(dir, "txt")
     n_studies = len(study_files)
     logging.info("found restricted metadata file(s) for " + str(n_studies) + " study/studies in " + dir)
@@ -71,9 +72,10 @@ def read_study_metadata(dir):
             txt_data = read_dbgap_restricted_metadata_txt(file_path)
             md[datatype] = { 'file': file_path, 'data': txt_data }
 
+        filetype = list(sd['Sample_Attributes'].keys())[0]
         for datatype in ('Sample_Attributes', 'Subject_Phenotypes'):
             md[datatype] = {}
-            file_path = sd[datatype]['DS-CS-RD']['path']
+            file_path = sd[datatype][filetype]['path']
             txt_data = read_dbgap_restricted_metadata_txt(file_path)
             md[datatype] = { 'file': file_path, 'data': txt_data }
 

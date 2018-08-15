@@ -215,7 +215,7 @@ def get_study_metadata_files(dir, suffix):
         # ignore anything that doesn't start with a study id and end with suffix
         if re.match(r'^phs\d+\..*\.' + suffix + '$', f):
             # list of possible file types (Subject, Sample, etc.) may vary from study to study
-            m = re.match(r'^(phs\d+\.v\d+)\.((\S+)_(Subject|Sample|Sample_Attributes|Subject_Phenotypes)).(data_dict|var_report|MULTI|DS-CS-RD)\.' + suffix + '$', f)
+            m = re.match(r'^(phs\d+\.v\d+)\.((\S+)_(Subject|Sample|Sample_Attributes|Subject_Phenotypes)).(data_dict|var_report|MULTI|DS-CS-RD|DS-LD|HMB|DS-LD-RD|)\.' + suffix + '$', f)
             if m is None:
                 logging.fatal("unable to parse file type and study name from dbGaP file " + f)
                 sys.exit(1)
