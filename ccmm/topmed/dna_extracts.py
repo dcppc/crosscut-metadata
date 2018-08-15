@@ -149,7 +149,7 @@ def get_single_dna_extract_json(study, subj_var_values, samp_var_values):
             ("alternateIdentifiers", [ util.get_alt_id(dbgap_samp_id, "dbGaP") ]),
             ("description", anatomy_name + " specimen collected from subject " + subj_id),
             ("taxonomy", human_t),
-            ("roles", [ OrderedDict([("value", "specimen"), ("valueIRI", "")]) ]),
+            ("roles", [ DatsObj("Annotation", [("value", "specimen"), ("valueIRI", "http://purl.obolibrary.org/obo/OBI_0100051")]) ]),
             ("derivesFrom", [ subject_material, anatomical_part ]),
             ("extraProperties", samp_extra_props)
             ])
@@ -159,7 +159,7 @@ def get_single_dna_extract_json(study, subj_var_values, samp_var_values):
             ("name", "DNA from " + sample_name),
             ("description", "DNA extracted from " + anatomy_name + " specimen collected from subject " + subj_id),
             ("taxonomy", human_t),
-            ("roles", [ OrderedDict([("value", "DNA extract"), ("valueIRI", "")])]),
+            ("roles", [ DatsObj("Annotation", [("value", "DNA extract"), ("valueIRI", "http://purl.obolibrary.org/obo/OBI_0001051")]) ]),
             ("derivesFrom", [ biological_sample_material ])
             ])
 
