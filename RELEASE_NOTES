@@ -1,7 +1,7 @@
 
-v0.3 Release Notes
+v0.4 Release Notes
 
-This is the v0.3 release of the KC7 crosscut metadata model instance for the following datasets:
+This is the v0.4 release of the KC7 crosscut metadata model instance for the following datasets:
 
    -GTEx v7 public RNA-Seq metadata
    -TOPMed public metadata for a single study, phs000946.v3
@@ -26,7 +26,7 @@ https://github.com/datatagsuite
 For more information on the crosscut metadata model and the DATS JSON-LD encoding please see the 
 README.md at https://github.com/dcppc/crosscut-metadata
 
-The following files can be found in the v0.3 BDBag:
+The following files can be found in the v0.4 BDBag:
 
 data/docs/ChangeLog       
   ChangeLog for the crosscut metadata model instance.
