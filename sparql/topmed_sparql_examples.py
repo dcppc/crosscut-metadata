@@ -25,11 +25,12 @@ def main():
         json_data = f.read()
 
     g = rdflib.Graph().parse(data=json_data, format='json-ld')
+    logging.info("Parsing complete")
 
     # Uncomment this to see the triples parsed from JSON-LD:
-    print("Parsed JSON-LD:")
-    print(g.serialize(format='n3', indent=4).decode('ascii'))
-    print()
+#    print("Parsed JSON-LD:")
+#    print(g.serialize(format='n3', indent=4).decode('ascii'))
+#    print()
 
     # ------------------------------------------
     # Enumerate TOPMed studies
