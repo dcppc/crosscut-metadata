@@ -5,6 +5,7 @@ import json
 import logging
 import re
 import sys
+import uuid
 
 # ------------------------------------------------------
 # Global variables
@@ -79,6 +80,12 @@ class DatsObj:
             dats_atts.append(("@context", json_ld_context))
 
         # @id
+
+        # assign random uuid if no id specified
+        # TODO - use minids/stable ids where possible
+        if id == "":
+            id = str(uuid.uuid4())
+
         # TODO - id should be a URI according to dataset_schema.json
         dats_atts.append(("@id", id))
         dats_atts.extend(atts)
