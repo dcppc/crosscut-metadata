@@ -34,6 +34,13 @@ DATS_DONOR_ROLES = [
             )
     ]
 
+# commonly-used Annotation objects
+DATS_ANNOTATIONS = {
+    "specimen" : DatsObj("Annotation", [("value", "specimen"), ("valueIRI", "http://purl.obolibrary.org/obo/OBI_0100051")]),
+    "DNA extract" : DatsObj("Annotation", [("value", "DNA extract"), ("valueIRI", "http://purl.obolibrary.org/obo/OBI_0001051")]),
+    "RNA extract" : DatsObj("Annotation", [("value", "RNA extract"), ("valueIRI", "http://purl.obolibrary.org/obo/OBI_0000880")])
+}
+
 # ------------------------------------------------------
 # util
 # ------------------------------------------------------
@@ -46,3 +53,6 @@ def get_taxon_human():
 
 def get_donor_roles():
     return DATS_DONOR_ROLES
+
+def get_annotation(name):
+    return DATS_ANNOTATIONS[name]
