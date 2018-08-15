@@ -20,12 +20,18 @@ DATS_TAXON_HUMAN =  [
     ]
 
 DATS_DONOR_ROLES = [
-    OrderedDict([
+    DatsObj("Annotation", 
+            [
             ("value", "patient"),
-            ("valueIRI",  "")]),
-    OrderedDict([
+            ("valueIRI",  "http://purl.obolibrary.org/obo/OBI_0000093")
+            ]
+            ),
+    DatsObj("Annotation",
+            [
             ("value", "donor"),
-            ("valueIRI", "")])
+            ("valueIRI", "http://purl.obolibrary.org/obo/OBI_1110087")
+            ]
+            )
     ]
 
 # ------------------------------------------------------
