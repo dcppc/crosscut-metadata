@@ -1,3 +1,15 @@
+0.4 (August 15 2018)
+ -v0.4 release of KC7 crosscut metadata model instance for the following datasets:
+   -GTEx v7 public RNA-Seq metadata
+   -TOPMed public metadata for a single study, phs000946.v3
+   -MGI C57BL/6J reference genome, annotation, and human orthologs
+ -v0.4 release of KC7 crosscut metadata model for all of the above, plus:
+   -TOPMed/dbGaP access-restricted metadata for a single study, phs000946.v3
+ -Added context files for all DATS types that did not already have them.
+ -Fixed broken JSON-LD context file references (issue #17)
+ -Added ER diagrams for the three current JSON LD files.
+ -Added missing OBO IRIs for several terms.
+	
 0.3 (June 29 2018)
  -v0.3 release of KC7 crosscut metadata model instance for the following datasets:
    -GTEx v7 public RNA-Seq metadata
