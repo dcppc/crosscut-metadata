@@ -276,7 +276,7 @@ def print_subject_sample_count_histogram(samples):
 # DATS JSON Output
 # ------------------------------------------------------
 
-def get_single_sample_json(sample):
+def get_single_sample_json(sample, referenced_subjects):
 #    print("converting sample to json: " + str(sample))
     samp_id = sample['SAMPID']['mapped_value']
     subj_id = sample['SUBJID']['mapped_value']
@@ -343,14 +343,21 @@ def get_single_sample_json(sample):
         ]
 
     # human experimental subject/patient
-    subject_material = DatsObj("Material", [
-            ("name", subj_id),
-            ("identifier", { "identifier": subj_id }),
-            ("description", "GTEx subject " + subj_id),
-            ("characteristics", subject_characteristics),
-            ("taxonomy", util.get_taxon_human()),
-            ("roles", util.get_donor_roles())
-            ])
+    if subj_id in referenced_subjects:
+        subject_material = referenced_subjects[subj_id].getIdRef()
+    else:
+        subject_material = DatsObj("Material", [
+                ("name", subj_id),
+                ("identifier", { "identifier": subj_id }),
+                ("description", "GTEx subject " + subj_id),
+                ("characteristics", subject_characteristics),
+                ("taxonomy", util.get_taxon_human()),
+                ("roles", util.get_donor_roles())
+                ])
+        referenced_subjects[subj_id] = subject_material
+
+    specimen_annot = util.get_annotation("specimen")
+    rna_extract_annot = util.get_annotation("RNA extract")
 
     # biological/tissue sample
     sample_name = samp_id
@@ -359,17 +366,16 @@ def get_single_sample_json(sample):
             ("identifier", { "identifier": samp_id }),
             ("description", anatomy_name + " specimen collected from subject " + subj_id),
             ("taxonomy", util.get_taxon_human()),
-            ("roles", [ OrderedDict([("value", "specimen"), ("valueIRI", "")]) ]),
+            ("roles", [ specimen_annot ]),
             ("derivesFrom", [ subject_material, anatomical_part ])
             ])
 
     # RNA extracted from tissue sample
     rna_material = DatsObj("Material", [
             ("name", "RNA from " + sample_name),
-#            ("identifier", {"identifier": tmpid()}),
             ("description", "total RNA extracted from " + anatomy_name + " specimen collected from subject " + subj_id),
             ("taxonomy", util.get_taxon_human()),
-            ("roles", [ OrderedDict([("value", "RNA extract"), ("valueIRI", "")])]),
+            ("roles", [ rna_extract_annot ]),
             ("derivesFrom", [ biological_sample_material ])
             ])
 
@@ -382,8 +388,11 @@ def write_single_sample_json(sample, output_file):
 
 def get_samples_json(samples, subjects):
     samples_json = []
+    # track which subjects have already been added to the structure
+    # maps name to DatsObj
+    referenced_subjects = {}
     for s in sorted(samples):
-        sample_json = get_single_sample_json(samples[s])
+        sample_json = get_single_sample_json(samples[s], referenced_subjects)
         samples_json.append(sample_json)
     return samples_json
 
