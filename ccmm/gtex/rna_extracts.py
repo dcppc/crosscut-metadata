@@ -276,7 +276,7 @@ def print_subject_sample_count_histogram(samples):
 # DATS JSON Output
 # ------------------------------------------------------
 
-def get_single_sample_json(sample, referenced_subjects):
+def get_single_sample_json(sample, dats_obj_cache):
 #    print("converting sample to json: " + str(sample))
     samp_id = sample['SAMPID']['mapped_value']
     subj_id = sample['SUBJID']['mapped_value']
@@ -311,11 +311,16 @@ def get_single_sample_json(sample, referenced_subjects):
                     ("identifierSource", "UBERON")])]
 
     # anatomical part
-    anatomical_part = DatsObj("AnatomicalPart", [
-            ("name", anatomy_name),
-            ("identifier", anatomy_identifier),
-            ("alternateIdentifiers", anatomy_alt_ids)
-            ])
+    anat_part_key = ":".join(["AnatomicalPart", anatomy_name])
+    if anat_part_key in dats_obj_cache:
+        anatomical_part = dats_obj_cache[anat_part_key]
+    else:
+        anatomical_part = DatsObj("AnatomicalPart", [
+                ("name", anatomy_name),
+                ("identifier", anatomy_identifier),
+                ("alternateIdentifiers", anatomy_alt_ids)
+                ])
+        dats_obj_cache[anat_part_key] = anatomical_part
 
     # human experimental subject/patient
     subject_sex = DatsObj("Dimension", [
@@ -343,8 +348,9 @@ def get_single_sample_json(sample, referenced_subjects):
         ]
 
     # human experimental subject/patient
-    if subj_id in referenced_subjects:
-        subject_material = referenced_subjects[subj_id].getIdRef()
+    subj_key = ":".join(["Material", subj_id])
+    if subj_key in dats_obj_cache:
+        subject_material = dats_obj_cache[subj_key]
     else:
         subject_material = DatsObj("Material", [
                 ("name", subj_id),
@@ -354,7 +360,7 @@ def get_single_sample_json(sample, referenced_subjects):
                 ("taxonomy", util.get_taxon_human()),
                 ("roles", util.get_donor_roles())
                 ])
-        referenced_subjects[subj_id] = subject_material
+        dats_obj_cache[subj_key] = subject_material
 
     specimen_annot = util.get_annotation("specimen")
     rna_extract_annot = util.get_annotation("RNA extract")
@@ -381,28 +387,31 @@ def get_single_sample_json(sample, referenced_subjects):
 
     return rna_material
 
-def write_single_sample_json(sample, output_file):
-    rna_material = get_single_sample_json(sample)
+def write_single_sample_json(sample, output_file, dats_obj_cache):
+    rna_material = get_single_sample_json(sample, dats_obj_cache)
     with open(output_file, mode="w") as jf:
         jf.write(json.dumps(rna_material, indent=2))
 
 def get_samples_json(samples, subjects):
     samples_json = []
-    # track which subjects have already been added to the structure
-    # maps name to DatsObj
-    referenced_subjects = {}
+    # track which DATS objects have already been added to the structure
+    # maps ":".join([<type>, <name>]) to DatsObj
+    dats_obj_cache = {}
     for s in sorted(samples):
-        sample_json = get_single_sample_json(samples[s], referenced_subjects)
+        sample_json = get_single_sample_json(samples[s], dats_obj_cache)
         samples_json.append(sample_json)
     return samples_json
 
+# write separate JSON file for each sample
 def write_samples_json(subjects, samples, output_dir):
-    # write separate JSON file for each sample
+    # track which DATS objects have already been added to the structure
+    # maps ":".join([<type>, <name>]<) to DatsObj
+    dats_obj_cache = {}
     for s in sorted(samples):
         sample = samples[s]
         samp_id = sample['SAMPID']['mapped_value']
         output_file = os.path.join(output_dir, samp_id + ".json")
-        write_single_sample_json(sample, output_file)
+        write_single_sample_json(sample, output_file, dats_obj_cache)
 
 def filter_samples(samples, smafrze):
     if smafrze is None:
