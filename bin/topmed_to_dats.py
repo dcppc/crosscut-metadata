@@ -3,6 +3,8 @@
 # Create DATS JSON description of TOPMed public data.
 
 import argparse
+from ccmm.dats.datsobj import DatsObj
+from collections import OrderedDict
 from ccmm.dats.datsobj import DATSEncoder
 import ccmm.topmed.dna_extracts
 import ccmm.topmed.wgs_datasets
@@ -53,6 +55,9 @@ def main():
     # read public metadata
     study_pub_md = ccmm.topmed.public_metadata.read_study_metadata(pub_xp)
 #        logging.debug("study_pub_md = " + str(study_pub_md))
+    
+    #Study Variables
+    STUDY_VARS = OrderedDict([("value", "Property or Attribute"), ("valueIRI", "http://purl.obolibrary.org/obo/NCIT_C20189")])
 
     # case 1: process public metadata only (i.e., data dictionaries and variable reports only)
     if restricted_mp is None:
@@ -64,6 +69,29 @@ def main():
             dna_extract = ccmm.topmed.dna_extracts.get_synthetic_single_dna_extract_json_from_public_metadata(study, study_pub_md[study_id])
             # insert synthetic sample into relevant study/Dataset
             study.set("isAbout", [dna_extract])
+            # get study variables
+            # Subject summary data
+            study_md = study_pub_md[study_id]
+            if 'Subject_Phenotypes' in study_md:
+                subj_data = study_md['Subject_Phenotypes']['var_report']['data']
+                subj_vars = subj_data['vars']
+            else:
+                subj_vars = {}
+            # Sample summary data
+            samp_data = study_md['Sample_Attributes']['var_report']['data']
+            samp_vars = samp_data['vars']
+            dimensions = [
+                study.getProperty("dimensions"),
+                DatsObj("Dimension", [
+                        ("name", { "value": "Study variables" } ),
+                        ("description", "List of variables captured in the study"),
+                        ("types", [ STUDY_VARS]),
+                        ("values", [ subj_vars, samp_vars ])
+                        ])
+                ]
+            study.setProperty("dimensions",dimensions)
+            
+            
 
     # case 2: process both public metadata and access-controlled dbGaP metadata
     else:
