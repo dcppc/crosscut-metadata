@@ -81,11 +81,13 @@ def main():
             samp_data = study_md['Sample_Attributes']['var_report']['data']
             samp_vars = samp_data['vars']
             # Dimension containing all summary data
+            all_vars = subj_vars[:]
+            all_vars.extend(samp_vars)
             summary_dim = DatsObj("Dimension", [
                     ("name", { "value": "Study variables" } ),
                     ("description", "List of variables captured in the study"),
                     ("types", [ STUDY_VARS]),
-                    ("values", [ subj_vars, samp_vars ])
+                    ("values", all_vars )
                     ])
             study.getProperty("dimensions").append(summary_dim)
 
