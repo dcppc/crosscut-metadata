@@ -33,8 +33,11 @@ def main():
     # logging
     logging.basicConfig(level=logging.INFO)
 
-    # create top-level dataset
-    rnaseq_dataset = ccmm.gtex.rnaseq_datasets.get_dataset_json()
+    # Dataset for GTEx project
+    gtex_dataset = ccmm.gtex.rnaseq_datasets.get_dataset_json()
+
+    # Dataset for public RNA-Seq analysis
+    rnaseq_dataset = gtex_dataset.get("hasPart")[0]
 
     # read metadata for subjects and samples
     subjects = ccmm.gtex.rna_extracts.read_subject_phenotypes_file(V7_SUBJECT_PHENOTYPES_FILE)

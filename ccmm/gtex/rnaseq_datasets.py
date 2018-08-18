@@ -7,6 +7,11 @@ import logging
 import sys
 import urllib.request
 
+# dbGaP landin page for GTEx
+GTEX_DB_GAP_URL = "https://www.ncbi.nlm.nih.gov/projects/gap/cgi-bin/study.cgi?study_id=phs000424.v7.p2"
+
+GTEX_DB_GAP_ID = "phs000424.v7.p2"
+
 # landing page for public RNA-Seq datasets
 GTEX_DATASETS_URL = "https://www.gtexportal.org/home/datasets"
 
@@ -32,6 +37,10 @@ TRANSCRIPT_PROFILING_TYPE = OrderedDict([("value", "transcription profiling"), (
 RNASEQ_ASSAY_TYPE = OrderedDict([("value", "RNA-seq assay"), ("valueIRI", "http://purl.obolibrary.org/obo/OBI_0001271")])
 # "Illumina"
 ILLUMINA_TYPE = OrderedDict([("value", "Illumina"), ("valueIRI", "http://purl.obolibrary.org/obo/OBI_0000759")])
+# "DNA sequencing"
+DNA_SEQUENCING_TYPE = OrderedDict([("value", "DNA sequencing"), ("valueIRI", "http://purl.obolibrary.org/obo/OBI_0000626")])
+# "whole genome sequencing assay"
+WGS_ASSAY_TYPE = OrderedDict([("value", "whole genome sequencing assay"), ("valueIRI", "http://purl.obolibrary.org/obo/OBI_0002117")])
 
 # documentation for earlier version at https://data.broadinstitute.org/cancer/cga/tools/rnaseqc/RNA-SeQC_Help_v1.1.2.pdf
 RNA_SEQ_QC = DatsObj("Software", [
@@ -133,11 +142,19 @@ GTEX_V7_RELEASE_DATE = OrderedDict([
         ("type", {"value": "release date"})
         ])
 
-GTEX_V7_TYPES = [OrderedDict([
+GTEX_V7_RNASEQ_TYPE = OrderedDict([
             ("information", TRANSCRIPT_PROFILING_TYPE),
             ("method", RNASEQ_ASSAY_TYPE),
             ("platform", ILLUMINA_TYPE)
-            ])]
+            ])
+
+GTEX_V7_WGS_TYPE = OrderedDict([
+        ("information", DNA_SEQUENCING_TYPE),
+        ("method", WGS_ASSAY_TYPE),
+        ("platform", ILLUMINA_TYPE)
+        ])
+
+GTEX_V7_TYPES = [ GTEX_V7_WGS_TYPE, GTEX_V7_RNASEQ_TYPE ]
 
 # parse dataset GUIDs from GTEX_DATASETS_GUIDS_URL
 def set_dataset_guids():
@@ -219,7 +236,7 @@ def get_dataset_json():
                 ("dates", [GTEX_V7_RELEASE_DATE]),
                 ("title", "GTEx v7 RNA-Seq Analysis, " + descr),
                 ("storedIn", DB_GAP),
-                ("types", GTEX_V7_TYPES),
+                ("types", [ GTEX_V7_RNASEQ_TYPE ]),
                 ("creators", [GTEX_CONSORTIUM]),
                 ("producedBy", data_analysis),
                 # TODO - where does the actual filename belong?
@@ -240,7 +257,7 @@ def get_dataset_json():
             ("dates", [GTEX_V7_RELEASE_DATE]),
             ("title",  "GTEx v7 RNA-Seq Analysis"),
             ("storedIn", DB_GAP),
-            ("types", GTEX_V7_TYPES),
+            ("types", [ GTEX_V7_RNASEQ_TYPE ]),
             ("creators", [GTEX_CONSORTIUM]),
             ("distributions", [DatsObj("DatasetDistribution", [
                                     ("access", DatsObj("Access", [
@@ -250,5 +267,25 @@ def get_dataset_json():
             ("hasPart", rnaseq_data_subsets)
             ])
 
+    # parent GTEx dataset
+    gtex_dataset = DatsObj("Dataset", [
+            ("identifier", DatsObj("Identifier", [
+                        ("identifier", GTEX_DB_GAP_ID)
+                        ])),
+            ("version", "v7"),
+            ("dates", [GTEX_V7_RELEASE_DATE]),
+            ("title",  "GTEx v7"),
+            ("storedIn", DB_GAP),
+            # TODO add types for parent GTEx project
+            ("types", GTEX_V7_TYPES),
+            ("creators", [GTEX_CONSORTIUM]),
+            ("distributions", [DatsObj("DatasetDistribution", [
+                            ("access", DatsObj("Access", [
+                                        ("landingPage", GTEX_DB_GAP_URL)
+                                        ]))
+                            ])]),
+            ("hasPart", [ parent_rnaseq_dataset ])
+            ])
+
     # TODO - add 'licenses', 'availability', 'dimensions', 'primaryPublications'?
-    return parent_rnaseq_dataset
+    return gtex_dataset
