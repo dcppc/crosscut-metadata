@@ -267,7 +267,7 @@ def get_dataset_json():
     # pull studies from dbGaP
     data_subsets = get_dbgap_studies("topmed")
 
-    # parent TOPMed dataset
+    # parent TOPMed Dataset that represents the entire TOPMed program
     parent_topmed_dataset = DatsObj("Dataset", [
             ("identifier", DatsObj("Identifier", [
                         # GTEx value - "GTEx_Analysis_2016-01-15_v7_RNA-SEQ"
