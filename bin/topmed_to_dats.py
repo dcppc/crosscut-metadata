@@ -80,18 +80,14 @@ def main():
             # Sample summary data
             samp_data = study_md['Sample_Attributes']['var_report']['data']
             samp_vars = samp_data['vars']
-            dimensions = [
-                study.getProperty("dimensions"),
-                DatsObj("Dimension", [
-                        ("name", { "value": "Study variables" } ),
-                        ("description", "List of variables captured in the study"),
-                        ("types", [ STUDY_VARS]),
-                        ("values", [ subj_vars, samp_vars ])
-                        ])
-                ]
-            study.setProperty("dimensions",dimensions)
-            
-            
+            # Dimension containing all summary data
+            summary_dim = DatsObj("Dimension", [
+                    ("name", { "value": "Study variables" } ),
+                    ("description", "List of variables captured in the study"),
+                    ("types", [ STUDY_VARS]),
+                    ("values", [ subj_vars, samp_vars ])
+                    ])
+            study.getProperty("dimensions").append(summary_dim)
 
     # case 2: process both public metadata and access-controlled dbGaP metadata
     else:
