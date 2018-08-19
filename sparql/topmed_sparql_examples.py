@@ -12,7 +12,7 @@ def main():
 
     # input
     parser = argparse.ArgumentParser(description='Run test queries on public TOPMed crosscut model instance using RDF/SPARQL.')
-    parser.add_argument('--topmed_file', default='.', help ='Path to TOPMed DATS JSON file.')
+    parser.add_argument('--topmed_file', help ='Path to TOPMed DATS JSON file.')
     args = parser.parse_args()
 
     # logging
