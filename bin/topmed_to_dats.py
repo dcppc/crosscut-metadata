@@ -76,7 +76,7 @@ def main():
                 subj_data = study_md['Subject_Phenotypes']['var_report']['data']
                 subj_vars = subj_data['vars']
             else:
-                subj_vars = {}
+                subj_vars = []
             # Sample summary data
             samp_data = study_md['Sample_Attributes']['var_report']['data']
             samp_vars = samp_data['vars']
