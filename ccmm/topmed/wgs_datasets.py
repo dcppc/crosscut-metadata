@@ -157,7 +157,7 @@ def get_dbgap_studies(qterm):
     # Add newline before each occurrence of "Versions" if not already present
     lines = []
     for line in TOPMED_STUDIES_STR.split('\n'):
-        m = re.match(r'^(\S+.*)(Versions.*)$', line)
+        m = re.match(r'^(\S+.*)(Versions?.*)$', line)
         if m is None:
             lines.append(line)
         else:
