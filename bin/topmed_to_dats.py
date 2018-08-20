@@ -83,13 +83,18 @@ def main():
             # Dimension containing all summary data
             all_vars = subj_vars[:]
             all_vars.extend(samp_vars)
-            summary_dim = DatsObj("Dimension", [
-                    ("name", { "value": "Study variables" } ),
-                    ("description", "List of variables captured in the study"),
-                    ("types", [ STUDY_VARS]),
-                    ("values", all_vars )
-                    ])
-            study.getProperty("dimensions").append(summary_dim)
+            
+            for var in all_vars:
+                id = OrderedDict([
+                    ("identifier",  var['id']),
+                    ("identifierSource", "dbGaP")])
+                dim = DatsObj("Dimension", [
+                    ("identifier", id),
+                    ("name", { "value": var['var_name'] } ),
+                    ("description", var['description'])
+                    #To do: include stats
+                    ])  
+                study.getProperty("dimensions").append(dim)
 
     # case 2: process both public metadata and access-controlled dbGaP metadata
     else:
