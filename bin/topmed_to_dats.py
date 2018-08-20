@@ -56,8 +56,34 @@ def main():
     study_pub_md = ccmm.topmed.public_metadata.read_study_metadata(pub_xp)
 #        logging.debug("study_pub_md = " + str(study_pub_md))
     
-    #Study Variables
+    # Study Variables
     STUDY_VARS = OrderedDict([("value", "Property or Attribute"), ("valueIRI", "http://purl.obolibrary.org/obo/NCIT_C20189")])
+
+    # record study variables as dimensions of the study/Dataset
+    def add_study_vars(study, study_md):
+        # Subject Phenotype study variables
+        if 'Subject_Phenotypes' in study_md:
+            subj_data = study_md['Subject_Phenotypes']['var_report']['data']
+            subj_vars = subj_data['vars']
+        else:
+            subj_vars = []
+        # Sample Attribute study variables
+        samp_data = study_md['Sample_Attributes']['var_report']['data']
+        samp_vars = samp_data['vars']
+        all_vars = subj_vars[:]
+        all_vars.extend(samp_vars)
+        # create a Dimension for each one
+        for var in all_vars:
+            id = OrderedDict([
+                    ("identifier",  var['id']),
+                    ("identifierSource", "dbGaP")])
+            dim = DatsObj("Dimension", [
+                    ("identifier", id),
+                    ("name", { "value": var['var_name'] } ),
+                    ("description", var['description'])
+                    #To do: include stats
+                    ])  
+            study.getProperty("dimensions").append(dim)
 
     # case 1: process public metadata only (i.e., data dictionaries and variable reports only)
     if restricted_mp is None:
@@ -69,32 +95,8 @@ def main():
             dna_extract = ccmm.topmed.dna_extracts.get_synthetic_single_dna_extract_json_from_public_metadata(study, study_pub_md[study_id])
             # insert synthetic sample into relevant study/Dataset
             study.set("isAbout", [dna_extract])
-            # get study variables
-            # Subject summary data
             study_md = study_pub_md[study_id]
-            if 'Subject_Phenotypes' in study_md:
-                subj_data = study_md['Subject_Phenotypes']['var_report']['data']
-                subj_vars = subj_data['vars']
-            else:
-                subj_vars = []
-            # Sample summary data
-            samp_data = study_md['Sample_Attributes']['var_report']['data']
-            samp_vars = samp_data['vars']
-            # Dimension containing all summary data
-            all_vars = subj_vars[:]
-            all_vars.extend(samp_vars)
-            
-            for var in all_vars:
-                id = OrderedDict([
-                    ("identifier",  var['id']),
-                    ("identifierSource", "dbGaP")])
-                dim = DatsObj("Dimension", [
-                    ("identifier", id),
-                    ("name", { "value": var['var_name'] } ),
-                    ("description", var['description'])
-                    #To do: include stats
-                    ])  
-                study.getProperty("dimensions").append(dim)
+            add_study_vars(study, study_md)
 
     # case 2: process both public metadata and access-controlled dbGaP metadata
     else:
@@ -103,32 +105,8 @@ def main():
             study = studies_by_id[study_id]
             dna_extracts = ccmm.topmed.dna_extracts.get_dna_extracts_json_from_restricted_metadata(study, study_pub_md[study_id], study_restricted_md[study_id])
             study.set("isAbout", dna_extracts)
-                        # get study variables
-            # Subject summary data
             study_md = study_pub_md[study_id]
-            if 'Subject_Phenotypes' in study_md:
-                subj_data = study_md['Subject_Phenotypes']['var_report']['data']
-                subj_vars = subj_data['vars']
-            else:
-                subj_vars = []
-            # Sample summary data
-            samp_data = study_md['Sample_Attributes']['var_report']['data']
-            samp_vars = samp_data['vars']
-            # Dimension containing all summary data
-            all_vars = subj_vars[:]
-            all_vars.extend(samp_vars)
-            
-            for var in all_vars:
-                id = OrderedDict([
-                    ("identifier",  var['id']),
-                    ("identifierSource", "dbGaP")])
-                dim = DatsObj("Dimension", [
-                    ("identifier", id),
-                    ("name", { "value": var['var_name'] } ),
-                    ("description", var['description'])
-                    #To do: include stats
-                    ])  
-                study.getProperty("dimensions").append(dim)
+            add_study_vars(study, study_md)
 
     # write Dataset to DATS JSON file
     with open(args.output_file, mode="w") as jf:
