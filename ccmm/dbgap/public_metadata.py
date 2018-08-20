@@ -10,6 +10,32 @@ import xml.etree.ElementTree as ET
 # Global variables
 # ------------------------------------------------------
 
+# list of permitted file types
+FILE_TYPES = [
+    'Subject',
+    'Sample',
+    'Sample_Attributes',
+    'Subject_Phenotypes',
+    'Subject_Images'
+]
+
+FILE_TYPES_RE = '|'.join(FILE_TYPES)
+
+# list of permitted metadata types
+METADATA_TYPES = [
+    'data_dict',
+    'var_report',
+    'MULTI',
+    # TODO - handle use codes separately and ensure all combinations are handled:
+    'DS-CS-RD',
+    'DS-LD',
+    'HMB',
+    'DS-LD-RD',
+    ''
+]
+
+METADATA_TYPES_RE = '|'.join(METADATA_TYPES)
+ 
 # expected attribute values for the <stat> element
 STAT_ATTRIBS = {
     "n": True,
@@ -215,7 +241,10 @@ def get_study_metadata_files(dir, suffix):
         # ignore anything that doesn't start with a study id and end with suffix
         if re.match(r'^phs\d+\..*\.' + suffix + '$', f):
             # list of possible file types (Subject, Sample, etc.) may vary from study to study
-            m = re.match(r'^(phs\d+\.v\d+)\.((\S+)_(Subject|Sample|Sample_Attributes|Subject_Phenotypes)).(data_dict|var_report|MULTI|DS-CS-RD|DS-LD|HMB|DS-LD-RD|)\.' + suffix + '$', f)
+            # phsXXXXXX - study accession
+            # phtXXXXXX - phenotype trait table accession
+            # v = data version, p = participant set version, c = consent group version
+            m = re.match(r'^(phs\d+\.v\d+)\.(pht\d+\.v\d+)(\.p\d+)?\.(\S+)_(' + FILE_TYPES_RE + ').(' + METADATA_TYPES_RE + ')\.' + suffix + '$', f)
             if m is None:
                 logging.fatal("unable to parse file type and study name from dbGaP file " + f)
                 sys.exit(1)
@@ -224,9 +253,11 @@ def get_study_metadata_files(dir, suffix):
                 "name": f, 
                 "path": os.path.join(dir, f), 
                 "study_id": m.group(1), 
-                "study_name": m.group(3), 
-                "metadata_type": m.group(4), 
-                "file_type": m.group(5) 
+                "phenotype_id": m.group(2), 
+                "participant_set_version": m.group(3),
+                "study_name": m.group(4), 
+                "metadata_type": m.group(5), 
+                "file_type": m.group(6) 
                 }
             files.append(file)
 
@@ -237,10 +268,44 @@ def read_study_metadata(dir):
     study_md = {}
     study_files = get_study_metadata_files(dir, "xml")
     n_studies = len(study_files)
-    logging.info("found metadata file(s) for " + str(n_studies) + " study/studies in " + dir)
+    study_str = 'study'
+    if n_studies > 1:
+        study_str = 'studies'
+    logging.info("found metadata file(s) for " + str(n_studies) + " " + study_str + " in " + dir)
+
+    # identify sub-studies
+    # and index their var_report files by phenotypic trait table accession
+    ss_var_reports = {}
+    n_not_substudy = 0
+    for study in study_files:
+        file_types_d = {}
+        sd = study_files[study]
+        for datatype in sd:
+            dt_files = sd[datatype]
+            for filetype in dt_files:
+                file = sd[datatype][filetype]
+                file_types_d[filetype] = True
+                if filetype == 'var_report':
+                    ss_var_reports[file['phenotype_id']] = file            
+
+        # if only var_report files are present it will be treated as a sub-study
+        file_types = [x for x in file_types_d.keys()]
+        n_file_types = len(file_types)
+        if (n_file_types == 1) and (file_types[0] == 'var_report'):
+            sd['is_substudy'] = True
+        else:
+            sd['is_substudy'] = False
+            n_not_substudy += 1
+
+    if n_not_substudy != 1:
+        logging.fatal("Failed to identify main study - found " + str(n_not_substudy) + " main studies")
+        sys.exit(1)
 
     # process one study at a time
     for study in study_files:
+        if study_files[study]['is_substudy']:
+            logging.info("skipping sub-study " + study)
+            continue
         logging.info("processing metadata for study " + study)
         sd = study_files[study]
         md = { 'files': sd }
@@ -249,15 +314,24 @@ def read_study_metadata(dir):
         # each study should have a data_dict and var_report for each of the following:
         for datatype in ('Subject', 'Sample', 'Sample_Attributes', 'Subject_Phenotypes'):
             for filetype in ('data_dict', 'var_report'):
+
                 # Subject_Phenotypes is not always present
                 if datatype not in sd:
                     logging.info("no XML found for " + datatype + "." + filetype)
                     continue
 
+                # skip any data_dict files whose corresponding var_report is from a sub-study
+                if filetype == 'data_dict':
+                    var_report_study = ss_var_reports[sd[datatype][filetype]['phenotype_id']]['study_id']
+                    if var_report_study != study:
+                        logging.info("skipping data_dict for sub-study " + var_report_study)
+                        break
+
                 if datatype not in md:
                     md[datatype] = {}
 
                 file_path = sd[datatype][filetype]['path']
+
                 xml_data = read_dbgap_data_dict_or_var_report_xml(file_path)
                 md[datatype][filetype] = { 'file': file_path, 'data': xml_data }
 
