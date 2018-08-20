@@ -185,7 +185,7 @@ def get_single_dna_extract_json(study, subj_var_values, samp_var_values):
             ("name", "Hypertension"),
             ("identifier", disease_identifier),
             ("alternateIdentifiers", disease_alt_ids),
-            ("diseaseStatus", [ OrderedDict([("value", disease['hypertension'] ), ("valueIRI", "")])]), 
+            ("diseaseStatus", OrderedDict([("value", disease['hypertension'] ), ("valueIRI", "")])), 
             ])
         subject_bearerOfDisease.append(subject_hypertension)
     
