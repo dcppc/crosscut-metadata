@@ -103,6 +103,32 @@ def main():
             study = studies_by_id[study_id]
             dna_extracts = ccmm.topmed.dna_extracts.get_dna_extracts_json_from_restricted_metadata(study, study_pub_md[study_id], study_restricted_md[study_id])
             study.set("isAbout", dna_extracts)
+                        # get study variables
+            # Subject summary data
+            study_md = study_pub_md[study_id]
+            if 'Subject_Phenotypes' in study_md:
+                subj_data = study_md['Subject_Phenotypes']['var_report']['data']
+                subj_vars = subj_data['vars']
+            else:
+                subj_vars = []
+            # Sample summary data
+            samp_data = study_md['Sample_Attributes']['var_report']['data']
+            samp_vars = samp_data['vars']
+            # Dimension containing all summary data
+            all_vars = subj_vars[:]
+            all_vars.extend(samp_vars)
+            
+            for var in all_vars:
+                id = OrderedDict([
+                    ("identifier",  var['id']),
+                    ("identifierSource", "dbGaP")])
+                dim = DatsObj("Dimension", [
+                    ("identifier", id),
+                    ("name", { "value": var['var_name'] } ),
+                    ("description", var['description'])
+                    #To do: include stats
+                    ])  
+                study.getProperty("dimensions").append(dim)
 
     # write Dataset to DATS JSON file
     with open(args.output_file, mode="w") as jf:
