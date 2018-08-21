@@ -74,7 +74,7 @@ def main():
         all_vars.extend(samp_vars)
         # create a Dimension for each one
         for var in all_vars:
-            id = OrderedDict([
+            id = DatsObj("Identifier", [
                     ("identifier",  var['id']),
                     ("identifierSource", "dbGaP")])
             dim = DatsObj("Dimension", [
