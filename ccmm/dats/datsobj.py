@@ -13,7 +13,16 @@ import uuid
 
 # Location of JSON-LD contexts
 # TODO - these links are stable but not versioned. Replace with stable versioned link prefix when available.
-JSON_LD_CONTEXT_URI_PREFIX = 'https://w3id.org/dats/context/sdo/'
+#JSON_LD_SDO_CONTEXT_URI_PREFIX = 'https://w3id.org/dats/context/sdo/'
+#JSON_LD_OBO_FOUNDRY_CONTEXT_URI_PREFIX = 'https://w3id.org/dats/context/obo/'
+
+# use direct links to avoid redirects (results in 3X improvement in rdflib parse speed)
+JSON_LD_SDO_CONTEXT_URI_PREFIX = 'https://datatagsuite.github.io/context/sdo/'
+JSON_LD_OBO_FOUNDRY_CONTEXT_URI_PREFIX = 'https://datatagsuite.github.io/context/obo/'
+
+# use local context files (further 10X improvement in rdflib parse speed)
+#JSON_LD_SDO_CONTEXT_URI_PREFIX = './contexts/sdo/'
+#JSON_LD_OBO_FOUNDRY_CONTEXT_URI_PREFIX = './contexts/obo/'
 
 # All known DATS object types
 # from schema dir of https://github.com/datatagsuite/schema.git:
@@ -75,16 +84,18 @@ class DatsObj:
         # @context
         if dt['has_context']:
             json_ld_file = dt['schema']
-            context_file = re.sub(r'_schema.json$', '_sdo_context.jsonld', json_ld_file)
-            json_ld_context = JSON_LD_CONTEXT_URI_PREFIX + context_file
-            dats_atts.append(("@context", json_ld_context))
+            sdo_context_file = re.sub(r'_schema.json$', '_sdo_context.jsonld', json_ld_file)
+            sdo_json_ld_context =  JSON_LD_SDO_CONTEXT_URI_PREFIX + sdo_context_file
+            obo_foundry_context_file = re.sub(r'_schema.json$', '_obo_context.jsonld', json_ld_file)
+            obo_foundry_ld_context =  JSON_LD_OBO_FOUNDRY_CONTEXT_URI_PREFIX + obo_foundry_context_file 
+            dats_atts.append(("@context", [ sdo_json_ld_context, obo_foundry_ld_context ] ))
 
         # @id
 
         # assign random uuid if no id specified
         # TODO - use minids/stable ids where possible
         if id == "":
-            id = str(uuid.uuid4())
+            id = "TMPID:" + str(uuid.uuid4())
 
         # TODO - id should be a URI according to dataset_schema.json
         dats_atts.append(("@id", id))
