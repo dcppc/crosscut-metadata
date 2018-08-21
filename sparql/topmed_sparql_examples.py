@@ -20,7 +20,6 @@ def main():
 
     # parse TOPMed JSON LD
     logging.info("Reading TOPMed metadata from " + args.topmed_file)
-    # TODO - use streaming API instead
     with open(args.topmed_file, "r") as f:
         json_data = f.read()
 
@@ -28,9 +27,9 @@ def main():
     logging.info("Parsing complete")
 
     # Uncomment this to see the triples parsed from JSON-LD:
-#    print("Parsed JSON-LD:")
-#    print(g.serialize(format='n3', indent=4).decode('ascii'))
-#    print()
+    print("Parsed JSON-LD:")
+    print(g.serialize(format='n3', indent=4).decode('ascii'))
+    print()
 
     # ------------------------------------------
     # Enumerate TOPMed studies
@@ -39,11 +38,11 @@ def main():
             """
             SELECT DISTINCT ?ident ?title
             WHERE {
-                ?tm_dataset a sdo:Dataset.
-                ?tm_dataset sdo:hasPart ?dataset.
-                ?dataset a sdo:Dataset.             
-                ?dataset sdo:name ?title.
-                ?dataset sdo:identifier ?identifier.
+                ?tm_dataset a obo:IAO_0000100.
+                ?tm_dataset obo:BFO_0000051 ?dataset.
+                ?dataset a obo:IAO_0000100.
+                ?dataset obo:OBI_0001622 ?title.
+                ?dataset obo:IAO_0000577 ?identifier.
                 ?identifier sdo:identifier ?ident.
             }
             """)
@@ -55,83 +54,89 @@ def main():
     print("\n")
 
     # ------------------------------------------
-    # List all DNA extracts
+    # DNA extract / sample / subject triples
     # ------------------------------------------
 
     qres = g.query(
             """
-            SELECT DISTINCT (group_concat( distinct ?dna_extract;separator="; ") as ?names)
+            SELECT DISTINCT ?dna_extract ?sample_name ?subject_name
             WHERE {
-                ?dataset a sdo:Dataset.
-                ?mat1 a sdo:Thing.
-                ?dataset sdo:about ?mat1.
-                ?mat1 sdo:name ?dna_extract.
-                ?mat1 sdo:roleName ?role.
+                ?dataset a obo:IAO_0000100.
+                ?mat1 a obo:BFO_0000040.
+                ?dataset obo:IAO_0000136 ?mat1.
+                ?mat1 obo:IAO_0000590 ?dna_extract.
+                ?mat1 obo:BFO_0000023 ?role.
                 ?role sdo:value ?rolename.
+                ?mat1 obo:RO_0001000 ?sample.
+                ?sample obo:IAO_0000300 ?sample_name.
+                ?sample obo:RO_0001000 ?subject.
+                ?subject obo:IAO_0000300 ?subject_name.
                 FILTER (str(?rolename) = "DNA extract").
             }
             """)
 
     print("[QUERY 2] DNA extracts:\n")
-    print("DNA extract")
+    print("DNA extract\tSample\tSubject")
     for row in qres:
-        print("%s" % row)
+        print("%s\t%s\t%s" % row)
     print("\n")
 
     # ------------------------------------------
     # List all subject metadata
     # ------------------------------------------
 
-    # This query is incomplete and also nonfunctional due to limitations in the context files, notably:
-    #  -no definition for derivesFrom, effectively hiding the specimens and subjects
-    #  -no definition for either subject 'characteristics' or 'extraProperties'
-    #    (DATS Material is mapped to sdo:Thing)
-    # Once these issues are resolved it should be possible to enumerate the characteristics and/or extraProperties.
+    qres = g.query(
+            """
+            SELECT DISTINCT ?subject_name ?propname ?propvalue
+            WHERE {
+                ?subj1 a obo:BFO_0000040.
+                ?subj1 obo:IAO_0000590 ?subject_name.
+                ?subj1 obo:BFO_0000023 ?role.
+                ?role sdo:value ?rolename.
+                ?subj1 obo:RO_0000086 ?chars.
+                ?chars obo:IAO_0000300 ?propname.
+                ?chars obo:IAO_0000027 ?propvalue.
+                FILTER (str(?rolename) = "donor").
+            }
+            """)
 
-#    qres = g.query(
-#            """
-#            SELECT DISTINCT ?subject_name
-#            WHERE {
-#                ?mat1 a sdo:Thing.
-#                ?mat1 sdo:name ?subject_name.
-#                ?mat1 sdo:roleName ?role.
-#                ?role sdo:value ?rolename.
-#                FILTER (str(?rolename) = "donor").
-#            }
-#            """)
-#
-#    print("[QUERY 3] Subject metadata:\n")
-#    print("Subject")
-#    for row in qres:
-#        print("%s" % row)
-#    print("\n")
+    print("[QUERY 3] Subject characteristics:\n")
+    print("Subject\tCharacteristic\tValue")
+    for row in qres:
+        print("%s\t%s\t%s" % row)
+    print("\n")
 
     # ------------------------------------------
-    # DNA extract / sample / subject triples
+    # Study variables (DATS dimensions)
     # ------------------------------------------
 
-    # This query doesn't work with only the schema.org context files because of the lack of a derivesFrom relationship
+    # Query doesn't include the actual subject count, which looks like this:
+    #
+    # <tmpid:f661cd29-6cb1-4059-aaf9-de94b3913cc0> a obo:STATO_23367 ;
+    #   obo:IAO_0000027 1134 ;
+    #   obo:IAO_0000300 "The actual number of subjects entered into a clinical trial."@en ;
+    #   obo:IAO_0000590 [ ] .
 
-#    qres = g.query(
-#            """
-#            SELECT DISTINCT ?dna_extract ?sample ?subject
-#            WHERE {
-#                ?mat1 a sdo:Material.
-#                ?mat2 a sdo:Material.
-#                ?mat3 a sdo:Material.
-#                ?mat1 sdo:derivesFrom ?mat2.
-#                ?mat2 sdo:derivesFrom ?mat3.
-#                ?mat1 sdo:name ?dna_extract.
-#                ?mat2 sdo:name ?sample.
-#                ?mat3 sdo:name ?subject.
-#            }
-#            """)
-#
-#    print("[QUERY 4] DNA extract/sample/subject triples:\n")
-#    print("DNA extract\tSample\tSubject")
-#    for row in qres:
-#        print("%s\t%s\t%s" % row)
-#    print()
+    qres = g.query(
+            """
+            SELECT DISTINCT ?dbgap_study_acc ?dbgap_var_acc ?name
+            WHERE {
+                ?study a obo:IAO_0000100.
+                ?study obo:IAO_0000577 ?study_id.
+                ?study_id sdo:identifier ?dbgap_study_acc.
+                ?study obo:BFO_0000051 ?dim1.
+                ?dim1 a obo:STATO_23367.
+                ?dim1 obo:IAO_0000300 ?name.
+                ?dim1 obo:IAO_0000577 ?dim1_id.
+                ?dim1_id sdo:identifier ?dbgap_var_acc.
+            }
+            """)
+
+    print("[QUERY 4] Study variables:\n")
+    print("dbGaP Study\tdbGaP variable accession\tName")
+    for row in qres:
+        print("%s\t%s\t%s" % row)
+    print()
 
 if __name__ == '__main__':
     main()
