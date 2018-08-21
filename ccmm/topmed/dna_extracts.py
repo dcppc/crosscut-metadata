@@ -55,16 +55,16 @@ def pick_var_values(vars):
         if vname.upper() == 'BODY_SITE':
             vname = 'BODY_SITE'
         
-        res[vname] = value
+        res[vname] = { "value": value, "var": var }
 
     return res
 
 # Generate DATS JSON for a single sample/DNA extract
-def get_single_dna_extract_json(study, subj_var_values, samp_var_values):
+def get_single_dna_extract_json(study, study_md, subj_var_values, samp_var_values):
 
     # all samples in TOPMed WGS phase are blood samples, named "Blood", "Peripheral Blood"...
-    if "blood" not in samp_var_values['BODY_SITE'].lower():
-        logging.fatal("encountered BODY_SITE other than 'Blood' in TOPMed sample metadata - " + samp_var_values['BODY_SITE'])
+    if "blood" not in samp_var_values['BODY_SITE']['value'].lower():
+        logging.fatal("encountered BODY_SITE other than 'Blood' in TOPMed sample metadata - " + samp_var_values['BODY_SITE']['value'])
         sys.exit(1)
 
     anatomy_name = "blood"
@@ -89,38 +89,20 @@ def get_single_dna_extract_json(study, subj_var_values, samp_var_values):
     for name in subj_var_values:
         name_upper = name.upper()
         if name_upper == "GENDER" or name_upper == "SEX":
-            gender = subj_var_values[name].lower()
+            gender = subj_var_values[name]['value'].lower()
         elif name_upper == "VISIT_AGE" or name_upper == "AGE" or name_upper == "AGE_ENROLL": #need to confirm that these  allmean the same thing
-            age = subj_var_values[name]
+            age = subj_var_values[name]['value']
         elif name_upper == "VISIT_YEAR":
-            visit_year =  subj_var_values[name]
+            visit_year =  subj_var_values[name]['value']
         elif name_upper == "SYSBP":
-            sys_bp = subj_var_values[name]  
+            sys_bp = subj_var_values[name]['value']
         elif name_upper == "DIASBP":
-            dias_bp = subj_var_values[name]         
+            dias_bp = subj_var_values[name]['value']
         elif name_upper == "HYPERTENSION" or name_upper == "HIGHBLOODPRES":
-            if subj_var_values[name].lower() == "yes" or subj_var_values[name] == 1:
+            if subj_var_values[name]['value'].lower() == "yes" or subj_var_values[name]['value'] == 1:
                 disease['hypertension'] = "yes"
             else:
                 disease['hypertension'] = "no"
-    
-    # TODO - determine what other subject attributes can be mapped directly to core DATS objects
-
-    # place original dbGaP subject metadata into extraProperties
-    # TODO - consider alternative of doing this only for un-harmonized metadata 
-    subj_extra_props = [DatsObj("CategoryValuesPair", [("category", xp), ("values", [subj_var_values[xp]])]) for xp in sorted(subj_var_values) ]
-
-    # extract sample attributes
-    for name in samp_var_values:
-        if name == 'SEQUENCING_CENTER':
-            # TODO - determine which DATS objects (e.g., biological sample, DNA prep, sequence data) this property should attach to
-            pass
-
-    # TODO - determine what other subject attributes can be mapped directly to core DATS objects
-    # e.g., IS_TUMOR -> bearerOfDisease ("the pathology affecting the material...")
-
-    # place original dbGaP sample metadata into extraProperties
-    samp_extra_props = [DatsObj("CategoryValuesPair", [("category", xp), ("values", [samp_var_values[xp]])]) for xp in sorted(samp_var_values) ]
 
     # anatomical part
     anatomical_part = DatsObj("AnatomicalPart", [
@@ -132,6 +114,7 @@ def get_single_dna_extract_json(study, subj_var_values, samp_var_values):
     subject_characteristics = []
     subject_bearerOfDisease = []
 
+    # harmonized/standardized characteristics
     if gender is not None:
         subject_sex = DatsObj("Dimension", [
                 ("name", { "value": "Gender" }),
@@ -188,13 +171,39 @@ def get_single_dna_extract_json(study, subj_var_values, samp_var_values):
             ("diseaseStatus", OrderedDict([("value", disease['hypertension'] ), ("valueIRI", "")])), 
             ])
         subject_bearerOfDisease.append(subject_hypertension)
-    
+
+    # create a DATS Dimension from a dbGaP variable value
+    def make_var_dimension(name, var_value):
+        value = var_value["value"]
+
+        dim = DatsObj("Dimension", 
+                      [("name", DatsObj("Annotation", [( "value",  name )])), 
+                       ("values", [ value ])
+                       ])
+
+        # find existing DATS identifier for the corresponding Dataset Dimension 
+        if "var" in var_value:
+            id = var_value["var"]["id"]
+            dbgap_var_dim = study_md['dbgap_vars'][id]
+            dim.setProperty("identifier", dbgap_var_dim.get("identifier").getIdRef())
+
+        return dim
+
+    # create DATS Dimensions for dbGaP subject metadata
+    subject_dimensions = [ make_var_dimension(vname, subj_var_values[vname]) for vname in sorted(subj_var_values) ]
+
+    # create DATS Dimensions for dbGaP sample metadata
+    sample_dimensions = [ make_var_dimension(vname, samp_var_values[vname]) for vname in sorted(samp_var_values) ]
+
+    # "raw" characteristics from dbGaP metadata
+    subject_characteristics.extend(subject_dimensions)
+    sample_characteristics = sample_dimensions
     
     human_t = util.get_taxon_human()
-    subj_id = subj_var_values['SUBJECT_ID']
-    dbgap_subj_id = subj_var_values['dbGaP_Subject_ID']
-    samp_id = samp_var_values['SAMPLE_ID']
-    dbgap_samp_id = samp_var_values['dbGaP_Sample_ID']
+    subj_id = subj_var_values['SUBJECT_ID']['value']
+    dbgap_subj_id = subj_var_values['dbGaP_Subject_ID']['value']
+    samp_id = samp_var_values['SAMPLE_ID']['value']
+    dbgap_samp_id = samp_var_values['dbGaP_Sample_ID']['value']
 
     study_title = study.get("title")
 
@@ -207,8 +216,7 @@ def get_single_dna_extract_json(study, subj_var_values, samp_var_values):
             ("characteristics", subject_characteristics),
             ("bearerOfDisease", subject_bearerOfDisease),
             ("taxonomy", human_t),
-            ("roles", util.get_donor_roles()),
-            ("extraProperties", subj_extra_props)
+            ("roles", util.get_donor_roles())
             ])
 
     specimen_annot = util.get_annotation("specimen")
@@ -221,10 +229,10 @@ def get_single_dna_extract_json(study, subj_var_values, samp_var_values):
             ("identifier", { "identifier": samp_id }),
             ("alternateIdentifiers", [ util.get_alt_id(dbgap_samp_id, "dbGaP") ]),
             ("description", anatomy_name + " specimen collected from subject " + subj_id),
+            ("characteristics", sample_characteristics),
             ("taxonomy", human_t),
             ("roles", [ specimen_annot ]),
-            ("derivesFrom", [ subject_material, anatomical_part ]),
-            ("extraProperties", samp_extra_props)
+            ("derivesFrom", [ subject_material, anatomical_part ])
             ])
 
     # DNA extracted from tissue sample
@@ -259,13 +267,13 @@ def get_synthetic_single_dna_extract_json_from_public_metadata(study, study_md):
     logging.debug("samp_var_values=" + json.dumps(samp_var_values, indent=2))
 
     # assign dummy ids: subject and sample ids are protected data
-    samp_var_values['dbGaP_Sample_ID'] = "0000000"
-    samp_var_values['SAMPLE_ID'] = "SA0000000"
+    samp_var_values['dbGaP_Sample_ID'] = { "value": "0000000" }
+    samp_var_values['SAMPLE_ID'] = { "value" : "SA0000000" }
 
-    subj_var_values['dbGaP_Subject_ID'] = "0000000"
-    subj_var_values['SUBJECT_ID'] = "SU0000000"
+    subj_var_values['dbGaP_Subject_ID'] = { "value" : "0000000" }
+    subj_var_values['SUBJECT_ID'] = { "value" : "SU0000000" }
 
-    return get_single_dna_extract_json(study, subj_var_values, samp_var_values)
+    return get_single_dna_extract_json(study, study_md, subj_var_values, samp_var_values)
 
 def index_dicts(dict_list, key):
     index = {}
@@ -376,17 +384,17 @@ def get_dna_extracts_json_from_restricted_metadata(study, pub_md, restricted_md)
     for dbgap_samp_id in samples:
         sample = samples[dbgap_samp_id]
         subject = sample['subject']
-        # filter out any attributes that don't belong in extraProperties
+        # filter out any attributes that don't belong in characteristics
         sample_atts = {}
         for sa in sample:
             if sa != 'subject':
-                sample_atts[sa] = sample[sa]
+                sample_atts[sa] = { "value": sample[sa] } # TODO - add corresponding dbgap var identifier from pub md
 
         subject_atts = {}
         for sa in subject:
-            subject_atts[sa] = subject[sa]
+            subject_atts[sa] = { "value" : subject[sa] } # TODO - add corresponding dbgap var identifier from pub md
 
-        dna_extract = get_single_dna_extract_json(study, subject_atts, sample_atts)
+        dna_extract = get_single_dna_extract_json(study, pub_md, subject_atts, sample_atts)
         dna_extracts.append(dna_extract)
 
     return dna_extracts

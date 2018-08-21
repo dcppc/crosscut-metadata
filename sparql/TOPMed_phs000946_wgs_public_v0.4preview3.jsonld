@@ -1,0 +1,3448 @@
+{
+  "@type": "Dataset",
+  "@context": [
+    "https://datatagsuite.github.io/context/sdo/dataset_sdo_context.jsonld",
+    "https://datatagsuite.github.io/context/obo/dataset_obo_context.jsonld"
+  ],
+  "@id": "TMPID:a86fdc6b-5a71-4571-8232-645c9705b7fe",
+  "identifier": {
+    "@type": "Identifier",
+    "@context": [
+      "https://datatagsuite.github.io/context/sdo/identifier_info_sdo_context.jsonld",
+      "https://datatagsuite.github.io/context/obo/identifier_info_obo_context.jsonld"
+    ],
+    "@id": "TMPID:aec8edfc-af04-4215-8637-ea3d1944442f",
+    "identifier": "TOPMed"
+  },
+  "title": "Trans-Omics for Precision Medicine (TOPMed)",
+  "description": "TOPMed generates scientific resources related to heart, lung, blood, and sleep disorders (HLBS). It is sponsored by the NIH NHLBI and is part of a broader Precision Medicine Initiative.",
+  "storedIn": {
+    "@type": "DataRepository",
+    "@context": [
+      "https://datatagsuite.github.io/context/sdo/data_repository_sdo_context.jsonld",
+      "https://datatagsuite.github.io/context/obo/data_repository_obo_context.jsonld"
+    ],
+    "@id": "TMPID:58a87d2b-8484-4221-aea2-e853ed02d33f",
+    "name": "dbGaP"
+  },
+  "types": [
+    {
+      "information": {
+        "value": "DNA sequencing",
+        "valueIRI": "http://purl.obolibrary.org/obo/OBI_0000626"
+      },
+      "method": {
+        "value": "whole genome sequencing assay",
+        "valueIRI": "http://purl.obolibrary.org/obo/OBI_0002117"
+      },
+      "platform": {
+        "value": "Illumina",
+        "valueIRI": "http://purl.obolibrary.org/obo/OBI_0000759"
+      }
+    }
+  ],
+  "creators": [
+    {
+      "@type": "Organization",
+      "@context": [
+        "https://datatagsuite.github.io/context/sdo/organization_sdo_context.jsonld",
+        "https://datatagsuite.github.io/context/obo/organization_obo_context.jsonld"
+      ],
+      "@id": "TMPID:07c4fe93-abcb-4572-81bd-da7f94078057",
+      "name": "The National Institute of Health's National Heart, Lung and Blood Institute",
+      "abbreviation": "NHLBI"
+    }
+  ],
+  "distributions": [
+    {
+      "@type": "DatasetDistribution",
+      "@context": [
+        "https://datatagsuite.github.io/context/sdo/dataset_distribution_sdo_context.jsonld",
+        "https://datatagsuite.github.io/context/obo/dataset_distribution_obo_context.jsonld"
+      ],
+      "@id": "TMPID:bcc7842f-1c16-430b-a841-2d3fbbc86b06",
+      "access": {
+        "@type": "Access",
+        "@context": [
+          "https://datatagsuite.github.io/context/sdo/access_sdo_context.jsonld",
+          "https://datatagsuite.github.io/context/obo/access_obo_context.jsonld"
+        ],
+        "@id": "TMPID:d190f3db-fe14-438b-983b-7b37ff036e9b",
+        "landingPage": "https://www.ncbi.nlm.nih.gov/gap/?term=topmed"
+      }
+    }
+  ],
+  "hasPart": [
+    {
+      "@type": "Dataset",
+      "@context": [
+        "https://datatagsuite.github.io/context/sdo/dataset_sdo_context.jsonld",
+        "https://datatagsuite.github.io/context/obo/dataset_obo_context.jsonld"
+      ],
+      "@id": "TMPID:0519d90a-2d34-41f6-afee-9c81de6c8f86",
+      "identifier": {
+        "@type": "Identifier",
+        "@context": [
+          "https://datatagsuite.github.io/context/sdo/identifier_info_sdo_context.jsonld",
+          "https://datatagsuite.github.io/context/obo/identifier_info_obo_context.jsonld"
+        ],
+        "@id": "TMPID:e1343ed1-8073-42fa-8d36-bb74c222fed2",
+        "identifier": "phs000946.v3.p1"
+      },
+      "version": "v3",
+      "title": "Boston Early-Onset COPD Study in the TOPMed Program",
+      "storedIn": {
+        "@type": "DataRepository",
+        "@context": [
+          "https://datatagsuite.github.io/context/sdo/data_repository_sdo_context.jsonld",
+          "https://datatagsuite.github.io/context/obo/data_repository_obo_context.jsonld"
+        ],
+        "@id": "TMPID:58a87d2b-8484-4221-aea2-e853ed02d33f",
+        "name": "dbGaP"
+      },
+      "types": [
+        {
+          "information": {
+            "value": "DNA sequencing",
+            "valueIRI": "http://purl.obolibrary.org/obo/OBI_0000626"
+          },
+          "method": {
+            "value": "whole genome sequencing assay",
+            "valueIRI": "http://purl.obolibrary.org/obo/OBI_0002117"
+          },
+          "platform": {
+            "value": "Illumina HiSeq X Ten",
+            "valueIRI": "http://purl.obolibrary.org/obo/OBI_0002129"
+          }
+        }
+      ],
+      "creators": [
+        {
+          "@type": "Organization",
+          "@context": [
+            "https://datatagsuite.github.io/context/sdo/organization_sdo_context.jsonld",
+            "https://datatagsuite.github.io/context/obo/organization_obo_context.jsonld"
+          ],
+          "@id": "TMPID:07c4fe93-abcb-4572-81bd-da7f94078057",
+          "name": "The National Institute of Health's National Heart, Lung and Blood Institute",
+          "abbreviation": "NHLBI"
+        }
+      ],
+      "dimensions": [
+        {
+          "@type": "Dimension",
+          "@context": [
+            "https://datatagsuite.github.io/context/sdo/dimension_sdo_context.jsonld",
+            "https://datatagsuite.github.io/context/obo/dimension_obo_context.jsonld"
+          ],
+          "@id": "TMPID:af610e79-3520-4f57-99c1-8e11de0f7bbb",
+          "name": {
+            "value": "Actual Subject Count"
+          },
+          "description": "The actual number of subjects entered into a clinical trial.",
+          "types": [
+            {
+              "value": "Actual Subject Number",
+              "valueIRI": "http://purl.obolibrary.org/obo/NCIT_C98703"
+            }
+          ],
+          "values": [
+            80
+          ]
+        },
+        {
+          "@type": "Dimension",
+          "@context": [
+            "https://datatagsuite.github.io/context/sdo/dimension_sdo_context.jsonld",
+            "https://datatagsuite.github.io/context/obo/dimension_obo_context.jsonld"
+          ],
+          "@id": "TMPID:4a3493d7-178d-4572-baa1-8ba6793dcdd6",
+          "identifier": {
+            "@type": "Identifier",
+            "@context": [
+              "https://datatagsuite.github.io/context/sdo/identifier_info_sdo_context.jsonld",
+              "https://datatagsuite.github.io/context/obo/identifier_info_obo_context.jsonld"
+            ],
+            "@id": "TMPID:9da347ca-c392-4c61-b863-6a4d9919dc78",
+            "identifier": "phv00266110.v1.p1",
+            "identifierSource": "dbGaP"
+          },
+          "name": {
+            "@type": "Annotation",
+            "@context": [
+              "https://datatagsuite.github.io/context/sdo/annotation_sdo_context.jsonld",
+              "https://datatagsuite.github.io/context/obo/annotation_obo_context.jsonld"
+            ],
+            "@id": "TMPID:c1fec6be-1ab3-4852-bd1f-71b7a5dbb291",
+            "value": "SUBJECT_ID"
+          },
+          "description": "De-identified subject ID"
+        },
+        {
+          "@type": "Dimension",
+          "@context": [
+            "https://datatagsuite.github.io/context/sdo/dimension_sdo_context.jsonld",
+            "https://datatagsuite.github.io/context/obo/dimension_obo_context.jsonld"
+          ],
+          "@id": "TMPID:5d7e66d6-b03f-44ec-8da2-06ee0abbd3f0",
+          "identifier": {
+            "@type": "Identifier",
+            "@context": [
+              "https://datatagsuite.github.io/context/sdo/identifier_info_sdo_context.jsonld",
+              "https://datatagsuite.github.io/context/obo/identifier_info_obo_context.jsonld"
+            ],
+            "@id": "TMPID:e9acb3ea-6424-44ea-8c77-31c41ff6ab47",
+            "identifier": "phv00266111.v1.p1",
+            "identifierSource": "dbGaP"
+          },
+          "name": {
+            "@type": "Annotation",
+            "@context": [
+              "https://datatagsuite.github.io/context/sdo/annotation_sdo_context.jsonld",
+              "https://datatagsuite.github.io/context/obo/annotation_obo_context.jsonld"
+            ],
+            "@id": "TMPID:895f65b1-5cf4-43e2-b3c6-df0af8e1346b",
+            "value": "GENDER"
+          },
+          "description": "Gender of participant [Male, Female]"
+        },
+        {
+          "@type": "Dimension",
+          "@context": [
+            "https://datatagsuite.github.io/context/sdo/dimension_sdo_context.jsonld",
+            "https://datatagsuite.github.io/context/obo/dimension_obo_context.jsonld"
+          ],
+          "@id": "TMPID:0b8220af-3cef-4313-b35d-44997e76ec6e",
+          "identifier": {
+            "@type": "Identifier",
+            "@context": [
+              "https://datatagsuite.github.io/context/sdo/identifier_info_sdo_context.jsonld",
+              "https://datatagsuite.github.io/context/obo/identifier_info_obo_context.jsonld"
+            ],
+            "@id": "TMPID:f4a00f76-6256-4b31-8b9f-96ec285cc314",
+            "identifier": "phv00266112.v1.p1",
+            "identifierSource": "dbGaP"
+          },
+          "name": {
+            "@type": "Annotation",
+            "@context": [
+              "https://datatagsuite.github.io/context/sdo/annotation_sdo_context.jsonld",
+              "https://datatagsuite.github.io/context/obo/annotation_obo_context.jsonld"
+            ],
+            "@id": "TMPID:f1ace06c-c3cb-4be8-be7f-10704b27dca0",
+            "value": "RACE"
+          },
+          "description": "Race of participant"
+        },
+        {
+          "@type": "Dimension",
+          "@context": [
+            "https://datatagsuite.github.io/context/sdo/dimension_sdo_context.jsonld",
+            "https://datatagsuite.github.io/context/obo/dimension_obo_context.jsonld"
+          ],
+          "@id": "TMPID:ef5a9d02-1632-4ee1-9be4-1467b57b3fb2",
+          "identifier": {
+            "@type": "Identifier",
+            "@context": [
+              "https://datatagsuite.github.io/context/sdo/identifier_info_sdo_context.jsonld",
+              "https://datatagsuite.github.io/context/obo/identifier_info_obo_context.jsonld"
+            ],
+            "@id": "TMPID:ea4e7b5e-36bd-429d-ad3f-122a429aef64",
+            "identifier": "phv00266113.v1.p1",
+            "identifierSource": "dbGaP"
+          },
+          "name": {
+            "@type": "Annotation",
+            "@context": [
+              "https://datatagsuite.github.io/context/sdo/annotation_sdo_context.jsonld",
+              "https://datatagsuite.github.io/context/obo/annotation_obo_context.jsonld"
+            ],
+            "@id": "TMPID:1f04fbbf-b4e1-44a3-a95f-5dccf03418f7",
+            "value": "VISIT_AGE"
+          },
+          "description": "Subject age"
+        },
+        {
+          "@type": "Dimension",
+          "@context": [
+            "https://datatagsuite.github.io/context/sdo/dimension_sdo_context.jsonld",
+            "https://datatagsuite.github.io/context/obo/dimension_obo_context.jsonld"
+          ],
+          "@id": "TMPID:3aac4c94-fc4a-4c24-b3f9-dd370a3eea51",
+          "identifier": {
+            "@type": "Identifier",
+            "@context": [
+              "https://datatagsuite.github.io/context/sdo/identifier_info_sdo_context.jsonld",
+              "https://datatagsuite.github.io/context/obo/identifier_info_obo_context.jsonld"
+            ],
+            "@id": "TMPID:131aeb5c-b4c9-47d8-adfa-58276ad45b7b",
+            "identifier": "phv00266114.v1.p1",
+            "identifierSource": "dbGaP"
+          },
+          "name": {
+            "@type": "Annotation",
+            "@context": [
+              "https://datatagsuite.github.io/context/sdo/annotation_sdo_context.jsonld",
+              "https://datatagsuite.github.io/context/obo/annotation_obo_context.jsonld"
+            ],
+            "@id": "TMPID:68bcefc4-1461-40ad-b6a3-9b64dbae381b",
+            "value": "DNA_AGE"
+          },
+          "description": "Subject age at sample collection"
+        },
+        {
+          "@type": "Dimension",
+          "@context": [
+            "https://datatagsuite.github.io/context/sdo/dimension_sdo_context.jsonld",
+            "https://datatagsuite.github.io/context/obo/dimension_obo_context.jsonld"
+          ],
+          "@id": "TMPID:ddaf09d8-8613-4c03-8d16-15ce0b843878",
+          "identifier": {
+            "@type": "Identifier",
+            "@context": [
+              "https://datatagsuite.github.io/context/sdo/identifier_info_sdo_context.jsonld",
+              "https://datatagsuite.github.io/context/obo/identifier_info_obo_context.jsonld"
+            ],
+            "@id": "TMPID:b22feba9-3e06-4783-a54d-81c7936c7cbe",
+            "identifier": "phv00266115.v1.p1",
+            "identifierSource": "dbGaP"
+          },
+          "name": {
+            "@type": "Annotation",
+            "@context": [
+              "https://datatagsuite.github.io/context/sdo/annotation_sdo_context.jsonld",
+              "https://datatagsuite.github.io/context/obo/annotation_obo_context.jsonld"
+            ],
+            "@id": "TMPID:c3df367f-e3ce-4283-8c08-29921e087acb",
+            "value": "FORMER_SMOKER"
+          },
+          "description": "Former smoking status"
+        },
+        {
+          "@type": "Dimension",
+          "@context": [
+            "https://datatagsuite.github.io/context/sdo/dimension_sdo_context.jsonld",
+            "https://datatagsuite.github.io/context/obo/dimension_obo_context.jsonld"
+          ],
+          "@id": "TMPID:406e6c3b-814e-49ef-bd59-1a94e051ddc6",
+          "identifier": {
+            "@type": "Identifier",
+            "@context": [
+              "https://datatagsuite.github.io/context/sdo/identifier_info_sdo_context.jsonld",
+              "https://datatagsuite.github.io/context/obo/identifier_info_obo_context.jsonld"
+            ],
+            "@id": "TMPID:e34e0303-040c-4ae3-a19e-fd216209f831",
+            "identifier": "phv00266116.v1.p1",
+            "identifierSource": "dbGaP"
+          },
+          "name": {
+            "@type": "Annotation",
+            "@context": [
+              "https://datatagsuite.github.io/context/sdo/annotation_sdo_context.jsonld",
+              "https://datatagsuite.github.io/context/obo/annotation_obo_context.jsonld"
+            ],
+            "@id": "TMPID:3d7259b6-fded-49b8-bf36-c77a5d23294e",
+            "value": "CURRENT_SMOKER"
+          },
+          "description": "Current smoking status"
+        },
+        {
+          "@type": "Dimension",
+          "@context": [
+            "https://datatagsuite.github.io/context/sdo/dimension_sdo_context.jsonld",
+            "https://datatagsuite.github.io/context/obo/dimension_obo_context.jsonld"
+          ],
+          "@id": "TMPID:900b168e-0e48-4984-b215-f81eea15a39b",
+          "identifier": {
+            "@type": "Identifier",
+            "@context": [
+              "https://datatagsuite.github.io/context/sdo/identifier_info_sdo_context.jsonld",
+              "https://datatagsuite.github.io/context/obo/identifier_info_obo_context.jsonld"
+            ],
+            "@id": "TMPID:94a33afb-a2ec-42fa-b88e-de73b60a66a9",
+            "identifier": "phv00266117.v1.p1",
+            "identifierSource": "dbGaP"
+          },
+          "name": {
+            "@type": "Annotation",
+            "@context": [
+              "https://datatagsuite.github.io/context/sdo/annotation_sdo_context.jsonld",
+              "https://datatagsuite.github.io/context/obo/annotation_obo_context.jsonld"
+            ],
+            "@id": "TMPID:7a0e2c95-f991-4d97-bd00-2bdde8887174",
+            "value": "CIGSPERDAY"
+          },
+          "description": "Number of cigarettes smoked per day"
+        },
+        {
+          "@type": "Dimension",
+          "@context": [
+            "https://datatagsuite.github.io/context/sdo/dimension_sdo_context.jsonld",
+            "https://datatagsuite.github.io/context/obo/dimension_obo_context.jsonld"
+          ],
+          "@id": "TMPID:03f534e0-a1c0-4497-8bdb-97665611cfa9",
+          "identifier": {
+            "@type": "Identifier",
+            "@context": [
+              "https://datatagsuite.github.io/context/sdo/identifier_info_sdo_context.jsonld",
+              "https://datatagsuite.github.io/context/obo/identifier_info_obo_context.jsonld"
+            ],
+            "@id": "TMPID:974cd781-26db-4884-a3eb-85dc8eec7efe",
+            "identifier": "phv00266118.v1.p1",
+            "identifierSource": "dbGaP"
+          },
+          "name": {
+            "@type": "Annotation",
+            "@context": [
+              "https://datatagsuite.github.io/context/sdo/annotation_sdo_context.jsonld",
+              "https://datatagsuite.github.io/context/obo/annotation_obo_context.jsonld"
+            ],
+            "@id": "TMPID:4dc6e98f-cc0e-43f4-a557-81315ef42369",
+            "value": "CIGSPERDAY_AVERAGE"
+          },
+          "description": "Number of cigarettes smoked per day, averaged over all years of smoking"
+        },
+        {
+          "@type": "Dimension",
+          "@context": [
+            "https://datatagsuite.github.io/context/sdo/dimension_sdo_context.jsonld",
+            "https://datatagsuite.github.io/context/obo/dimension_obo_context.jsonld"
+          ],
+          "@id": "TMPID:06a4f7b9-1c85-495f-90e7-9665dbc68b88",
+          "identifier": {
+            "@type": "Identifier",
+            "@context": [
+              "https://datatagsuite.github.io/context/sdo/identifier_info_sdo_context.jsonld",
+              "https://datatagsuite.github.io/context/obo/identifier_info_obo_context.jsonld"
+            ],
+            "@id": "TMPID:f118c3db-09c0-4069-ba36-05f17525424d",
+            "identifier": "phv00266119.v1.p1",
+            "identifierSource": "dbGaP"
+          },
+          "name": {
+            "@type": "Annotation",
+            "@context": [
+              "https://datatagsuite.github.io/context/sdo/annotation_sdo_context.jsonld",
+              "https://datatagsuite.github.io/context/obo/annotation_obo_context.jsonld"
+            ],
+            "@id": "TMPID:5dc0d9f8-09cb-41a1-8fe3-3144b0c3c9e6",
+            "value": "PACKYEARS"
+          },
+          "description": "Packs of cigarettes smoked per day multiplied by years of cigarette smoking, calculated at specified visit"
+        },
+        {
+          "@type": "Dimension",
+          "@context": [
+            "https://datatagsuite.github.io/context/sdo/dimension_sdo_context.jsonld",
+            "https://datatagsuite.github.io/context/obo/dimension_obo_context.jsonld"
+          ],
+          "@id": "TMPID:0128521f-efb4-40da-83f9-d7c9f4088deb",
+          "identifier": {
+            "@type": "Identifier",
+            "@context": [
+              "https://datatagsuite.github.io/context/sdo/identifier_info_sdo_context.jsonld",
+              "https://datatagsuite.github.io/context/obo/identifier_info_obo_context.jsonld"
+            ],
+            "@id": "TMPID:5789c544-ba7b-4632-b8d9-478e706e7765",
+            "identifier": "phv00266120.v1.p1",
+            "identifierSource": "dbGaP"
+          },
+          "name": {
+            "@type": "Annotation",
+            "@context": [
+              "https://datatagsuite.github.io/context/sdo/annotation_sdo_context.jsonld",
+              "https://datatagsuite.github.io/context/obo/annotation_obo_context.jsonld"
+            ],
+            "@id": "TMPID:f9eb0f47-01ce-4428-9534-fbb2537fb5d1",
+            "value": "PREGNANCY"
+          },
+          "description": "Pregnant"
+        },
+        {
+          "@type": "Dimension",
+          "@context": [
+            "https://datatagsuite.github.io/context/sdo/dimension_sdo_context.jsonld",
+            "https://datatagsuite.github.io/context/obo/dimension_obo_context.jsonld"
+          ],
+          "@id": "TMPID:68d2d060-2067-4c22-affd-6c3b8e41ab4c",
+          "identifier": {
+            "@type": "Identifier",
+            "@context": [
+              "https://datatagsuite.github.io/context/sdo/identifier_info_sdo_context.jsonld",
+              "https://datatagsuite.github.io/context/obo/identifier_info_obo_context.jsonld"
+            ],
+            "@id": "TMPID:dca244d5-20f3-4ce6-a34a-30ba442e14a9",
+            "identifier": "phv00266121.v1.p1",
+            "identifierSource": "dbGaP"
+          },
+          "name": {
+            "@type": "Annotation",
+            "@context": [
+              "https://datatagsuite.github.io/context/sdo/annotation_sdo_context.jsonld",
+              "https://datatagsuite.github.io/context/obo/annotation_obo_context.jsonld"
+            ],
+            "@id": "TMPID:04a56382-bff3-4c55-869d-f65658cdd255",
+            "value": "WEIGHT"
+          },
+          "description": "Weight in kg"
+        },
+        {
+          "@type": "Dimension",
+          "@context": [
+            "https://datatagsuite.github.io/context/sdo/dimension_sdo_context.jsonld",
+            "https://datatagsuite.github.io/context/obo/dimension_obo_context.jsonld"
+          ],
+          "@id": "TMPID:176ce58f-ebd1-4d7f-b3b9-45480072fa63",
+          "identifier": {
+            "@type": "Identifier",
+            "@context": [
+              "https://datatagsuite.github.io/context/sdo/identifier_info_sdo_context.jsonld",
+              "https://datatagsuite.github.io/context/obo/identifier_info_obo_context.jsonld"
+            ],
+            "@id": "TMPID:99282c3e-00f8-4993-b48d-a03ea6e20438",
+            "identifier": "phv00266122.v1.p1",
+            "identifierSource": "dbGaP"
+          },
+          "name": {
+            "@type": "Annotation",
+            "@context": [
+              "https://datatagsuite.github.io/context/sdo/annotation_sdo_context.jsonld",
+              "https://datatagsuite.github.io/context/obo/annotation_obo_context.jsonld"
+            ],
+            "@id": "TMPID:dd60aeea-3725-4afa-9787-509b5ad0f7c8",
+            "value": "HEIGHT"
+          },
+          "description": "Height  in cm"
+        },
+        {
+          "@type": "Dimension",
+          "@context": [
+            "https://datatagsuite.github.io/context/sdo/dimension_sdo_context.jsonld",
+            "https://datatagsuite.github.io/context/obo/dimension_obo_context.jsonld"
+          ],
+          "@id": "TMPID:7d1c9295-3fee-4f4e-9552-3464820a2ead",
+          "identifier": {
+            "@type": "Identifier",
+            "@context": [
+              "https://datatagsuite.github.io/context/sdo/identifier_info_sdo_context.jsonld",
+              "https://datatagsuite.github.io/context/obo/identifier_info_obo_context.jsonld"
+            ],
+            "@id": "TMPID:9b12bb4c-82eb-42eb-b907-8896e4f2a581",
+            "identifier": "phv00266123.v1.p1",
+            "identifierSource": "dbGaP"
+          },
+          "name": {
+            "@type": "Annotation",
+            "@context": [
+              "https://datatagsuite.github.io/context/sdo/annotation_sdo_context.jsonld",
+              "https://datatagsuite.github.io/context/obo/annotation_obo_context.jsonld"
+            ],
+            "@id": "TMPID:253bd4f3-ba67-459c-808a-57ec4f4d1979",
+            "value": "BMI"
+          },
+          "description": "Body Mass Index [BMI ]"
+        },
+        {
+          "@type": "Dimension",
+          "@context": [
+            "https://datatagsuite.github.io/context/sdo/dimension_sdo_context.jsonld",
+            "https://datatagsuite.github.io/context/obo/dimension_obo_context.jsonld"
+          ],
+          "@id": "TMPID:6a03e3e6-0267-4d72-ada9-ce39557f8c33",
+          "identifier": {
+            "@type": "Identifier",
+            "@context": [
+              "https://datatagsuite.github.io/context/sdo/identifier_info_sdo_context.jsonld",
+              "https://datatagsuite.github.io/context/obo/identifier_info_obo_context.jsonld"
+            ],
+            "@id": "TMPID:3962bfbd-fd43-4396-95a0-b6b1da824f23",
+            "identifier": "phv00252868.v2.p1",
+            "identifierSource": "dbGaP"
+          },
+          "name": {
+            "@type": "Annotation",
+            "@context": [
+              "https://datatagsuite.github.io/context/sdo/annotation_sdo_context.jsonld",
+              "https://datatagsuite.github.io/context/obo/annotation_obo_context.jsonld"
+            ],
+            "@id": "TMPID:3f8d6251-39bb-4692-bec7-4e40c464a84f",
+            "value": "SAMPLE_ID"
+          },
+          "description": "De-identified sample ID"
+        },
+        {
+          "@type": "Dimension",
+          "@context": [
+            "https://datatagsuite.github.io/context/sdo/dimension_sdo_context.jsonld",
+            "https://datatagsuite.github.io/context/obo/dimension_obo_context.jsonld"
+          ],
+          "@id": "TMPID:7f54eaa7-31b4-4d4b-9034-3fad7d2188b5",
+          "identifier": {
+            "@type": "Identifier",
+            "@context": [
+              "https://datatagsuite.github.io/context/sdo/identifier_info_sdo_context.jsonld",
+              "https://datatagsuite.github.io/context/obo/identifier_info_obo_context.jsonld"
+            ],
+            "@id": "TMPID:4c0357fc-9e5b-40a2-818a-46698e8b741d",
+            "identifier": "phv00252869.v2.p1",
+            "identifierSource": "dbGaP"
+          },
+          "name": {
+            "@type": "Annotation",
+            "@context": [
+              "https://datatagsuite.github.io/context/sdo/annotation_sdo_context.jsonld",
+              "https://datatagsuite.github.io/context/obo/annotation_obo_context.jsonld"
+            ],
+            "@id": "TMPID:1eb84e31-cc84-4975-aed1-5f1178f8c60a",
+            "value": "BODY_SITE"
+          },
+          "description": "Body site where sample was collected"
+        },
+        {
+          "@type": "Dimension",
+          "@context": [
+            "https://datatagsuite.github.io/context/sdo/dimension_sdo_context.jsonld",
+            "https://datatagsuite.github.io/context/obo/dimension_obo_context.jsonld"
+          ],
+          "@id": "TMPID:e5f1c260-f95b-48fd-8b8a-f2bb6bb3f1bd",
+          "identifier": {
+            "@type": "Identifier",
+            "@context": [
+              "https://datatagsuite.github.io/context/sdo/identifier_info_sdo_context.jsonld",
+              "https://datatagsuite.github.io/context/obo/identifier_info_obo_context.jsonld"
+            ],
+            "@id": "TMPID:0fe0c0b6-dc03-4047-a721-b804b188e9ea",
+            "identifier": "phv00252870.v2.p1",
+            "identifierSource": "dbGaP"
+          },
+          "name": {
+            "@type": "Annotation",
+            "@context": [
+              "https://datatagsuite.github.io/context/sdo/annotation_sdo_context.jsonld",
+              "https://datatagsuite.github.io/context/obo/annotation_obo_context.jsonld"
+            ],
+            "@id": "TMPID:f3d45230-3f15-4091-b9e5-4903d8f6625b",
+            "value": "ANALYTE_TYPE"
+          },
+          "description": "Analyte type"
+        },
+        {
+          "@type": "Dimension",
+          "@context": [
+            "https://datatagsuite.github.io/context/sdo/dimension_sdo_context.jsonld",
+            "https://datatagsuite.github.io/context/obo/dimension_obo_context.jsonld"
+          ],
+          "@id": "TMPID:a7520ae1-2599-43b6-9411-401e5fc03a3b",
+          "identifier": {
+            "@type": "Identifier",
+            "@context": [
+              "https://datatagsuite.github.io/context/sdo/identifier_info_sdo_context.jsonld",
+              "https://datatagsuite.github.io/context/obo/identifier_info_obo_context.jsonld"
+            ],
+            "@id": "TMPID:5861b845-575c-41f0-9719-89b04528f25a",
+            "identifier": "phv00252871.v2.p1",
+            "identifierSource": "dbGaP"
+          },
+          "name": {
+            "@type": "Annotation",
+            "@context": [
+              "https://datatagsuite.github.io/context/sdo/annotation_sdo_context.jsonld",
+              "https://datatagsuite.github.io/context/obo/annotation_obo_context.jsonld"
+            ],
+            "@id": "TMPID:c929fd75-454b-48f2-a4f8-1da6f108e764",
+            "value": "IS_TUMOR"
+          },
+          "description": "Tumor status"
+        },
+        {
+          "@type": "Dimension",
+          "@context": [
+            "https://datatagsuite.github.io/context/sdo/dimension_sdo_context.jsonld",
+            "https://datatagsuite.github.io/context/obo/dimension_obo_context.jsonld"
+          ],
+          "@id": "TMPID:ab7dcaa9-a01c-41d7-9e46-6d9dfe5743f3",
+          "identifier": {
+            "@type": "Identifier",
+            "@context": [
+              "https://datatagsuite.github.io/context/sdo/identifier_info_sdo_context.jsonld",
+              "https://datatagsuite.github.io/context/obo/identifier_info_obo_context.jsonld"
+            ],
+            "@id": "TMPID:08ddfb89-31d5-447f-a96f-c9e1dd5c0924",
+            "identifier": "phv00252872.v2.p1",
+            "identifierSource": "dbGaP"
+          },
+          "name": {
+            "@type": "Annotation",
+            "@context": [
+              "https://datatagsuite.github.io/context/sdo/annotation_sdo_context.jsonld",
+              "https://datatagsuite.github.io/context/obo/annotation_obo_context.jsonld"
+            ],
+            "@id": "TMPID:91a35d06-aca5-40cb-b62d-e71c106d20b6",
+            "value": "SEQUENCING_CENTER"
+          },
+          "description": "Name of the center which conducted sequencing"
+        },
+        {
+          "@type": "Dimension",
+          "@context": [
+            "https://datatagsuite.github.io/context/sdo/dimension_sdo_context.jsonld",
+            "https://datatagsuite.github.io/context/obo/dimension_obo_context.jsonld"
+          ],
+          "@id": "TMPID:2966f1ae-2728-4e5f-812d-5dcf03e95180",
+          "identifier": {
+            "@type": "Identifier",
+            "@context": [
+              "https://datatagsuite.github.io/context/sdo/identifier_info_sdo_context.jsonld",
+              "https://datatagsuite.github.io/context/obo/identifier_info_obo_context.jsonld"
+            ],
+            "@id": "TMPID:4c0a7e4c-ce58-4aa9-b2ba-6209742560a2",
+            "identifier": "phv00352941.v1.p1",
+            "identifierSource": "dbGaP"
+          },
+          "name": {
+            "@type": "Annotation",
+            "@context": [
+              "https://datatagsuite.github.io/context/sdo/annotation_sdo_context.jsonld",
+              "https://datatagsuite.github.io/context/obo/annotation_obo_context.jsonld"
+            ],
+            "@id": "TMPID:3b390dd5-aab4-4681-ba49-771c20f4e3fd",
+            "value": "Funding_Source"
+          },
+          "description": "Funding source"
+        },
+        {
+          "@type": "Dimension",
+          "@context": [
+            "https://datatagsuite.github.io/context/sdo/dimension_sdo_context.jsonld",
+            "https://datatagsuite.github.io/context/obo/dimension_obo_context.jsonld"
+          ],
+          "@id": "TMPID:b492de0d-66d4-4dac-866f-c57e47e6ba0b",
+          "identifier": {
+            "@type": "Identifier",
+            "@context": [
+              "https://datatagsuite.github.io/context/sdo/identifier_info_sdo_context.jsonld",
+              "https://datatagsuite.github.io/context/obo/identifier_info_obo_context.jsonld"
+            ],
+            "@id": "TMPID:4f19004c-446d-462a-b2fc-9d4b7c8d1b8f",
+            "identifier": "phv00352942.v1.p1",
+            "identifierSource": "dbGaP"
+          },
+          "name": {
+            "@type": "Annotation",
+            "@context": [
+              "https://datatagsuite.github.io/context/sdo/annotation_sdo_context.jsonld",
+              "https://datatagsuite.github.io/context/obo/annotation_obo_context.jsonld"
+            ],
+            "@id": "TMPID:94812bf9-5348-45b9-90a3-bb2ffd588885",
+            "value": "TOPMed_Phase"
+          },
+          "description": "TOP Med phase"
+        },
+        {
+          "@type": "Dimension",
+          "@context": [
+            "https://datatagsuite.github.io/context/sdo/dimension_sdo_context.jsonld",
+            "https://datatagsuite.github.io/context/obo/dimension_obo_context.jsonld"
+          ],
+          "@id": "TMPID:265148aa-31b7-4e92-88b9-8ef9921b3f7e",
+          "identifier": {
+            "@type": "Identifier",
+            "@context": [
+              "https://datatagsuite.github.io/context/sdo/identifier_info_sdo_context.jsonld",
+              "https://datatagsuite.github.io/context/obo/identifier_info_obo_context.jsonld"
+            ],
+            "@id": "TMPID:8b38378c-3b31-4d39-8beb-d004d3652ee9",
+            "identifier": "phv00352943.v1.p1",
+            "identifierSource": "dbGaP"
+          },
+          "name": {
+            "@type": "Annotation",
+            "@context": [
+              "https://datatagsuite.github.io/context/sdo/annotation_sdo_context.jsonld",
+              "https://datatagsuite.github.io/context/obo/annotation_obo_context.jsonld"
+            ],
+            "@id": "TMPID:2b504145-79b9-47fa-84ae-772c8e5a8244",
+            "value": "TOPMed_Project"
+          },
+          "description": "TOP Med project"
+        },
+        {
+          "@type": "Dimension",
+          "@context": [
+            "https://datatagsuite.github.io/context/sdo/dimension_sdo_context.jsonld",
+            "https://datatagsuite.github.io/context/obo/dimension_obo_context.jsonld"
+          ],
+          "@id": "TMPID:30add3ea-a515-4268-b875-d165fc971d23",
+          "identifier": {
+            "@type": "Identifier",
+            "@context": [
+              "https://datatagsuite.github.io/context/sdo/identifier_info_sdo_context.jsonld",
+              "https://datatagsuite.github.io/context/obo/identifier_info_obo_context.jsonld"
+            ],
+            "@id": "TMPID:8371bf08-b8f6-4668-b198-cf4f86082f1a",
+            "identifier": "phv00352944.v1.p1",
+            "identifierSource": "dbGaP"
+          },
+          "name": {
+            "@type": "Annotation",
+            "@context": [
+              "https://datatagsuite.github.io/context/sdo/annotation_sdo_context.jsonld",
+              "https://datatagsuite.github.io/context/obo/annotation_obo_context.jsonld"
+            ],
+            "@id": "TMPID:75481389-576a-4867-a177-4963a463cd3e",
+            "value": "Study_Name"
+          },
+          "description": "Study name"
+        }
+      ],
+      "extraProperties": [
+        {
+          "@type": "CategoryValuesPair",
+          "@context": [
+            "https://datatagsuite.github.io/context/sdo/category_values_pair_sdo_context.jsonld",
+            "https://datatagsuite.github.io/context/obo/category_values_pair_obo_context.jsonld"
+          ],
+          "@id": "TMPID:d429be0a-3e16-4c38-9cfd-629cdd4c8ff5",
+          "category": "study_type",
+          "values": [
+            "Pedigree Whole Genome Sequencing"
+          ]
+        }
+      ],
+      "isAbout": [
+        {
+          "@type": "Material",
+          "@context": [
+            "https://datatagsuite.github.io/context/sdo/material_sdo_context.jsonld",
+            "https://datatagsuite.github.io/context/obo/material_obo_context.jsonld"
+          ],
+          "@id": "TMPID:8bb27997-e680-444a-adb4-7f72da771e66",
+          "name": "DNA from SA0000000",
+          "description": "DNA extracted from blood specimen collected from subject SU0000000",
+          "taxonomy": [
+            {
+              "@type": "TaxonomicInformation",
+              "@context": [
+                "https://datatagsuite.github.io/context/sdo/taxonomic_info_sdo_context.jsonld",
+                "https://datatagsuite.github.io/context/obo/taxonomic_info_obo_context.jsonld"
+              ],
+              "@id": "TMPID:b5b6b86a-94f6-47f8-98a6-c8df60f66a6d",
+              "name": "Homo sapiens",
+              "identifier": {
+                "identifier": "ncbitax:9606",
+                "identifierSource": "ncbitax"
+              }
+            }
+          ],
+          "roles": [
+            {
+              "@type": "Annotation",
+              "@context": [
+                "https://datatagsuite.github.io/context/sdo/annotation_sdo_context.jsonld",
+                "https://datatagsuite.github.io/context/obo/annotation_obo_context.jsonld"
+              ],
+              "@id": "TMPID:71065825-fcc1-4ca7-ab86-5fe07af65c22",
+              "value": "DNA extract",
+              "valueIRI": "http://purl.obolibrary.org/obo/OBI_0001051"
+            }
+          ],
+          "derivesFrom": [
+            {
+              "@type": "Material",
+              "@context": [
+                "https://datatagsuite.github.io/context/sdo/material_sdo_context.jsonld",
+                "https://datatagsuite.github.io/context/obo/material_obo_context.jsonld"
+              ],
+              "@id": "TMPID:26467915-15aa-427c-b09d-462a5cfc7bb3",
+              "name": "SA0000000",
+              "identifier": {
+                "identifier": "SA0000000"
+              },
+              "alternateIdentifiers": [
+                {
+                  "@type": "AlternateIdentifier",
+                  "@context": [
+                    "https://datatagsuite.github.io/context/sdo/alternate_identifier_info_sdo_context.jsonld",
+                    "https://datatagsuite.github.io/context/obo/alternate_identifier_info_obo_context.jsonld"
+                  ],
+                  "@id": "TMPID:9b404b03-f9af-4a6b-9370-5333d01b56a3",
+                  "identifier": "0000000",
+                  "identifierSource": "dbGaP"
+                }
+              ],
+              "description": "blood specimen collected from subject SU0000000",
+              "characteristics": [
+                {
+                  "@type": "Dimension",
+                  "@context": [
+                    "https://datatagsuite.github.io/context/sdo/dimension_sdo_context.jsonld",
+                    "https://datatagsuite.github.io/context/obo/dimension_obo_context.jsonld"
+                  ],
+                  "@id": "TMPID:f5ef3895-194f-4c1a-a144-f96ea8344518",
+                  "name": {
+                    "@type": "Annotation",
+                    "@context": [
+                      "https://datatagsuite.github.io/context/sdo/annotation_sdo_context.jsonld",
+                      "https://datatagsuite.github.io/context/obo/annotation_obo_context.jsonld"
+                    ],
+                    "@id": "TMPID:8f491cef-1c10-4869-82b1-75e81162f581",
+                    "value": "ANALYTE_TYPE"
+                  },
+                  "values": [
+                    "DNA"
+                  ],
+                  "identifier": {
+                    "@id": "TMPID:0fe0c0b6-dc03-4047-a721-b804b188e9ea"
+                  }
+                },
+                {
+                  "@type": "Dimension",
+                  "@context": [
+                    "https://datatagsuite.github.io/context/sdo/dimension_sdo_context.jsonld",
+                    "https://datatagsuite.github.io/context/obo/dimension_obo_context.jsonld"
+                  ],
+                  "@id": "TMPID:8b969d35-9603-42e4-b6ef-e0315bb75d62",
+                  "name": {
+                    "@type": "Annotation",
+                    "@context": [
+                      "https://datatagsuite.github.io/context/sdo/annotation_sdo_context.jsonld",
+                      "https://datatagsuite.github.io/context/obo/annotation_obo_context.jsonld"
+                    ],
+                    "@id": "TMPID:597384da-19b5-4c62-9ef6-726b25523164",
+                    "value": "BODY_SITE"
+                  },
+                  "values": [
+                    "Blood"
+                  ],
+                  "identifier": {
+                    "@id": "TMPID:4c0357fc-9e5b-40a2-818a-46698e8b741d"
+                  }
+                },
+                {
+                  "@type": "Dimension",
+                  "@context": [
+                    "https://datatagsuite.github.io/context/sdo/dimension_sdo_context.jsonld",
+                    "https://datatagsuite.github.io/context/obo/dimension_obo_context.jsonld"
+                  ],
+                  "@id": "TMPID:2b2140d7-e018-41d1-9f21-06a56fd56d78",
+                  "name": {
+                    "@type": "Annotation",
+                    "@context": [
+                      "https://datatagsuite.github.io/context/sdo/annotation_sdo_context.jsonld",
+                      "https://datatagsuite.github.io/context/obo/annotation_obo_context.jsonld"
+                    ],
+                    "@id": "TMPID:aed6bac6-43ba-4cb5-b0f5-9022c04f10b1",
+                    "value": "Funding_Source"
+                  },
+                  "values": [
+                    "TOPMed"
+                  ],
+                  "identifier": {
+                    "@id": "TMPID:4c0a7e4c-ce58-4aa9-b2ba-6209742560a2"
+                  }
+                },
+                {
+                  "@type": "Dimension",
+                  "@context": [
+                    "https://datatagsuite.github.io/context/sdo/dimension_sdo_context.jsonld",
+                    "https://datatagsuite.github.io/context/obo/dimension_obo_context.jsonld"
+                  ],
+                  "@id": "TMPID:be0e359a-5cdf-4e91-b396-a43dd82a646d",
+                  "name": {
+                    "@type": "Annotation",
+                    "@context": [
+                      "https://datatagsuite.github.io/context/sdo/annotation_sdo_context.jsonld",
+                      "https://datatagsuite.github.io/context/obo/annotation_obo_context.jsonld"
+                    ],
+                    "@id": "TMPID:58701de7-bd59-4934-83f9-8047a10640eb",
+                    "value": "IS_TUMOR"
+                  },
+                  "values": [
+                    "Is not a tumor"
+                  ],
+                  "identifier": {
+                    "@id": "TMPID:5861b845-575c-41f0-9719-89b04528f25a"
+                  }
+                },
+                {
+                  "@type": "Dimension",
+                  "@context": [
+                    "https://datatagsuite.github.io/context/sdo/dimension_sdo_context.jsonld",
+                    "https://datatagsuite.github.io/context/obo/dimension_obo_context.jsonld"
+                  ],
+                  "@id": "TMPID:a1e405ba-77a6-4fbd-81d9-f2aef0f7373d",
+                  "name": {
+                    "@type": "Annotation",
+                    "@context": [
+                      "https://datatagsuite.github.io/context/sdo/annotation_sdo_context.jsonld",
+                      "https://datatagsuite.github.io/context/obo/annotation_obo_context.jsonld"
+                    ],
+                    "@id": "TMPID:6ad980b9-c275-42fa-a660-fb347e6199fc",
+                    "value": "SAMPLE_ID"
+                  },
+                  "values": [
+                    "SA0000000"
+                  ]
+                },
+                {
+                  "@type": "Dimension",
+                  "@context": [
+                    "https://datatagsuite.github.io/context/sdo/dimension_sdo_context.jsonld",
+                    "https://datatagsuite.github.io/context/obo/dimension_obo_context.jsonld"
+                  ],
+                  "@id": "TMPID:dcef9870-0c48-4169-a161-0e1b14f3fbd8",
+                  "name": {
+                    "@type": "Annotation",
+                    "@context": [
+                      "https://datatagsuite.github.io/context/sdo/annotation_sdo_context.jsonld",
+                      "https://datatagsuite.github.io/context/obo/annotation_obo_context.jsonld"
+                    ],
+                    "@id": "TMPID:36aa24b3-b7f0-4c96-a9c1-cdc2d9ae95d4",
+                    "value": "SEQUENCING_CENTER"
+                  },
+                  "values": [
+                    "UW"
+                  ],
+                  "identifier": {
+                    "@id": "TMPID:08ddfb89-31d5-447f-a96f-c9e1dd5c0924"
+                  }
+                },
+                {
+                  "@type": "Dimension",
+                  "@context": [
+                    "https://datatagsuite.github.io/context/sdo/dimension_sdo_context.jsonld",
+                    "https://datatagsuite.github.io/context/obo/dimension_obo_context.jsonld"
+                  ],
+                  "@id": "TMPID:7326e120-22dd-4bd9-b31a-45b27f12a613",
+                  "name": {
+                    "@type": "Annotation",
+                    "@context": [
+                      "https://datatagsuite.github.io/context/sdo/annotation_sdo_context.jsonld",
+                      "https://datatagsuite.github.io/context/obo/annotation_obo_context.jsonld"
+                    ],
+                    "@id": "TMPID:94245418-0900-4f3e-9fc8-cc3223f4d862",
+                    "value": "Study_Name"
+                  },
+                  "values": [
+                    "EOCOPD"
+                  ],
+                  "identifier": {
+                    "@id": "TMPID:8371bf08-b8f6-4668-b198-cf4f86082f1a"
+                  }
+                },
+                {
+                  "@type": "Dimension",
+                  "@context": [
+                    "https://datatagsuite.github.io/context/sdo/dimension_sdo_context.jsonld",
+                    "https://datatagsuite.github.io/context/obo/dimension_obo_context.jsonld"
+                  ],
+                  "@id": "TMPID:cc7a309f-6f0c-425a-a5f2-2dabc0c7690d",
+                  "name": {
+                    "@type": "Annotation",
+                    "@context": [
+                      "https://datatagsuite.github.io/context/sdo/annotation_sdo_context.jsonld",
+                      "https://datatagsuite.github.io/context/obo/annotation_obo_context.jsonld"
+                    ],
+                    "@id": "TMPID:5352bff8-8288-4062-9906-06de0c1aaf92",
+                    "value": "TOPMed_Phase"
+                  },
+                  "values": [
+                    "1"
+                  ],
+                  "identifier": {
+                    "@id": "TMPID:4f19004c-446d-462a-b2fc-9d4b7c8d1b8f"
+                  }
+                },
+                {
+                  "@type": "Dimension",
+                  "@context": [
+                    "https://datatagsuite.github.io/context/sdo/dimension_sdo_context.jsonld",
+                    "https://datatagsuite.github.io/context/obo/dimension_obo_context.jsonld"
+                  ],
+                  "@id": "TMPID:d52f9589-a583-4b16-80c9-00e05b90a1c7",
+                  "name": {
+                    "@type": "Annotation",
+                    "@context": [
+                      "https://datatagsuite.github.io/context/sdo/annotation_sdo_context.jsonld",
+                      "https://datatagsuite.github.io/context/obo/annotation_obo_context.jsonld"
+                    ],
+                    "@id": "TMPID:f130184d-2839-48ab-80a9-165b48889549",
+                    "value": "TOPMed_Project"
+                  },
+                  "values": [
+                    "COPD"
+                  ],
+                  "identifier": {
+                    "@id": "TMPID:8b38378c-3b31-4d39-8beb-d004d3652ee9"
+                  }
+                },
+                {
+                  "@type": "Dimension",
+                  "@context": [
+                    "https://datatagsuite.github.io/context/sdo/dimension_sdo_context.jsonld",
+                    "https://datatagsuite.github.io/context/obo/dimension_obo_context.jsonld"
+                  ],
+                  "@id": "TMPID:315723e3-fa12-4911-a677-f381a5850555",
+                  "name": {
+                    "@type": "Annotation",
+                    "@context": [
+                      "https://datatagsuite.github.io/context/sdo/annotation_sdo_context.jsonld",
+                      "https://datatagsuite.github.io/context/obo/annotation_obo_context.jsonld"
+                    ],
+                    "@id": "TMPID:025c2ddf-cdbc-4eed-9bfc-e09fd16357f9",
+                    "value": "dbGaP_Sample_ID"
+                  },
+                  "values": [
+                    "0000000"
+                  ]
+                }
+              ],
+              "taxonomy": [
+                {
+                  "@type": "TaxonomicInformation",
+                  "@context": [
+                    "https://datatagsuite.github.io/context/sdo/taxonomic_info_sdo_context.jsonld",
+                    "https://datatagsuite.github.io/context/obo/taxonomic_info_obo_context.jsonld"
+                  ],
+                  "@id": "TMPID:b5b6b86a-94f6-47f8-98a6-c8df60f66a6d",
+                  "name": "Homo sapiens",
+                  "identifier": {
+                    "identifier": "ncbitax:9606",
+                    "identifierSource": "ncbitax"
+                  }
+                }
+              ],
+              "roles": [
+                {
+                  "@type": "Annotation",
+                  "@context": [
+                    "https://datatagsuite.github.io/context/sdo/annotation_sdo_context.jsonld",
+                    "https://datatagsuite.github.io/context/obo/annotation_obo_context.jsonld"
+                  ],
+                  "@id": "TMPID:f7d24a56-2b78-4985-9f2f-d1b6608505db",
+                  "value": "specimen",
+                  "valueIRI": "http://purl.obolibrary.org/obo/OBI_0100051"
+                }
+              ],
+              "derivesFrom": [
+                {
+                  "@type": "Material",
+                  "@context": [
+                    "https://datatagsuite.github.io/context/sdo/material_sdo_context.jsonld",
+                    "https://datatagsuite.github.io/context/obo/material_obo_context.jsonld"
+                  ],
+                  "@id": "TMPID:fd17ea65-7eb6-429a-86c8-a5d9e8e01812",
+                  "name": "SU0000000",
+                  "identifier": {
+                    "identifier": "SU0000000"
+                  },
+                  "alternateIdentifiers": [
+                    {
+                      "@type": "AlternateIdentifier",
+                      "@context": [
+                        "https://datatagsuite.github.io/context/sdo/alternate_identifier_info_sdo_context.jsonld",
+                        "https://datatagsuite.github.io/context/obo/alternate_identifier_info_obo_context.jsonld"
+                      ],
+                      "@id": "TMPID:e9764a02-9ea5-41b0-9dbc-f1db224b34bf",
+                      "identifier": "0000000",
+                      "identifierSource": "dbGaP"
+                    }
+                  ],
+                  "description": "Boston Early-Onset COPD Study in the TOPMed Program subject SU0000000",
+                  "characteristics": [
+                    {
+                      "@type": "Dimension",
+                      "@context": [
+                        "https://datatagsuite.github.io/context/sdo/dimension_sdo_context.jsonld",
+                        "https://datatagsuite.github.io/context/obo/dimension_obo_context.jsonld"
+                      ],
+                      "@id": "TMPID:a5a5b4d9-7cf1-4d3f-b661-16d072c94ed2",
+                      "name": {
+                        "value": "Gender"
+                      },
+                      "description": "Gender of the subject",
+                      "values": [
+                        "female"
+                      ]
+                    },
+                    {
+                      "@type": "Dimension",
+                      "@context": [
+                        "https://datatagsuite.github.io/context/sdo/dimension_sdo_context.jsonld",
+                        "https://datatagsuite.github.io/context/obo/dimension_obo_context.jsonld"
+                      ],
+                      "@id": "TMPID:1b5d809a-8e1e-4fed-ac28-a3aeeb726ec0",
+                      "name": {
+                        "value": "Age"
+                      },
+                      "description": "Age of the subject",
+                      "values": [
+                        "46.76"
+                      ]
+                    },
+                    {
+                      "@type": "Dimension",
+                      "@context": [
+                        "https://datatagsuite.github.io/context/sdo/dimension_sdo_context.jsonld",
+                        "https://datatagsuite.github.io/context/obo/dimension_obo_context.jsonld"
+                      ],
+                      "@id": "TMPID:f977d7ca-4883-4b26-b237-a71c22b7f385",
+                      "name": {
+                        "@type": "Annotation",
+                        "@context": [
+                          "https://datatagsuite.github.io/context/sdo/annotation_sdo_context.jsonld",
+                          "https://datatagsuite.github.io/context/obo/annotation_obo_context.jsonld"
+                        ],
+                        "@id": "TMPID:8088b7c7-7fa8-491d-975d-eb452bea1bab",
+                        "value": "BMI"
+                      },
+                      "values": [
+                        "23.71"
+                      ],
+                      "identifier": {
+                        "@id": "TMPID:9b12bb4c-82eb-42eb-b907-8896e4f2a581"
+                      }
+                    },
+                    {
+                      "@type": "Dimension",
+                      "@context": [
+                        "https://datatagsuite.github.io/context/sdo/dimension_sdo_context.jsonld",
+                        "https://datatagsuite.github.io/context/obo/dimension_obo_context.jsonld"
+                      ],
+                      "@id": "TMPID:a4478c06-148c-4143-ac6d-7be0074b7091",
+                      "name": {
+                        "@type": "Annotation",
+                        "@context": [
+                          "https://datatagsuite.github.io/context/sdo/annotation_sdo_context.jsonld",
+                          "https://datatagsuite.github.io/context/obo/annotation_obo_context.jsonld"
+                        ],
+                        "@id": "TMPID:dc7a0c64-7a48-4cc7-9d42-fdb285b4f950",
+                        "value": "CIGSPERDAY"
+                      },
+                      "values": [
+                        "5"
+                      ],
+                      "identifier": {
+                        "@id": "TMPID:94a33afb-a2ec-42fa-b88e-de73b60a66a9"
+                      }
+                    },
+                    {
+                      "@type": "Dimension",
+                      "@context": [
+                        "https://datatagsuite.github.io/context/sdo/dimension_sdo_context.jsonld",
+                        "https://datatagsuite.github.io/context/obo/dimension_obo_context.jsonld"
+                      ],
+                      "@id": "TMPID:184869e3-fd1d-4012-95ea-d85ea0b63339",
+                      "name": {
+                        "@type": "Annotation",
+                        "@context": [
+                          "https://datatagsuite.github.io/context/sdo/annotation_sdo_context.jsonld",
+                          "https://datatagsuite.github.io/context/obo/annotation_obo_context.jsonld"
+                        ],
+                        "@id": "TMPID:a926fcf4-d955-473e-accb-5526525e2cb1",
+                        "value": "CIGSPERDAY_AVERAGE"
+                      },
+                      "values": [
+                        "25"
+                      ],
+                      "identifier": {
+                        "@id": "TMPID:974cd781-26db-4884-a3eb-85dc8eec7efe"
+                      }
+                    },
+                    {
+                      "@type": "Dimension",
+                      "@context": [
+                        "https://datatagsuite.github.io/context/sdo/dimension_sdo_context.jsonld",
+                        "https://datatagsuite.github.io/context/obo/dimension_obo_context.jsonld"
+                      ],
+                      "@id": "TMPID:6aef432a-2347-47f7-b8fc-16482f45c7cb",
+                      "name": {
+                        "@type": "Annotation",
+                        "@context": [
+                          "https://datatagsuite.github.io/context/sdo/annotation_sdo_context.jsonld",
+                          "https://datatagsuite.github.io/context/obo/annotation_obo_context.jsonld"
+                        ],
+                        "@id": "TMPID:f12e5d4f-aeba-4dd5-9047-41cc9543967c",
+                        "value": "CURRENT_SMOKER"
+                      },
+                      "values": [
+                        "No"
+                      ],
+                      "identifier": {
+                        "@id": "TMPID:e34e0303-040c-4ae3-a19e-fd216209f831"
+                      }
+                    },
+                    {
+                      "@type": "Dimension",
+                      "@context": [
+                        "https://datatagsuite.github.io/context/sdo/dimension_sdo_context.jsonld",
+                        "https://datatagsuite.github.io/context/obo/dimension_obo_context.jsonld"
+                      ],
+                      "@id": "TMPID:e83e44ae-331b-46b5-88be-634d1c1f25b4",
+                      "name": {
+                        "@type": "Annotation",
+                        "@context": [
+                          "https://datatagsuite.github.io/context/sdo/annotation_sdo_context.jsonld",
+                          "https://datatagsuite.github.io/context/obo/annotation_obo_context.jsonld"
+                        ],
+                        "@id": "TMPID:d2bfb88c-6354-42e8-b10e-30b0ea066279",
+                        "value": "DNA_AGE"
+                      },
+                      "values": [
+                        "48.75"
+                      ],
+                      "identifier": {
+                        "@id": "TMPID:131aeb5c-b4c9-47d8-adfa-58276ad45b7b"
+                      }
+                    },
+                    {
+                      "@type": "Dimension",
+                      "@context": [
+                        "https://datatagsuite.github.io/context/sdo/dimension_sdo_context.jsonld",
+                        "https://datatagsuite.github.io/context/obo/dimension_obo_context.jsonld"
+                      ],
+                      "@id": "TMPID:00173fbb-36ab-4d3a-924b-a4d16ab3738e",
+                      "name": {
+                        "@type": "Annotation",
+                        "@context": [
+                          "https://datatagsuite.github.io/context/sdo/annotation_sdo_context.jsonld",
+                          "https://datatagsuite.github.io/context/obo/annotation_obo_context.jsonld"
+                        ],
+                        "@id": "TMPID:3139bfb4-5b26-4f24-a5c8-73ee94ac76d1",
+                        "value": "FORMER_SMOKER"
+                      },
+                      "values": [
+                        "No"
+                      ],
+                      "identifier": {
+                        "@id": "TMPID:b22feba9-3e06-4783-a54d-81c7936c7cbe"
+                      }
+                    },
+                    {
+                      "@type": "Dimension",
+                      "@context": [
+                        "https://datatagsuite.github.io/context/sdo/dimension_sdo_context.jsonld",
+                        "https://datatagsuite.github.io/context/obo/dimension_obo_context.jsonld"
+                      ],
+                      "@id": "TMPID:2b9eae94-a53e-4322-aa02-7e200cb93582",
+                      "name": {
+                        "@type": "Annotation",
+                        "@context": [
+                          "https://datatagsuite.github.io/context/sdo/annotation_sdo_context.jsonld",
+                          "https://datatagsuite.github.io/context/obo/annotation_obo_context.jsonld"
+                        ],
+                        "@id": "TMPID:f609f651-5775-476c-89ca-eb7a80b0542c",
+                        "value": "GENDER"
+                      },
+                      "values": [
+                        "Female"
+                      ],
+                      "identifier": {
+                        "@id": "TMPID:e9acb3ea-6424-44ea-8c77-31c41ff6ab47"
+                      }
+                    },
+                    {
+                      "@type": "Dimension",
+                      "@context": [
+                        "https://datatagsuite.github.io/context/sdo/dimension_sdo_context.jsonld",
+                        "https://datatagsuite.github.io/context/obo/dimension_obo_context.jsonld"
+                      ],
+                      "@id": "TMPID:04fba5b3-f8fc-45b2-8ba1-7b43edbeb491",
+                      "name": {
+                        "@type": "Annotation",
+                        "@context": [
+                          "https://datatagsuite.github.io/context/sdo/annotation_sdo_context.jsonld",
+                          "https://datatagsuite.github.io/context/obo/annotation_obo_context.jsonld"
+                        ],
+                        "@id": "TMPID:1fcd87bb-83fc-4594-b273-b8c46417b525",
+                        "value": "HEIGHT"
+                      },
+                      "values": [
+                        "161.3"
+                      ],
+                      "identifier": {
+                        "@id": "TMPID:99282c3e-00f8-4993-b48d-a03ea6e20438"
+                      }
+                    },
+                    {
+                      "@type": "Dimension",
+                      "@context": [
+                        "https://datatagsuite.github.io/context/sdo/dimension_sdo_context.jsonld",
+                        "https://datatagsuite.github.io/context/obo/dimension_obo_context.jsonld"
+                      ],
+                      "@id": "TMPID:e2fb4a8b-05b8-454b-9834-624f9a2a4c90",
+                      "name": {
+                        "@type": "Annotation",
+                        "@context": [
+                          "https://datatagsuite.github.io/context/sdo/annotation_sdo_context.jsonld",
+                          "https://datatagsuite.github.io/context/obo/annotation_obo_context.jsonld"
+                        ],
+                        "@id": "TMPID:1f9d6e4d-0c37-4730-b01f-d2c5a6b08bcb",
+                        "value": "PACKYEARS"
+                      },
+                      "values": [
+                        "32.25"
+                      ],
+                      "identifier": {
+                        "@id": "TMPID:f118c3db-09c0-4069-ba36-05f17525424d"
+                      }
+                    },
+                    {
+                      "@type": "Dimension",
+                      "@context": [
+                        "https://datatagsuite.github.io/context/sdo/dimension_sdo_context.jsonld",
+                        "https://datatagsuite.github.io/context/obo/dimension_obo_context.jsonld"
+                      ],
+                      "@id": "TMPID:eb35b9f9-f6c0-43b8-a315-1864874e4d16",
+                      "name": {
+                        "@type": "Annotation",
+                        "@context": [
+                          "https://datatagsuite.github.io/context/sdo/annotation_sdo_context.jsonld",
+                          "https://datatagsuite.github.io/context/obo/annotation_obo_context.jsonld"
+                        ],
+                        "@id": "TMPID:41a4f476-8270-4ab9-a254-1f24cd86ff63",
+                        "value": "PREGNANCY"
+                      },
+                      "values": [
+                        "No"
+                      ],
+                      "identifier": {
+                        "@id": "TMPID:5789c544-ba7b-4632-b8d9-478e706e7765"
+                      }
+                    },
+                    {
+                      "@type": "Dimension",
+                      "@context": [
+                        "https://datatagsuite.github.io/context/sdo/dimension_sdo_context.jsonld",
+                        "https://datatagsuite.github.io/context/obo/dimension_obo_context.jsonld"
+                      ],
+                      "@id": "TMPID:1cac50e7-fd66-4d7d-9450-4427a5bf7977",
+                      "name": {
+                        "@type": "Annotation",
+                        "@context": [
+                          "https://datatagsuite.github.io/context/sdo/annotation_sdo_context.jsonld",
+                          "https://datatagsuite.github.io/context/obo/annotation_obo_context.jsonld"
+                        ],
+                        "@id": "TMPID:54b5b0bc-0cec-4fd8-8c1c-f5261aa4f9c7",
+                        "value": "RACE"
+                      },
+                      "values": [
+                        "Caucasian"
+                      ],
+                      "identifier": {
+                        "@id": "TMPID:f4a00f76-6256-4b31-8b9f-96ec285cc314"
+                      }
+                    },
+                    {
+                      "@type": "Dimension",
+                      "@context": [
+                        "https://datatagsuite.github.io/context/sdo/dimension_sdo_context.jsonld",
+                        "https://datatagsuite.github.io/context/obo/dimension_obo_context.jsonld"
+                      ],
+                      "@id": "TMPID:4a08988f-6495-4160-bfeb-a6797c582978",
+                      "name": {
+                        "@type": "Annotation",
+                        "@context": [
+                          "https://datatagsuite.github.io/context/sdo/annotation_sdo_context.jsonld",
+                          "https://datatagsuite.github.io/context/obo/annotation_obo_context.jsonld"
+                        ],
+                        "@id": "TMPID:b57178b2-82a6-45a9-b2e0-8b07f3488987",
+                        "value": "SUBJECT_ID"
+                      },
+                      "values": [
+                        "SU0000000"
+                      ]
+                    },
+                    {
+                      "@type": "Dimension",
+                      "@context": [
+                        "https://datatagsuite.github.io/context/sdo/dimension_sdo_context.jsonld",
+                        "https://datatagsuite.github.io/context/obo/dimension_obo_context.jsonld"
+                      ],
+                      "@id": "TMPID:01a7bd71-6ad0-49c4-a568-bed8016aba87",
+                      "name": {
+                        "@type": "Annotation",
+                        "@context": [
+                          "https://datatagsuite.github.io/context/sdo/annotation_sdo_context.jsonld",
+                          "https://datatagsuite.github.io/context/obo/annotation_obo_context.jsonld"
+                        ],
+                        "@id": "TMPID:0f6e9f13-6316-458b-a2c5-65c61110d4b9",
+                        "value": "VISIT_AGE"
+                      },
+                      "values": [
+                        "46.76"
+                      ],
+                      "identifier": {
+                        "@id": "TMPID:ea4e7b5e-36bd-429d-ad3f-122a429aef64"
+                      }
+                    },
+                    {
+                      "@type": "Dimension",
+                      "@context": [
+                        "https://datatagsuite.github.io/context/sdo/dimension_sdo_context.jsonld",
+                        "https://datatagsuite.github.io/context/obo/dimension_obo_context.jsonld"
+                      ],
+                      "@id": "TMPID:9a2eac73-285b-451b-8e98-c0715a6ce498",
+                      "name": {
+                        "@type": "Annotation",
+                        "@context": [
+                          "https://datatagsuite.github.io/context/sdo/annotation_sdo_context.jsonld",
+                          "https://datatagsuite.github.io/context/obo/annotation_obo_context.jsonld"
+                        ],
+                        "@id": "TMPID:5f32123a-6307-4ce2-8544-7fda83a8ec5d",
+                        "value": "WEIGHT"
+                      },
+                      "values": [
+                        "63.64"
+                      ],
+                      "identifier": {
+                        "@id": "TMPID:dca244d5-20f3-4ce6-a34a-30ba442e14a9"
+                      }
+                    },
+                    {
+                      "@type": "Dimension",
+                      "@context": [
+                        "https://datatagsuite.github.io/context/sdo/dimension_sdo_context.jsonld",
+                        "https://datatagsuite.github.io/context/obo/dimension_obo_context.jsonld"
+                      ],
+                      "@id": "TMPID:63ed844a-0fb3-425d-b42c-753ce6c32670",
+                      "name": {
+                        "@type": "Annotation",
+                        "@context": [
+                          "https://datatagsuite.github.io/context/sdo/annotation_sdo_context.jsonld",
+                          "https://datatagsuite.github.io/context/obo/annotation_obo_context.jsonld"
+                        ],
+                        "@id": "TMPID:0a789234-8f4f-4183-a100-568c81dc81c5",
+                        "value": "dbGaP_Subject_ID"
+                      },
+                      "values": [
+                        "0000000"
+                      ]
+                    }
+                  ],
+                  "bearerOfDisease": [],
+                  "taxonomy": [
+                    {
+                      "@type": "TaxonomicInformation",
+                      "@context": [
+                        "https://datatagsuite.github.io/context/sdo/taxonomic_info_sdo_context.jsonld",
+                        "https://datatagsuite.github.io/context/obo/taxonomic_info_obo_context.jsonld"
+                      ],
+                      "@id": "TMPID:b5b6b86a-94f6-47f8-98a6-c8df60f66a6d",
+                      "name": "Homo sapiens",
+                      "identifier": {
+                        "identifier": "ncbitax:9606",
+                        "identifierSource": "ncbitax"
+                      }
+                    }
+                  ],
+                  "roles": [
+                    {
+                      "@type": "Annotation",
+                      "@context": [
+                        "https://datatagsuite.github.io/context/sdo/annotation_sdo_context.jsonld",
+                        "https://datatagsuite.github.io/context/obo/annotation_obo_context.jsonld"
+                      ],
+                      "@id": "TMPID:48c14dc1-99ff-42f0-96c6-c9f0294b73d7",
+                      "value": "patient",
+                      "valueIRI": "http://purl.obolibrary.org/obo/OBI_0000093"
+                    },
+                    {
+                      "@type": "Annotation",
+                      "@context": [
+                        "https://datatagsuite.github.io/context/sdo/annotation_sdo_context.jsonld",
+                        "https://datatagsuite.github.io/context/obo/annotation_obo_context.jsonld"
+                      ],
+                      "@id": "TMPID:51f1b417-e173-4aad-924b-31b83cd50717",
+                      "value": "donor",
+                      "valueIRI": "http://purl.obolibrary.org/obo/OBI_1110087"
+                    }
+                  ]
+                },
+                {
+                  "@type": "AnatomicalPart",
+                  "@context": [
+                    "https://datatagsuite.github.io/context/sdo/anatomical_part_sdo_context.jsonld",
+                    "https://datatagsuite.github.io/context/obo/anatomical_part_obo_context.jsonld"
+                  ],
+                  "@id": "TMPID:cefcc8a6-d949-45b4-9482-076ef37ddac8",
+                  "name": "blood",
+                  "identifier": {
+                    "identifier": "UBERON:0000178",
+                    "identifierSource": "UBERON"
+                  },
+                  "alternateIdentifiers": [
+                    {
+                      "identifier": "http://purl.obolibrary.org/obo/UBERON_0000178",
+                      "identifierSource": "UBERON"
+                    }
+                  ]
+                }
+              ]
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "@type": "Dataset",
+      "@context": [
+        "https://datatagsuite.github.io/context/sdo/dataset_sdo_context.jsonld",
+        "https://datatagsuite.github.io/context/obo/dataset_obo_context.jsonld"
+      ],
+      "@id": "TMPID:66a366ae-75d4-4ac7-8320-0496b76fe90b",
+      "identifier": {
+        "@type": "Identifier",
+        "@context": [
+          "https://datatagsuite.github.io/context/sdo/identifier_info_sdo_context.jsonld",
+          "https://datatagsuite.github.io/context/obo/identifier_info_obo_context.jsonld"
+        ],
+        "@id": "TMPID:5a0bf8ca-b6ba-41fb-80a2-72b254c8caa6",
+        "identifier": "phs001024.v3.p1"
+      },
+      "version": "v3",
+      "title": "Partners HealthCare Biobank",
+      "storedIn": {
+        "@type": "DataRepository",
+        "@context": [
+          "https://datatagsuite.github.io/context/sdo/data_repository_sdo_context.jsonld",
+          "https://datatagsuite.github.io/context/obo/data_repository_obo_context.jsonld"
+        ],
+        "@id": "TMPID:58a87d2b-8484-4221-aea2-e853ed02d33f",
+        "name": "dbGaP"
+      },
+      "types": [
+        {
+          "information": {
+            "value": "DNA sequencing",
+            "valueIRI": "http://purl.obolibrary.org/obo/OBI_0000626"
+          },
+          "method": {
+            "value": "whole genome sequencing assay",
+            "valueIRI": "http://purl.obolibrary.org/obo/OBI_0002117"
+          },
+          "platform": {
+            "value": "Illumina HiSeq X Ten",
+            "valueIRI": "http://purl.obolibrary.org/obo/OBI_0002129"
+          }
+        }
+      ],
+      "creators": [
+        {
+          "@type": "Organization",
+          "@context": [
+            "https://datatagsuite.github.io/context/sdo/organization_sdo_context.jsonld",
+            "https://datatagsuite.github.io/context/obo/organization_obo_context.jsonld"
+          ],
+          "@id": "TMPID:07c4fe93-abcb-4572-81bd-da7f94078057",
+          "name": "The National Institute of Health's National Heart, Lung and Blood Institute",
+          "abbreviation": "NHLBI"
+        }
+      ],
+      "dimensions": [
+        {
+          "@type": "Dimension",
+          "@context": [
+            "https://datatagsuite.github.io/context/sdo/dimension_sdo_context.jsonld",
+            "https://datatagsuite.github.io/context/obo/dimension_obo_context.jsonld"
+          ],
+          "@id": "TMPID:d199ebbb-20f8-437e-8520-fa8e01b53408",
+          "name": {
+            "value": "Actual Subject Count"
+          },
+          "description": "The actual number of subjects entered into a clinical trial.",
+          "types": [
+            {
+              "value": "Actual Subject Number",
+              "valueIRI": "http://purl.obolibrary.org/obo/NCIT_C98703"
+            }
+          ],
+          "values": [
+            128
+          ]
+        }
+      ],
+      "extraProperties": [
+        {
+          "@type": "CategoryValuesPair",
+          "@context": [
+            "https://datatagsuite.github.io/context/sdo/category_values_pair_sdo_context.jsonld",
+            "https://datatagsuite.github.io/context/obo/category_values_pair_obo_context.jsonld"
+          ],
+          "@id": "TMPID:e630c2df-59e7-4952-919d-e15eb9343202",
+          "category": "study_type",
+          "values": [
+            "Case Set"
+          ]
+        }
+      ]
+    },
+    {
+      "@type": "Dataset",
+      "@context": [
+        "https://datatagsuite.github.io/context/sdo/dataset_sdo_context.jsonld",
+        "https://datatagsuite.github.io/context/obo/dataset_obo_context.jsonld"
+      ],
+      "@id": "TMPID:797d3d8a-a2d9-4130-b4d0-ead2500fe20a",
+      "identifier": {
+        "@type": "Identifier",
+        "@context": [
+          "https://datatagsuite.github.io/context/sdo/identifier_info_sdo_context.jsonld",
+          "https://datatagsuite.github.io/context/obo/identifier_info_obo_context.jsonld"
+        ],
+        "@id": "TMPID:da583968-6f03-40eb-9767-da317bb798cb",
+        "identifier": "phs000964.v3.p1"
+      },
+      "version": "v3",
+      "title": "The Jackson Heart Study",
+      "storedIn": {
+        "@type": "DataRepository",
+        "@context": [
+          "https://datatagsuite.github.io/context/sdo/data_repository_sdo_context.jsonld",
+          "https://datatagsuite.github.io/context/obo/data_repository_obo_context.jsonld"
+        ],
+        "@id": "TMPID:58a87d2b-8484-4221-aea2-e853ed02d33f",
+        "name": "dbGaP"
+      },
+      "types": [
+        {
+          "information": {
+            "value": "DNA sequencing",
+            "valueIRI": "http://purl.obolibrary.org/obo/OBI_0000626"
+          },
+          "method": {
+            "value": "whole genome sequencing assay",
+            "valueIRI": "http://purl.obolibrary.org/obo/OBI_0002117"
+          },
+          "platform": {
+            "value": "Illumina HiSeq X Ten",
+            "valueIRI": "http://purl.obolibrary.org/obo/OBI_0002129"
+          }
+        }
+      ],
+      "creators": [
+        {
+          "@type": "Organization",
+          "@context": [
+            "https://datatagsuite.github.io/context/sdo/organization_sdo_context.jsonld",
+            "https://datatagsuite.github.io/context/obo/organization_obo_context.jsonld"
+          ],
+          "@id": "TMPID:07c4fe93-abcb-4572-81bd-da7f94078057",
+          "name": "The National Institute of Health's National Heart, Lung and Blood Institute",
+          "abbreviation": "NHLBI"
+        }
+      ],
+      "dimensions": [
+        {
+          "@type": "Dimension",
+          "@context": [
+            "https://datatagsuite.github.io/context/sdo/dimension_sdo_context.jsonld",
+            "https://datatagsuite.github.io/context/obo/dimension_obo_context.jsonld"
+          ],
+          "@id": "TMPID:4efe2aa9-2d8d-4d2f-be6e-b52c1e52d237",
+          "name": {
+            "value": "Actual Subject Count"
+          },
+          "description": "The actual number of subjects entered into a clinical trial.",
+          "types": [
+            {
+              "value": "Actual Subject Number",
+              "valueIRI": "http://purl.obolibrary.org/obo/NCIT_C98703"
+            }
+          ],
+          "values": [
+            3596
+          ]
+        }
+      ],
+      "extraProperties": [
+        {
+          "@type": "CategoryValuesPair",
+          "@context": [
+            "https://datatagsuite.github.io/context/sdo/category_values_pair_sdo_context.jsonld",
+            "https://datatagsuite.github.io/context/obo/category_values_pair_obo_context.jsonld"
+          ],
+          "@id": "TMPID:36b5f245-24a3-4438-a358-9879d446a07e",
+          "category": "study_type",
+          "values": [
+            "Longitudinal Cohort"
+          ]
+        }
+      ]
+    },
+    {
+      "@type": "Dataset",
+      "@context": [
+        "https://datatagsuite.github.io/context/sdo/dataset_sdo_context.jsonld",
+        "https://datatagsuite.github.io/context/obo/dataset_obo_context.jsonld"
+      ],
+      "@id": "TMPID:960e09b7-7a46-4a7d-86eb-69eeb486942e",
+      "identifier": {
+        "@type": "Identifier",
+        "@context": [
+          "https://datatagsuite.github.io/context/sdo/identifier_info_sdo_context.jsonld",
+          "https://datatagsuite.github.io/context/obo/identifier_info_obo_context.jsonld"
+        ],
+        "@id": "TMPID:a1c16268-620f-48ac-b59d-30571a8e4bf5",
+        "identifier": "phs000956.v3.p1"
+      },
+      "version": "v3",
+      "title": "Genetics of Cardiometabolic Health in the Amish",
+      "storedIn": {
+        "@type": "DataRepository",
+        "@context": [
+          "https://datatagsuite.github.io/context/sdo/data_repository_sdo_context.jsonld",
+          "https://datatagsuite.github.io/context/obo/data_repository_obo_context.jsonld"
+        ],
+        "@id": "TMPID:58a87d2b-8484-4221-aea2-e853ed02d33f",
+        "name": "dbGaP"
+      },
+      "types": [
+        {
+          "information": {
+            "value": "DNA sequencing",
+            "valueIRI": "http://purl.obolibrary.org/obo/OBI_0000626"
+          },
+          "method": {
+            "value": "whole genome sequencing assay",
+            "valueIRI": "http://purl.obolibrary.org/obo/OBI_0002117"
+          },
+          "platform": {
+            "value": "Illumina HiSeq X Ten",
+            "valueIRI": "http://purl.obolibrary.org/obo/OBI_0002129"
+          }
+        }
+      ],
+      "creators": [
+        {
+          "@type": "Organization",
+          "@context": [
+            "https://datatagsuite.github.io/context/sdo/organization_sdo_context.jsonld",
+            "https://datatagsuite.github.io/context/obo/organization_obo_context.jsonld"
+          ],
+          "@id": "TMPID:07c4fe93-abcb-4572-81bd-da7f94078057",
+          "name": "The National Institute of Health's National Heart, Lung and Blood Institute",
+          "abbreviation": "NHLBI"
+        }
+      ],
+      "dimensions": [
+        {
+          "@type": "Dimension",
+          "@context": [
+            "https://datatagsuite.github.io/context/sdo/dimension_sdo_context.jsonld",
+            "https://datatagsuite.github.io/context/obo/dimension_obo_context.jsonld"
+          ],
+          "@id": "TMPID:38729d0f-11e5-4f42-bb26-5dd6f30c7c61",
+          "name": {
+            "value": "Actual Subject Count"
+          },
+          "description": "The actual number of subjects entered into a clinical trial.",
+          "types": [
+            {
+              "value": "Actual Subject Number",
+              "valueIRI": "http://purl.obolibrary.org/obo/NCIT_C98703"
+            }
+          ],
+          "values": [
+            1123
+          ]
+        }
+      ],
+      "extraProperties": [
+        {
+          "@type": "CategoryValuesPair",
+          "@context": [
+            "https://datatagsuite.github.io/context/sdo/category_values_pair_sdo_context.jsonld",
+            "https://datatagsuite.github.io/context/obo/category_values_pair_obo_context.jsonld"
+          ],
+          "@id": "TMPID:71a70ade-6a60-46d0-87a0-58b275da5d3b",
+          "category": "study_type",
+          "values": [
+            "Family"
+          ]
+        }
+      ]
+    },
+    {
+      "@type": "Dataset",
+      "@context": [
+        "https://datatagsuite.github.io/context/sdo/dataset_sdo_context.jsonld",
+        "https://datatagsuite.github.io/context/obo/dataset_obo_context.jsonld"
+      ],
+      "@id": "TMPID:f8e46fe8-4d43-4333-8d36-47a8a3c801ed",
+      "identifier": {
+        "@type": "Identifier",
+        "@context": [
+          "https://datatagsuite.github.io/context/sdo/identifier_info_sdo_context.jsonld",
+          "https://datatagsuite.github.io/context/obo/identifier_info_obo_context.jsonld"
+        ],
+        "@id": "TMPID:e275e7b8-c44b-43ea-a0a7-9261b17a111c",
+        "identifier": "phs000954.v2.p1"
+      },
+      "version": "v2",
+      "title": "The Cleveland Family Study (WGS)",
+      "storedIn": {
+        "@type": "DataRepository",
+        "@context": [
+          "https://datatagsuite.github.io/context/sdo/data_repository_sdo_context.jsonld",
+          "https://datatagsuite.github.io/context/obo/data_repository_obo_context.jsonld"
+        ],
+        "@id": "TMPID:58a87d2b-8484-4221-aea2-e853ed02d33f",
+        "name": "dbGaP"
+      },
+      "types": [
+        {
+          "information": {
+            "value": "DNA sequencing",
+            "valueIRI": "http://purl.obolibrary.org/obo/OBI_0000626"
+          },
+          "method": {
+            "value": "whole genome sequencing assay",
+            "valueIRI": "http://purl.obolibrary.org/obo/OBI_0002117"
+          },
+          "platform": {
+            "value": "Illumina HiSeq X Ten",
+            "valueIRI": "http://purl.obolibrary.org/obo/OBI_0002129"
+          }
+        }
+      ],
+      "creators": [
+        {
+          "@type": "Organization",
+          "@context": [
+            "https://datatagsuite.github.io/context/sdo/organization_sdo_context.jsonld",
+            "https://datatagsuite.github.io/context/obo/organization_obo_context.jsonld"
+          ],
+          "@id": "TMPID:07c4fe93-abcb-4572-81bd-da7f94078057",
+          "name": "The National Institute of Health's National Heart, Lung and Blood Institute",
+          "abbreviation": "NHLBI"
+        }
+      ],
+      "dimensions": [
+        {
+          "@type": "Dimension",
+          "@context": [
+            "https://datatagsuite.github.io/context/sdo/dimension_sdo_context.jsonld",
+            "https://datatagsuite.github.io/context/obo/dimension_obo_context.jsonld"
+          ],
+          "@id": "TMPID:ce8e5348-36ab-4880-ba55-3d7efe68c086",
+          "name": {
+            "value": "Actual Subject Count"
+          },
+          "description": "The actual number of subjects entered into a clinical trial.",
+          "types": [
+            {
+              "value": "Actual Subject Number",
+              "valueIRI": "http://purl.obolibrary.org/obo/NCIT_C98703"
+            }
+          ],
+          "values": [
+            994
+          ]
+        }
+      ],
+      "extraProperties": [
+        {
+          "@type": "CategoryValuesPair",
+          "@context": [
+            "https://datatagsuite.github.io/context/sdo/category_values_pair_sdo_context.jsonld",
+            "https://datatagsuite.github.io/context/obo/category_values_pair_obo_context.jsonld"
+          ],
+          "@id": "TMPID:d86bc295-3151-4dec-876c-25ac4f0ef1c6",
+          "category": "study_type",
+          "values": [
+            "Longitudinal"
+          ]
+        }
+      ]
+    },
+    {
+      "@type": "Dataset",
+      "@context": [
+        "https://datatagsuite.github.io/context/sdo/dataset_sdo_context.jsonld",
+        "https://datatagsuite.github.io/context/obo/dataset_obo_context.jsonld"
+      ],
+      "@id": "TMPID:8e1a18c8-b89a-4e4e-8e17-b4cb9e84770d",
+      "identifier": {
+        "@type": "Identifier",
+        "@context": [
+          "https://datatagsuite.github.io/context/sdo/identifier_info_sdo_context.jsonld",
+          "https://datatagsuite.github.io/context/obo/identifier_info_obo_context.jsonld"
+        ],
+        "@id": "TMPID:75daeba0-28b0-40f9-ba29-caf6ea7c19b9",
+        "identifier": "phs000921.v3.p1"
+      },
+      "version": "v3",
+      "title": "Study of African Americans, Asthma, Genes and Environment (SAGE) Study",
+      "storedIn": {
+        "@type": "DataRepository",
+        "@context": [
+          "https://datatagsuite.github.io/context/sdo/data_repository_sdo_context.jsonld",
+          "https://datatagsuite.github.io/context/obo/data_repository_obo_context.jsonld"
+        ],
+        "@id": "TMPID:58a87d2b-8484-4221-aea2-e853ed02d33f",
+        "name": "dbGaP"
+      },
+      "types": [
+        {
+          "information": {
+            "value": "DNA sequencing",
+            "valueIRI": "http://purl.obolibrary.org/obo/OBI_0000626"
+          },
+          "method": {
+            "value": "whole genome sequencing assay",
+            "valueIRI": "http://purl.obolibrary.org/obo/OBI_0002117"
+          },
+          "platform": {
+            "value": "Illumina HiSeq X Ten",
+            "valueIRI": "http://purl.obolibrary.org/obo/OBI_0002129"
+          }
+        }
+      ],
+      "creators": [
+        {
+          "@type": "Organization",
+          "@context": [
+            "https://datatagsuite.github.io/context/sdo/organization_sdo_context.jsonld",
+            "https://datatagsuite.github.io/context/obo/organization_obo_context.jsonld"
+          ],
+          "@id": "TMPID:07c4fe93-abcb-4572-81bd-da7f94078057",
+          "name": "The National Institute of Health's National Heart, Lung and Blood Institute",
+          "abbreviation": "NHLBI"
+        }
+      ],
+      "dimensions": [
+        {
+          "@type": "Dimension",
+          "@context": [
+            "https://datatagsuite.github.io/context/sdo/dimension_sdo_context.jsonld",
+            "https://datatagsuite.github.io/context/obo/dimension_obo_context.jsonld"
+          ],
+          "@id": "TMPID:c9376418-1807-46ba-99a5-b5468a6928f5",
+          "name": {
+            "value": "Actual Subject Count"
+          },
+          "description": "The actual number of subjects entered into a clinical trial.",
+          "types": [
+            {
+              "value": "Actual Subject Number",
+              "valueIRI": "http://purl.obolibrary.org/obo/NCIT_C98703"
+            }
+          ],
+          "values": [
+            2106
+          ]
+        }
+      ],
+      "extraProperties": [
+        {
+          "@type": "CategoryValuesPair",
+          "@context": [
+            "https://datatagsuite.github.io/context/sdo/category_values_pair_sdo_context.jsonld",
+            "https://datatagsuite.github.io/context/obo/category_values_pair_obo_context.jsonld"
+          ],
+          "@id": "TMPID:837a7656-9b58-47c0-a652-56fe8d4937fb",
+          "category": "study_type",
+          "values": [
+            "Case Set"
+          ]
+        }
+      ]
+    },
+    {
+      "@type": "Dataset",
+      "@context": [
+        "https://datatagsuite.github.io/context/sdo/dataset_sdo_context.jsonld",
+        "https://datatagsuite.github.io/context/obo/dataset_obo_context.jsonld"
+      ],
+      "@id": "TMPID:9b235d30-18f8-4e52-a450-a6990d240cbd",
+      "identifier": {
+        "@type": "Identifier",
+        "@context": [
+          "https://datatagsuite.github.io/context/sdo/identifier_info_sdo_context.jsonld",
+          "https://datatagsuite.github.io/context/obo/identifier_info_obo_context.jsonld"
+        ],
+        "@id": "TMPID:877f8540-838e-420b-946d-5bdaaca069df",
+        "identifier": "phs001040.v3.p1"
+      },
+      "version": "v3",
+      "title": "Novel Risk Factors for the Development of Atrial Fibrillation in Women",
+      "storedIn": {
+        "@type": "DataRepository",
+        "@context": [
+          "https://datatagsuite.github.io/context/sdo/data_repository_sdo_context.jsonld",
+          "https://datatagsuite.github.io/context/obo/data_repository_obo_context.jsonld"
+        ],
+        "@id": "TMPID:58a87d2b-8484-4221-aea2-e853ed02d33f",
+        "name": "dbGaP"
+      },
+      "types": [
+        {
+          "information": {
+            "value": "DNA sequencing",
+            "valueIRI": "http://purl.obolibrary.org/obo/OBI_0000626"
+          },
+          "method": {
+            "value": "whole genome sequencing assay",
+            "valueIRI": "http://purl.obolibrary.org/obo/OBI_0002117"
+          },
+          "platform": {
+            "value": "Illumina HiSeq X Ten",
+            "valueIRI": "http://purl.obolibrary.org/obo/OBI_0002129"
+          }
+        }
+      ],
+      "creators": [
+        {
+          "@type": "Organization",
+          "@context": [
+            "https://datatagsuite.github.io/context/sdo/organization_sdo_context.jsonld",
+            "https://datatagsuite.github.io/context/obo/organization_obo_context.jsonld"
+          ],
+          "@id": "TMPID:07c4fe93-abcb-4572-81bd-da7f94078057",
+          "name": "The National Institute of Health's National Heart, Lung and Blood Institute",
+          "abbreviation": "NHLBI"
+        }
+      ],
+      "dimensions": [
+        {
+          "@type": "Dimension",
+          "@context": [
+            "https://datatagsuite.github.io/context/sdo/dimension_sdo_context.jsonld",
+            "https://datatagsuite.github.io/context/obo/dimension_obo_context.jsonld"
+          ],
+          "@id": "TMPID:cc3e17a5-25f2-460b-a925-c6e729392aba",
+          "name": {
+            "value": "Actual Subject Count"
+          },
+          "description": "The actual number of subjects entered into a clinical trial.",
+          "types": [
+            {
+              "value": "Actual Subject Number",
+              "valueIRI": "http://purl.obolibrary.org/obo/NCIT_C98703"
+            }
+          ],
+          "values": [
+            118
+          ]
+        }
+      ],
+      "extraProperties": [
+        {
+          "@type": "CategoryValuesPair",
+          "@context": [
+            "https://datatagsuite.github.io/context/sdo/category_values_pair_sdo_context.jsonld",
+            "https://datatagsuite.github.io/context/obo/category_values_pair_obo_context.jsonld"
+          ],
+          "@id": "TMPID:9106c692-cc1e-4ff5-8c82-30ebaef6eb25",
+          "category": "study_type",
+          "values": [
+            "Case Set"
+          ]
+        }
+      ]
+    },
+    {
+      "@type": "Dataset",
+      "@context": [
+        "https://datatagsuite.github.io/context/sdo/dataset_sdo_context.jsonld",
+        "https://datatagsuite.github.io/context/obo/dataset_obo_context.jsonld"
+      ],
+      "@id": "TMPID:1516c380-7399-4acf-b06b-ec1a6d246734",
+      "identifier": {
+        "@type": "Identifier",
+        "@context": [
+          "https://datatagsuite.github.io/context/sdo/identifier_info_sdo_context.jsonld",
+          "https://datatagsuite.github.io/context/obo/identifier_info_obo_context.jsonld"
+        ],
+        "@id": "TMPID:fe16d3ad-8b3b-4904-9ca5-59265c775414",
+        "identifier": "phs000993.v2.p2"
+      },
+      "version": "v2",
+      "title": "Heart and Vascular Health Study (HVH)",
+      "storedIn": {
+        "@type": "DataRepository",
+        "@context": [
+          "https://datatagsuite.github.io/context/sdo/data_repository_sdo_context.jsonld",
+          "https://datatagsuite.github.io/context/obo/data_repository_obo_context.jsonld"
+        ],
+        "@id": "TMPID:58a87d2b-8484-4221-aea2-e853ed02d33f",
+        "name": "dbGaP"
+      },
+      "types": [
+        {
+          "information": {
+            "value": "DNA sequencing",
+            "valueIRI": "http://purl.obolibrary.org/obo/OBI_0000626"
+          },
+          "method": {
+            "value": "whole genome sequencing assay",
+            "valueIRI": "http://purl.obolibrary.org/obo/OBI_0002117"
+          },
+          "platform": {
+            "value": "Illumina HiSeq X Ten",
+            "valueIRI": "http://purl.obolibrary.org/obo/OBI_0002129"
+          }
+        }
+      ],
+      "creators": [
+        {
+          "@type": "Organization",
+          "@context": [
+            "https://datatagsuite.github.io/context/sdo/organization_sdo_context.jsonld",
+            "https://datatagsuite.github.io/context/obo/organization_obo_context.jsonld"
+          ],
+          "@id": "TMPID:07c4fe93-abcb-4572-81bd-da7f94078057",
+          "name": "The National Institute of Health's National Heart, Lung and Blood Institute",
+          "abbreviation": "NHLBI"
+        }
+      ],
+      "dimensions": [
+        {
+          "@type": "Dimension",
+          "@context": [
+            "https://datatagsuite.github.io/context/sdo/dimension_sdo_context.jsonld",
+            "https://datatagsuite.github.io/context/obo/dimension_obo_context.jsonld"
+          ],
+          "@id": "TMPID:ed6d05c4-e5db-4a5e-9093-7e0c163286bf",
+          "name": {
+            "value": "Actual Subject Count"
+          },
+          "description": "The actual number of subjects entered into a clinical trial.",
+          "types": [
+            {
+              "value": "Actual Subject Number",
+              "valueIRI": "http://purl.obolibrary.org/obo/NCIT_C98703"
+            }
+          ],
+          "values": [
+            709
+          ]
+        }
+      ],
+      "extraProperties": [
+        {
+          "@type": "CategoryValuesPair",
+          "@context": [
+            "https://datatagsuite.github.io/context/sdo/category_values_pair_sdo_context.jsonld",
+            "https://datatagsuite.github.io/context/obo/category_values_pair_obo_context.jsonld"
+          ],
+          "@id": "TMPID:8331fed9-0fc5-4ee7-84a3-a1a1cbe7609d",
+          "category": "study_type",
+          "values": [
+            "Case Set"
+          ]
+        }
+      ]
+    },
+    {
+      "@type": "Dataset",
+      "@context": [
+        "https://datatagsuite.github.io/context/sdo/dataset_sdo_context.jsonld",
+        "https://datatagsuite.github.io/context/obo/dataset_obo_context.jsonld"
+      ],
+      "@id": "TMPID:df0cd7ac-d0a1-4c8f-8040-90e57a3e4803",
+      "identifier": {
+        "@type": "Identifier",
+        "@context": [
+          "https://datatagsuite.github.io/context/sdo/identifier_info_sdo_context.jsonld",
+          "https://datatagsuite.github.io/context/obo/identifier_info_obo_context.jsonld"
+        ],
+        "@id": "TMPID:22998afe-a293-4b52-9c03-65f9b1c0394a",
+        "identifier": "phs000997.v3.p2"
+      },
+      "version": "v3",
+      "title": "The Vanderbilt AF Ablation Registry",
+      "storedIn": {
+        "@type": "DataRepository",
+        "@context": [
+          "https://datatagsuite.github.io/context/sdo/data_repository_sdo_context.jsonld",
+          "https://datatagsuite.github.io/context/obo/data_repository_obo_context.jsonld"
+        ],
+        "@id": "TMPID:58a87d2b-8484-4221-aea2-e853ed02d33f",
+        "name": "dbGaP"
+      },
+      "types": [
+        {
+          "information": {
+            "value": "DNA sequencing",
+            "valueIRI": "http://purl.obolibrary.org/obo/OBI_0000626"
+          },
+          "method": {
+            "value": "whole genome sequencing assay",
+            "valueIRI": "http://purl.obolibrary.org/obo/OBI_0002117"
+          },
+          "platform": {
+            "value": "Illumina HiSeq X Ten",
+            "valueIRI": "http://purl.obolibrary.org/obo/OBI_0002129"
+          }
+        }
+      ],
+      "creators": [
+        {
+          "@type": "Organization",
+          "@context": [
+            "https://datatagsuite.github.io/context/sdo/organization_sdo_context.jsonld",
+            "https://datatagsuite.github.io/context/obo/organization_obo_context.jsonld"
+          ],
+          "@id": "TMPID:07c4fe93-abcb-4572-81bd-da7f94078057",
+          "name": "The National Institute of Health's National Heart, Lung and Blood Institute",
+          "abbreviation": "NHLBI"
+        }
+      ],
+      "dimensions": [
+        {
+          "@type": "Dimension",
+          "@context": [
+            "https://datatagsuite.github.io/context/sdo/dimension_sdo_context.jsonld",
+            "https://datatagsuite.github.io/context/obo/dimension_obo_context.jsonld"
+          ],
+          "@id": "TMPID:7931eabc-e861-454b-a3d4-bf8c788c12bf",
+          "name": {
+            "value": "Actual Subject Count"
+          },
+          "description": "The actual number of subjects entered into a clinical trial.",
+          "types": [
+            {
+              "value": "Actual Subject Number",
+              "valueIRI": "http://purl.obolibrary.org/obo/NCIT_C98703"
+            }
+          ],
+          "values": [
+            173
+          ]
+        }
+      ],
+      "extraProperties": [
+        {
+          "@type": "CategoryValuesPair",
+          "@context": [
+            "https://datatagsuite.github.io/context/sdo/category_values_pair_sdo_context.jsonld",
+            "https://datatagsuite.github.io/context/obo/category_values_pair_obo_context.jsonld"
+          ],
+          "@id": "TMPID:30613635-34ae-4b1f-8e24-abd0c5802686",
+          "category": "study_type",
+          "values": [
+            "Case Set"
+          ]
+        }
+      ]
+    },
+    {
+      "@type": "Dataset",
+      "@context": [
+        "https://datatagsuite.github.io/context/sdo/dataset_sdo_context.jsonld",
+        "https://datatagsuite.github.io/context/obo/dataset_obo_context.jsonld"
+      ],
+      "@id": "TMPID:821956e8-14fc-4666-90d1-cbfedafc4687",
+      "identifier": {
+        "@type": "Identifier",
+        "@context": [
+          "https://datatagsuite.github.io/context/sdo/identifier_info_sdo_context.jsonld",
+          "https://datatagsuite.github.io/context/obo/identifier_info_obo_context.jsonld"
+        ],
+        "@id": "TMPID:7af2fe33-72f2-4fd1-a0c9-5390ffbeb610",
+        "identifier": "phs001032.v3.p2"
+      },
+      "version": "v3",
+      "title": "The Vanderbilt Atrial Fibrillation Registry",
+      "storedIn": {
+        "@type": "DataRepository",
+        "@context": [
+          "https://datatagsuite.github.io/context/sdo/data_repository_sdo_context.jsonld",
+          "https://datatagsuite.github.io/context/obo/data_repository_obo_context.jsonld"
+        ],
+        "@id": "TMPID:58a87d2b-8484-4221-aea2-e853ed02d33f",
+        "name": "dbGaP"
+      },
+      "types": [
+        {
+          "information": {
+            "value": "DNA sequencing",
+            "valueIRI": "http://purl.obolibrary.org/obo/OBI_0000626"
+          },
+          "method": {
+            "value": "whole genome sequencing assay",
+            "valueIRI": "http://purl.obolibrary.org/obo/OBI_0002117"
+          },
+          "platform": {
+            "value": "Illumina HiSeq X Ten",
+            "valueIRI": "http://purl.obolibrary.org/obo/OBI_0002129"
+          }
+        }
+      ],
+      "creators": [
+        {
+          "@type": "Organization",
+          "@context": [
+            "https://datatagsuite.github.io/context/sdo/organization_sdo_context.jsonld",
+            "https://datatagsuite.github.io/context/obo/organization_obo_context.jsonld"
+          ],
+          "@id": "TMPID:07c4fe93-abcb-4572-81bd-da7f94078057",
+          "name": "The National Institute of Health's National Heart, Lung and Blood Institute",
+          "abbreviation": "NHLBI"
+        }
+      ],
+      "dimensions": [
+        {
+          "@type": "Dimension",
+          "@context": [
+            "https://datatagsuite.github.io/context/sdo/dimension_sdo_context.jsonld",
+            "https://datatagsuite.github.io/context/obo/dimension_obo_context.jsonld"
+          ],
+          "@id": "TMPID:5a5e1f0f-dd36-44ee-be06-378987961f18",
+          "name": {
+            "value": "Actual Subject Count"
+          },
+          "description": "The actual number of subjects entered into a clinical trial.",
+          "types": [
+            {
+              "value": "Actual Subject Number",
+              "valueIRI": "http://purl.obolibrary.org/obo/NCIT_C98703"
+            }
+          ],
+          "values": [
+            1134
+          ]
+        }
+      ],
+      "extraProperties": [
+        {
+          "@type": "CategoryValuesPair",
+          "@context": [
+            "https://datatagsuite.github.io/context/sdo/category_values_pair_sdo_context.jsonld",
+            "https://datatagsuite.github.io/context/obo/category_values_pair_obo_context.jsonld"
+          ],
+          "@id": "TMPID:ec7e296b-05af-4e55-8d8c-e1d66bb0b879",
+          "category": "study_type",
+          "values": [
+            "Case Set"
+          ]
+        }
+      ]
+    },
+    {
+      "@type": "Dataset",
+      "@context": [
+        "https://datatagsuite.github.io/context/sdo/dataset_sdo_context.jsonld",
+        "https://datatagsuite.github.io/context/obo/dataset_obo_context.jsonld"
+      ],
+      "@id": "TMPID:ffc45f7f-1ece-4916-9acd-f6bcbe413480",
+      "identifier": {
+        "@type": "Identifier",
+        "@context": [
+          "https://datatagsuite.github.io/context/sdo/identifier_info_sdo_context.jsonld",
+          "https://datatagsuite.github.io/context/obo/identifier_info_obo_context.jsonld"
+        ],
+        "@id": "TMPID:375d0f03-ba35-4e2b-b8b8-ec787fd32655",
+        "identifier": "phs001062.v3.p2"
+      },
+      "version": "v3",
+      "title": "MGH Atrial Fibrillation Study",
+      "storedIn": {
+        "@type": "DataRepository",
+        "@context": [
+          "https://datatagsuite.github.io/context/sdo/data_repository_sdo_context.jsonld",
+          "https://datatagsuite.github.io/context/obo/data_repository_obo_context.jsonld"
+        ],
+        "@id": "TMPID:58a87d2b-8484-4221-aea2-e853ed02d33f",
+        "name": "dbGaP"
+      },
+      "types": [
+        {
+          "information": {
+            "value": "DNA sequencing",
+            "valueIRI": "http://purl.obolibrary.org/obo/OBI_0000626"
+          },
+          "method": {
+            "value": "whole genome sequencing assay",
+            "valueIRI": "http://purl.obolibrary.org/obo/OBI_0002117"
+          },
+          "platform": {
+            "value": "Illumina HiSeq X Ten",
+            "valueIRI": "http://purl.obolibrary.org/obo/OBI_0002129"
+          }
+        }
+      ],
+      "creators": [
+        {
+          "@type": "Organization",
+          "@context": [
+            "https://datatagsuite.github.io/context/sdo/organization_sdo_context.jsonld",
+            "https://datatagsuite.github.io/context/obo/organization_obo_context.jsonld"
+          ],
+          "@id": "TMPID:07c4fe93-abcb-4572-81bd-da7f94078057",
+          "name": "The National Institute of Health's National Heart, Lung and Blood Institute",
+          "abbreviation": "NHLBI"
+        }
+      ],
+      "dimensions": [
+        {
+          "@type": "Dimension",
+          "@context": [
+            "https://datatagsuite.github.io/context/sdo/dimension_sdo_context.jsonld",
+            "https://datatagsuite.github.io/context/obo/dimension_obo_context.jsonld"
+          ],
+          "@id": "TMPID:e6ed0f4b-ee99-46e9-81cc-703a191fded0",
+          "name": {
+            "value": "Actual Subject Count"
+          },
+          "description": "The actual number of subjects entered into a clinical trial.",
+          "types": [
+            {
+              "value": "Actual Subject Number",
+              "valueIRI": "http://purl.obolibrary.org/obo/NCIT_C98703"
+            }
+          ],
+          "values": [
+            999
+          ]
+        }
+      ],
+      "extraProperties": [
+        {
+          "@type": "CategoryValuesPair",
+          "@context": [
+            "https://datatagsuite.github.io/context/sdo/category_values_pair_sdo_context.jsonld",
+            "https://datatagsuite.github.io/context/obo/category_values_pair_obo_context.jsonld"
+          ],
+          "@id": "TMPID:b78149d5-adac-49b6-a0d7-5e1c53d9ecd5",
+          "category": "study_type",
+          "values": [
+            "Case Set"
+          ]
+        }
+      ]
+    },
+    {
+      "@type": "Dataset",
+      "@context": [
+        "https://datatagsuite.github.io/context/sdo/dataset_sdo_context.jsonld",
+        "https://datatagsuite.github.io/context/obo/dataset_obo_context.jsonld"
+      ],
+      "@id": "TMPID:7524318d-2612-4d74-810c-fff2f84dbbf0",
+      "identifier": {
+        "@type": "Identifier",
+        "@context": [
+          "https://datatagsuite.github.io/context/sdo/identifier_info_sdo_context.jsonld",
+          "https://datatagsuite.github.io/context/obo/identifier_info_obo_context.jsonld"
+        ],
+        "@id": "TMPID:6bb7cbee-c2fd-4a5f-884a-ca798b4d4cc8",
+        "identifier": "phs000920.v2.p2"
+      },
+      "version": "v2",
+      "title": "Genes-environments and Admixture in Latino Asthmatics (GALA II) Study",
+      "storedIn": {
+        "@type": "DataRepository",
+        "@context": [
+          "https://datatagsuite.github.io/context/sdo/data_repository_sdo_context.jsonld",
+          "https://datatagsuite.github.io/context/obo/data_repository_obo_context.jsonld"
+        ],
+        "@id": "TMPID:58a87d2b-8484-4221-aea2-e853ed02d33f",
+        "name": "dbGaP"
+      },
+      "types": [
+        {
+          "information": {
+            "value": "DNA sequencing",
+            "valueIRI": "http://purl.obolibrary.org/obo/OBI_0000626"
+          },
+          "method": {
+            "value": "whole genome sequencing assay",
+            "valueIRI": "http://purl.obolibrary.org/obo/OBI_0002117"
+          },
+          "platform": {
+            "value": "Illumina HiSeq X Ten",
+            "valueIRI": "http://purl.obolibrary.org/obo/OBI_0002129"
+          }
+        }
+      ],
+      "creators": [
+        {
+          "@type": "Organization",
+          "@context": [
+            "https://datatagsuite.github.io/context/sdo/organization_sdo_context.jsonld",
+            "https://datatagsuite.github.io/context/obo/organization_obo_context.jsonld"
+          ],
+          "@id": "TMPID:07c4fe93-abcb-4572-81bd-da7f94078057",
+          "name": "The National Institute of Health's National Heart, Lung and Blood Institute",
+          "abbreviation": "NHLBI"
+        }
+      ],
+      "dimensions": [
+        {
+          "@type": "Dimension",
+          "@context": [
+            "https://datatagsuite.github.io/context/sdo/dimension_sdo_context.jsonld",
+            "https://datatagsuite.github.io/context/obo/dimension_obo_context.jsonld"
+          ],
+          "@id": "TMPID:30bd4e8f-ca5c-4963-be01-66102016e501",
+          "name": {
+            "value": "Actual Subject Count"
+          },
+          "description": "The actual number of subjects entered into a clinical trial.",
+          "types": [
+            {
+              "value": "Actual Subject Number",
+              "valueIRI": "http://purl.obolibrary.org/obo/NCIT_C98703"
+            }
+          ],
+          "values": [
+            999
+          ]
+        }
+      ],
+      "extraProperties": [
+        {
+          "@type": "CategoryValuesPair",
+          "@context": [
+            "https://datatagsuite.github.io/context/sdo/category_values_pair_sdo_context.jsonld",
+            "https://datatagsuite.github.io/context/obo/category_values_pair_obo_context.jsonld"
+          ],
+          "@id": "TMPID:5a288a85-5757-4009-a98a-befe195a40fc",
+          "category": "study_type",
+          "values": [
+            "Case Set"
+          ]
+        }
+      ]
+    },
+    {
+      "@type": "Dataset",
+      "@context": [
+        "https://datatagsuite.github.io/context/sdo/dataset_sdo_context.jsonld",
+        "https://datatagsuite.github.io/context/obo/dataset_obo_context.jsonld"
+      ],
+      "@id": "TMPID:4c55e1e8-abbb-49a1-ad75-14cd80bd3e2b",
+      "identifier": {
+        "@type": "Identifier",
+        "@context": [
+          "https://datatagsuite.github.io/context/sdo/identifier_info_sdo_context.jsonld",
+          "https://datatagsuite.github.io/context/obo/identifier_info_obo_context.jsonld"
+        ],
+        "@id": "TMPID:5295acd6-544a-473b-bc94-8146025feae1",
+        "identifier": "phs000974.v3.p2"
+      },
+      "version": "v3",
+      "title": "Whole Genome Sequencing and Related Phenotypes in the Framingham Heart Study",
+      "storedIn": {
+        "@type": "DataRepository",
+        "@context": [
+          "https://datatagsuite.github.io/context/sdo/data_repository_sdo_context.jsonld",
+          "https://datatagsuite.github.io/context/obo/data_repository_obo_context.jsonld"
+        ],
+        "@id": "TMPID:58a87d2b-8484-4221-aea2-e853ed02d33f",
+        "name": "dbGaP"
+      },
+      "types": [
+        {
+          "information": {
+            "value": "DNA sequencing",
+            "valueIRI": "http://purl.obolibrary.org/obo/OBI_0000626"
+          },
+          "method": {
+            "value": "whole genome sequencing assay",
+            "valueIRI": "http://purl.obolibrary.org/obo/OBI_0002117"
+          },
+          "platform": {
+            "value": "Illumina HiSeq X Ten",
+            "valueIRI": "http://purl.obolibrary.org/obo/OBI_0002129"
+          }
+        }
+      ],
+      "creators": [
+        {
+          "@type": "Organization",
+          "@context": [
+            "https://datatagsuite.github.io/context/sdo/organization_sdo_context.jsonld",
+            "https://datatagsuite.github.io/context/obo/organization_obo_context.jsonld"
+          ],
+          "@id": "TMPID:07c4fe93-abcb-4572-81bd-da7f94078057",
+          "name": "The National Institute of Health's National Heart, Lung and Blood Institute",
+          "abbreviation": "NHLBI"
+        }
+      ],
+      "dimensions": [
+        {
+          "@type": "Dimension",
+          "@context": [
+            "https://datatagsuite.github.io/context/sdo/dimension_sdo_context.jsonld",
+            "https://datatagsuite.github.io/context/obo/dimension_obo_context.jsonld"
+          ],
+          "@id": "TMPID:ccb556aa-1ccb-49bd-8a85-2e8610c49129",
+          "name": {
+            "value": "Actual Subject Count"
+          },
+          "description": "The actual number of subjects entered into a clinical trial.",
+          "types": [
+            {
+              "value": "Actual Subject Number",
+              "valueIRI": "http://purl.obolibrary.org/obo/NCIT_C98703"
+            }
+          ],
+          "values": [
+            4154
+          ]
+        }
+      ],
+      "extraProperties": [
+        {
+          "@type": "CategoryValuesPair",
+          "@context": [
+            "https://datatagsuite.github.io/context/sdo/category_values_pair_sdo_context.jsonld",
+            "https://datatagsuite.github.io/context/obo/category_values_pair_obo_context.jsonld"
+          ],
+          "@id": "TMPID:c34b4abe-038e-4649-86f8-cdbc61337fbf",
+          "category": "study_type",
+          "values": [
+            "Cohort"
+          ]
+        }
+      ]
+    },
+    {
+      "@type": "Dataset",
+      "@context": [
+        "https://datatagsuite.github.io/context/sdo/dataset_sdo_context.jsonld",
+        "https://datatagsuite.github.io/context/obo/dataset_obo_context.jsonld"
+      ],
+      "@id": "TMPID:c4d2cc80-2a08-4b6a-8bda-d6e4b9a2fb7a",
+      "identifier": {
+        "@type": "Identifier",
+        "@context": [
+          "https://datatagsuite.github.io/context/sdo/identifier_info_sdo_context.jsonld",
+          "https://datatagsuite.github.io/context/obo/identifier_info_obo_context.jsonld"
+        ],
+        "@id": "TMPID:41415030-f75e-43d7-b472-acabae1dbae2",
+        "identifier": "phs000951.v2.p2"
+      },
+      "version": "v2",
+      "title": "Genetic Epidemiology of COPD (COPDGene) in the TOPMed Program",
+      "storedIn": {
+        "@type": "DataRepository",
+        "@context": [
+          "https://datatagsuite.github.io/context/sdo/data_repository_sdo_context.jsonld",
+          "https://datatagsuite.github.io/context/obo/data_repository_obo_context.jsonld"
+        ],
+        "@id": "TMPID:58a87d2b-8484-4221-aea2-e853ed02d33f",
+        "name": "dbGaP"
+      },
+      "types": [
+        {
+          "information": {
+            "value": "DNA sequencing",
+            "valueIRI": "http://purl.obolibrary.org/obo/OBI_0000626"
+          },
+          "method": {
+            "value": "whole genome sequencing assay",
+            "valueIRI": "http://purl.obolibrary.org/obo/OBI_0002117"
+          },
+          "platform": {
+            "value": "Illumina HiSeq X Ten",
+            "valueIRI": "http://purl.obolibrary.org/obo/OBI_0002129"
+          }
+        }
+      ],
+      "creators": [
+        {
+          "@type": "Organization",
+          "@context": [
+            "https://datatagsuite.github.io/context/sdo/organization_sdo_context.jsonld",
+            "https://datatagsuite.github.io/context/obo/organization_obo_context.jsonld"
+          ],
+          "@id": "TMPID:07c4fe93-abcb-4572-81bd-da7f94078057",
+          "name": "The National Institute of Health's National Heart, Lung and Blood Institute",
+          "abbreviation": "NHLBI"
+        }
+      ],
+      "dimensions": [
+        {
+          "@type": "Dimension",
+          "@context": [
+            "https://datatagsuite.github.io/context/sdo/dimension_sdo_context.jsonld",
+            "https://datatagsuite.github.io/context/obo/dimension_obo_context.jsonld"
+          ],
+          "@id": "TMPID:ea519800-402f-438a-ad1c-a6ab83be55ad",
+          "name": {
+            "value": "Actual Subject Count"
+          },
+          "description": "The actual number of subjects entered into a clinical trial.",
+          "types": [
+            {
+              "value": "Actual Subject Number",
+              "valueIRI": "http://purl.obolibrary.org/obo/NCIT_C98703"
+            }
+          ],
+          "values": [
+            10229
+          ]
+        }
+      ],
+      "extraProperties": [
+        {
+          "@type": "CategoryValuesPair",
+          "@context": [
+            "https://datatagsuite.github.io/context/sdo/category_values_pair_sdo_context.jsonld",
+            "https://datatagsuite.github.io/context/obo/category_values_pair_obo_context.jsonld"
+          ],
+          "@id": "TMPID:b0e4d2b6-a30e-4587-bdf6-97f81cb12ada",
+          "category": "study_type",
+          "values": [
+            "Case-Control"
+          ]
+        }
+      ]
+    },
+    {
+      "@type": "Dataset",
+      "@context": [
+        "https://datatagsuite.github.io/context/sdo/dataset_sdo_context.jsonld",
+        "https://datatagsuite.github.io/context/obo/dataset_obo_context.jsonld"
+      ],
+      "@id": "TMPID:997c4b58-fe6c-45f9-88f8-0639f2763b2a",
+      "identifier": {
+        "@type": "Identifier",
+        "@context": [
+          "https://datatagsuite.github.io/context/sdo/identifier_info_sdo_context.jsonld",
+          "https://datatagsuite.github.io/context/obo/identifier_info_obo_context.jsonld"
+        ],
+        "@id": "TMPID:a567569f-cd33-43d6-b639-b7b87500f327",
+        "identifier": "phs000988.v2.p1"
+      },
+      "version": "v2",
+      "title": "The Genetic Epidemiology of Asthma in Costa Rica",
+      "storedIn": {
+        "@type": "DataRepository",
+        "@context": [
+          "https://datatagsuite.github.io/context/sdo/data_repository_sdo_context.jsonld",
+          "https://datatagsuite.github.io/context/obo/data_repository_obo_context.jsonld"
+        ],
+        "@id": "TMPID:58a87d2b-8484-4221-aea2-e853ed02d33f",
+        "name": "dbGaP"
+      },
+      "types": [
+        {
+          "information": {
+            "value": "DNA sequencing",
+            "valueIRI": "http://purl.obolibrary.org/obo/OBI_0000626"
+          },
+          "method": {
+            "value": "whole genome sequencing assay",
+            "valueIRI": "http://purl.obolibrary.org/obo/OBI_0002117"
+          },
+          "platform": {
+            "value": "Illumina HiSeq X Ten",
+            "valueIRI": "http://purl.obolibrary.org/obo/OBI_0002129"
+          }
+        }
+      ],
+      "creators": [
+        {
+          "@type": "Organization",
+          "@context": [
+            "https://datatagsuite.github.io/context/sdo/organization_sdo_context.jsonld",
+            "https://datatagsuite.github.io/context/obo/organization_obo_context.jsonld"
+          ],
+          "@id": "TMPID:07c4fe93-abcb-4572-81bd-da7f94078057",
+          "name": "The National Institute of Health's National Heart, Lung and Blood Institute",
+          "abbreviation": "NHLBI"
+        }
+      ],
+      "dimensions": [
+        {
+          "@type": "Dimension",
+          "@context": [
+            "https://datatagsuite.github.io/context/sdo/dimension_sdo_context.jsonld",
+            "https://datatagsuite.github.io/context/obo/dimension_obo_context.jsonld"
+          ],
+          "@id": "TMPID:2a052061-0fc3-48ad-afde-cfa4ec43d626",
+          "name": {
+            "value": "Actual Subject Count"
+          },
+          "description": "The actual number of subjects entered into a clinical trial.",
+          "types": [
+            {
+              "value": "Actual Subject Number",
+              "valueIRI": "http://purl.obolibrary.org/obo/NCIT_C98703"
+            }
+          ],
+          "values": [
+            1533
+          ]
+        }
+      ],
+      "extraProperties": [
+        {
+          "@type": "CategoryValuesPair",
+          "@context": [
+            "https://datatagsuite.github.io/context/sdo/category_values_pair_sdo_context.jsonld",
+            "https://datatagsuite.github.io/context/obo/category_values_pair_obo_context.jsonld"
+          ],
+          "@id": "TMPID:d9a20b58-df91-4557-bbff-7323af2dffbd",
+          "category": "study_type",
+          "values": [
+            "Parent-Offspring Trios"
+          ]
+        }
+      ]
+    },
+    {
+      "@type": "Dataset",
+      "@context": [
+        "https://datatagsuite.github.io/context/sdo/dataset_sdo_context.jsonld",
+        "https://datatagsuite.github.io/context/obo/dataset_obo_context.jsonld"
+      ],
+      "@id": "TMPID:fa2c853b-e2f0-49be-bd68-fb838b87fdea",
+      "identifier": {
+        "@type": "Identifier",
+        "@context": [
+          "https://datatagsuite.github.io/context/sdo/identifier_info_sdo_context.jsonld",
+          "https://datatagsuite.github.io/context/obo/identifier_info_obo_context.jsonld"
+        ],
+        "@id": "TMPID:5e059c49-f982-4aeb-b6fb-2e549e85109b",
+        "identifier": "phs000972.v2.p1"
+      },
+      "version": "v2",
+      "title": "Genome-wide Association Study of Adiposity in Samoans",
+      "storedIn": {
+        "@type": "DataRepository",
+        "@context": [
+          "https://datatagsuite.github.io/context/sdo/data_repository_sdo_context.jsonld",
+          "https://datatagsuite.github.io/context/obo/data_repository_obo_context.jsonld"
+        ],
+        "@id": "TMPID:58a87d2b-8484-4221-aea2-e853ed02d33f",
+        "name": "dbGaP"
+      },
+      "types": [
+        {
+          "information": {
+            "value": "DNA sequencing",
+            "valueIRI": "http://purl.obolibrary.org/obo/OBI_0000626"
+          },
+          "method": {
+            "value": "whole genome sequencing assay",
+            "valueIRI": "http://purl.obolibrary.org/obo/OBI_0002117"
+          },
+          "platform": {
+            "value": "Illumina HiSeq X Ten",
+            "valueIRI": "http://purl.obolibrary.org/obo/OBI_0002129"
+          }
+        }
+      ],
+      "creators": [
+        {
+          "@type": "Organization",
+          "@context": [
+            "https://datatagsuite.github.io/context/sdo/organization_sdo_context.jsonld",
+            "https://datatagsuite.github.io/context/obo/organization_obo_context.jsonld"
+          ],
+          "@id": "TMPID:07c4fe93-abcb-4572-81bd-da7f94078057",
+          "name": "The National Institute of Health's National Heart, Lung and Blood Institute",
+          "abbreviation": "NHLBI"
+        }
+      ],
+      "dimensions": [
+        {
+          "@type": "Dimension",
+          "@context": [
+            "https://datatagsuite.github.io/context/sdo/dimension_sdo_context.jsonld",
+            "https://datatagsuite.github.io/context/obo/dimension_obo_context.jsonld"
+          ],
+          "@id": "TMPID:4f8df358-7f64-4d60-b22c-c30847c3134c",
+          "name": {
+            "value": "Actual Subject Count"
+          },
+          "description": "The actual number of subjects entered into a clinical trial.",
+          "types": [
+            {
+              "value": "Actual Subject Number",
+              "valueIRI": "http://purl.obolibrary.org/obo/NCIT_C98703"
+            }
+          ],
+          "values": [
+            1332
+          ]
+        }
+      ],
+      "extraProperties": [
+        {
+          "@type": "CategoryValuesPair",
+          "@context": [
+            "https://datatagsuite.github.io/context/sdo/category_values_pair_sdo_context.jsonld",
+            "https://datatagsuite.github.io/context/obo/category_values_pair_obo_context.jsonld"
+          ],
+          "@id": "TMPID:35f94fc2-ce68-4f00-9a22-b4859df51e41",
+          "category": "study_type",
+          "values": [
+            "Cross-Sectional, Population"
+          ]
+        }
+      ]
+    },
+    {
+      "@type": "Dataset",
+      "@context": [
+        "https://datatagsuite.github.io/context/sdo/dataset_sdo_context.jsonld",
+        "https://datatagsuite.github.io/context/obo/dataset_obo_context.jsonld"
+      ],
+      "@id": "TMPID:09df5ee7-8452-4d1f-afd0-99fe00fbe36c",
+      "identifier": {
+        "@type": "Identifier",
+        "@context": [
+          "https://datatagsuite.github.io/context/sdo/identifier_info_sdo_context.jsonld",
+          "https://datatagsuite.github.io/context/obo/identifier_info_obo_context.jsonld"
+        ],
+        "@id": "TMPID:e72adb4f-b572-42af-9cf6-5a32197855dd",
+        "identifier": "phs001211.v1.p1"
+      },
+      "version": "v1",
+      "title": "Trans-Omics for Precision Medicine Whole Genome Sequencing Project: ARIC",
+      "storedIn": {
+        "@type": "DataRepository",
+        "@context": [
+          "https://datatagsuite.github.io/context/sdo/data_repository_sdo_context.jsonld",
+          "https://datatagsuite.github.io/context/obo/data_repository_obo_context.jsonld"
+        ],
+        "@id": "TMPID:58a87d2b-8484-4221-aea2-e853ed02d33f",
+        "name": "dbGaP"
+      },
+      "types": [
+        {
+          "information": {
+            "value": "DNA sequencing",
+            "valueIRI": "http://purl.obolibrary.org/obo/OBI_0000626"
+          },
+          "method": {
+            "value": "whole genome sequencing assay",
+            "valueIRI": "http://purl.obolibrary.org/obo/OBI_0002117"
+          },
+          "platform": {
+            "value": "Illumina HiSeq X Ten",
+            "valueIRI": "http://purl.obolibrary.org/obo/OBI_0002129"
+          }
+        }
+      ],
+      "creators": [
+        {
+          "@type": "Organization",
+          "@context": [
+            "https://datatagsuite.github.io/context/sdo/organization_sdo_context.jsonld",
+            "https://datatagsuite.github.io/context/obo/organization_obo_context.jsonld"
+          ],
+          "@id": "TMPID:07c4fe93-abcb-4572-81bd-da7f94078057",
+          "name": "The National Institute of Health's National Heart, Lung and Blood Institute",
+          "abbreviation": "NHLBI"
+        }
+      ],
+      "dimensions": [
+        {
+          "@type": "Dimension",
+          "@context": [
+            "https://datatagsuite.github.io/context/sdo/dimension_sdo_context.jsonld",
+            "https://datatagsuite.github.io/context/obo/dimension_obo_context.jsonld"
+          ],
+          "@id": "TMPID:161d1231-1070-4931-8b4c-af31102ecf0c",
+          "name": {
+            "value": "Actual Subject Count"
+          },
+          "description": "The actual number of subjects entered into a clinical trial.",
+          "types": [
+            {
+              "value": "Actual Subject Number",
+              "valueIRI": "http://purl.obolibrary.org/obo/NCIT_C98703"
+            }
+          ],
+          "values": [
+            4230
+          ]
+        }
+      ],
+      "extraProperties": [
+        {
+          "@type": "CategoryValuesPair",
+          "@context": [
+            "https://datatagsuite.github.io/context/sdo/category_values_pair_sdo_context.jsonld",
+            "https://datatagsuite.github.io/context/obo/category_values_pair_obo_context.jsonld"
+          ],
+          "@id": "TMPID:d2a4fb94-bd64-4d41-b313-aab94a8485db",
+          "category": "study_type",
+          "values": [
+            "Case-Control"
+          ]
+        }
+      ]
+    },
+    {
+      "@type": "Dataset",
+      "@context": [
+        "https://datatagsuite.github.io/context/sdo/dataset_sdo_context.jsonld",
+        "https://datatagsuite.github.io/context/obo/dataset_obo_context.jsonld"
+      ],
+      "@id": "TMPID:b1d8f493-297a-4e7d-b32a-b8fe3b53df46",
+      "identifier": {
+        "@type": "Identifier",
+        "@context": [
+          "https://datatagsuite.github.io/context/sdo/identifier_info_sdo_context.jsonld",
+          "https://datatagsuite.github.io/context/obo/identifier_info_obo_context.jsonld"
+        ],
+        "@id": "TMPID:fcd12f87-fe06-4771-8647-b1edcb3b4364",
+        "identifier": "phs001189.v1.p1"
+      },
+      "version": "v1",
+      "title": "Cleveland Clinic Atrial Fibrillation Study",
+      "storedIn": {
+        "@type": "DataRepository",
+        "@context": [
+          "https://datatagsuite.github.io/context/sdo/data_repository_sdo_context.jsonld",
+          "https://datatagsuite.github.io/context/obo/data_repository_obo_context.jsonld"
+        ],
+        "@id": "TMPID:58a87d2b-8484-4221-aea2-e853ed02d33f",
+        "name": "dbGaP"
+      },
+      "types": [
+        {
+          "information": {
+            "value": "DNA sequencing",
+            "valueIRI": "http://purl.obolibrary.org/obo/OBI_0000626"
+          },
+          "method": {
+            "value": "whole genome sequencing assay",
+            "valueIRI": "http://purl.obolibrary.org/obo/OBI_0002117"
+          },
+          "platform": {
+            "value": "Illumina HiSeq X Ten",
+            "valueIRI": "http://purl.obolibrary.org/obo/OBI_0002129"
+          }
+        }
+      ],
+      "creators": [
+        {
+          "@type": "Organization",
+          "@context": [
+            "https://datatagsuite.github.io/context/sdo/organization_sdo_context.jsonld",
+            "https://datatagsuite.github.io/context/obo/organization_obo_context.jsonld"
+          ],
+          "@id": "TMPID:07c4fe93-abcb-4572-81bd-da7f94078057",
+          "name": "The National Institute of Health's National Heart, Lung and Blood Institute",
+          "abbreviation": "NHLBI"
+        }
+      ],
+      "dimensions": [
+        {
+          "@type": "Dimension",
+          "@context": [
+            "https://datatagsuite.github.io/context/sdo/dimension_sdo_context.jsonld",
+            "https://datatagsuite.github.io/context/obo/dimension_obo_context.jsonld"
+          ],
+          "@id": "TMPID:71d31545-71d6-4161-b44d-6157b7c515f4",
+          "name": {
+            "value": "Actual Subject Count"
+          },
+          "description": "The actual number of subjects entered into a clinical trial.",
+          "types": [
+            {
+              "value": "Actual Subject Number",
+              "valueIRI": "http://purl.obolibrary.org/obo/NCIT_C98703"
+            }
+          ],
+          "values": [
+            362
+          ]
+        }
+      ],
+      "extraProperties": [
+        {
+          "@type": "CategoryValuesPair",
+          "@context": [
+            "https://datatagsuite.github.io/context/sdo/category_values_pair_sdo_context.jsonld",
+            "https://datatagsuite.github.io/context/obo/category_values_pair_obo_context.jsonld"
+          ],
+          "@id": "TMPID:bdd51c43-46e8-4b8d-bd5e-2b4e63a9025e",
+          "category": "study_type",
+          "values": [
+            "Case Set"
+          ]
+        }
+      ]
+    },
+    {
+      "@type": "Dataset",
+      "@context": [
+        "https://datatagsuite.github.io/context/sdo/dataset_sdo_context.jsonld",
+        "https://datatagsuite.github.io/context/obo/dataset_obo_context.jsonld"
+      ],
+      "@id": "TMPID:301fbed4-94e3-4b51-a8a8-96766548e6da",
+      "identifier": {
+        "@type": "Identifier",
+        "@context": [
+          "https://datatagsuite.github.io/context/sdo/identifier_info_sdo_context.jsonld",
+          "https://datatagsuite.github.io/context/obo/identifier_info_obo_context.jsonld"
+        ],
+        "@id": "TMPID:a10d2bc0-ff87-4459-b5c2-30f466a8f817",
+        "identifier": "phs001143.v1.p1"
+      },
+      "version": "v1",
+      "title": "The Genetics and Epidemiology of Asthma in Barbados",
+      "storedIn": {
+        "@type": "DataRepository",
+        "@context": [
+          "https://datatagsuite.github.io/context/sdo/data_repository_sdo_context.jsonld",
+          "https://datatagsuite.github.io/context/obo/data_repository_obo_context.jsonld"
+        ],
+        "@id": "TMPID:58a87d2b-8484-4221-aea2-e853ed02d33f",
+        "name": "dbGaP"
+      },
+      "types": [
+        {
+          "information": {
+            "value": "DNA sequencing",
+            "valueIRI": "http://purl.obolibrary.org/obo/OBI_0000626"
+          },
+          "method": {
+            "value": "whole genome sequencing assay",
+            "valueIRI": "http://purl.obolibrary.org/obo/OBI_0002117"
+          },
+          "platform": {
+            "value": "Illumina HiSeq 2000",
+            "valueIRI": "http://purl.obolibrary.org/obo/OBI_0002001"
+          }
+        }
+      ],
+      "creators": [
+        {
+          "@type": "Organization",
+          "@context": [
+            "https://datatagsuite.github.io/context/sdo/organization_sdo_context.jsonld",
+            "https://datatagsuite.github.io/context/obo/organization_obo_context.jsonld"
+          ],
+          "@id": "TMPID:07c4fe93-abcb-4572-81bd-da7f94078057",
+          "name": "The National Institute of Health's National Heart, Lung and Blood Institute",
+          "abbreviation": "NHLBI"
+        }
+      ],
+      "dimensions": [
+        {
+          "@type": "Dimension",
+          "@context": [
+            "https://datatagsuite.github.io/context/sdo/dimension_sdo_context.jsonld",
+            "https://datatagsuite.github.io/context/obo/dimension_obo_context.jsonld"
+          ],
+          "@id": "TMPID:0bd674ac-c5be-4ae0-93d1-aa3286381cb6",
+          "name": {
+            "value": "Actual Subject Count"
+          },
+          "description": "The actual number of subjects entered into a clinical trial.",
+          "types": [
+            {
+              "value": "Actual Subject Number",
+              "valueIRI": "http://purl.obolibrary.org/obo/NCIT_C98703"
+            }
+          ],
+          "values": [
+            1527
+          ]
+        }
+      ],
+      "extraProperties": [
+        {
+          "@type": "CategoryValuesPair",
+          "@context": [
+            "https://datatagsuite.github.io/context/sdo/category_values_pair_sdo_context.jsonld",
+            "https://datatagsuite.github.io/context/obo/category_values_pair_obo_context.jsonld"
+          ],
+          "@id": "TMPID:780465f4-fadb-46cb-93ad-b7ce7ebb3ad7",
+          "category": "study_type",
+          "values": [
+            "Family"
+          ]
+        }
+      ]
+    },
+    {
+      "@type": "Dataset",
+      "@context": [
+        "https://datatagsuite.github.io/context/sdo/dataset_sdo_context.jsonld",
+        "https://datatagsuite.github.io/context/obo/dataset_obo_context.jsonld"
+      ],
+      "@id": "TMPID:2a6a5d93-eb52-492a-800b-44819e4d2382",
+      "identifier": {
+        "@type": "Identifier",
+        "@context": [
+          "https://datatagsuite.github.io/context/sdo/identifier_info_sdo_context.jsonld",
+          "https://datatagsuite.github.io/context/obo/identifier_info_obo_context.jsonld"
+        ],
+        "@id": "TMPID:2e9cde50-0f3f-4d95-be11-febdb2bd5832",
+        "identifier": "phs001368.v1.p1"
+      },
+      "version": "v1",
+      "title": "Cardiovascular Health Study",
+      "storedIn": {
+        "@type": "DataRepository",
+        "@context": [
+          "https://datatagsuite.github.io/context/sdo/data_repository_sdo_context.jsonld",
+          "https://datatagsuite.github.io/context/obo/data_repository_obo_context.jsonld"
+        ],
+        "@id": "TMPID:58a87d2b-8484-4221-aea2-e853ed02d33f",
+        "name": "dbGaP"
+      },
+      "types": [
+        {
+          "information": {
+            "value": "DNA sequencing",
+            "valueIRI": "http://purl.obolibrary.org/obo/OBI_0000626"
+          },
+          "method": {
+            "value": "whole genome sequencing assay",
+            "valueIRI": "http://purl.obolibrary.org/obo/OBI_0002117"
+          },
+          "platform": {
+            "value": "Illumina HiSeq X Ten",
+            "valueIRI": "http://purl.obolibrary.org/obo/OBI_0002129"
+          }
+        }
+      ],
+      "creators": [
+        {
+          "@type": "Organization",
+          "@context": [
+            "https://datatagsuite.github.io/context/sdo/organization_sdo_context.jsonld",
+            "https://datatagsuite.github.io/context/obo/organization_obo_context.jsonld"
+          ],
+          "@id": "TMPID:07c4fe93-abcb-4572-81bd-da7f94078057",
+          "name": "The National Institute of Health's National Heart, Lung and Blood Institute",
+          "abbreviation": "NHLBI"
+        }
+      ],
+      "dimensions": [
+        {
+          "@type": "Dimension",
+          "@context": [
+            "https://datatagsuite.github.io/context/sdo/dimension_sdo_context.jsonld",
+            "https://datatagsuite.github.io/context/obo/dimension_obo_context.jsonld"
+          ],
+          "@id": "TMPID:9ad2eeb9-da1b-41c8-876b-2510241887cc",
+          "name": {
+            "value": "Actual Subject Count"
+          },
+          "description": "The actual number of subjects entered into a clinical trial.",
+          "types": [
+            {
+              "value": "Actual Subject Number",
+              "valueIRI": "http://purl.obolibrary.org/obo/NCIT_C98703"
+            }
+          ],
+          "values": [
+            3622
+          ]
+        }
+      ],
+      "extraProperties": [
+        {
+          "@type": "CategoryValuesPair",
+          "@context": [
+            "https://datatagsuite.github.io/context/sdo/category_values_pair_sdo_context.jsonld",
+            "https://datatagsuite.github.io/context/obo/category_values_pair_obo_context.jsonld"
+          ],
+          "@id": "TMPID:84d2a0ce-408d-4b79-9494-fa58c031b9ea",
+          "category": "study_type",
+          "values": [
+            "Longitudinal"
+          ]
+        }
+      ]
+    },
+    {
+      "@type": "Dataset",
+      "@context": [
+        "https://datatagsuite.github.io/context/sdo/dataset_sdo_context.jsonld",
+        "https://datatagsuite.github.io/context/obo/dataset_obo_context.jsonld"
+      ],
+      "@id": "TMPID:06974bb1-eaf3-414d-a8ed-66a5dd944a3b",
+      "identifier": {
+        "@type": "Identifier",
+        "@context": [
+          "https://datatagsuite.github.io/context/sdo/identifier_info_sdo_context.jsonld",
+          "https://datatagsuite.github.io/context/obo/identifier_info_obo_context.jsonld"
+        ],
+        "@id": "TMPID:eed8b22a-e6ea-4550-b8e6-1495f2ee248a",
+        "identifier": "phs000179.v5.p2"
+      },
+      "version": "v5",
+      "title": "Genetic Epidemiology of COPD (COPDGene)",
+      "storedIn": {
+        "@type": "DataRepository",
+        "@context": [
+          "https://datatagsuite.github.io/context/sdo/data_repository_sdo_context.jsonld",
+          "https://datatagsuite.github.io/context/obo/data_repository_obo_context.jsonld"
+        ],
+        "@id": "TMPID:58a87d2b-8484-4221-aea2-e853ed02d33f",
+        "name": "dbGaP"
+      },
+      "types": [
+        {
+          "information": {
+            "value": "DNA sequencing",
+            "valueIRI": "http://purl.obolibrary.org/obo/OBI_0000626"
+          },
+          "method": {
+            "value": "whole genome sequencing assay",
+            "valueIRI": "http://purl.obolibrary.org/obo/OBI_0002117"
+          },
+          "platform": {
+            "value": "Illumina HiSeq X Ten",
+            "valueIRI": "http://purl.obolibrary.org/obo/OBI_0002129"
+          }
+        }
+      ],
+      "creators": [
+        {
+          "@type": "Organization",
+          "@context": [
+            "https://datatagsuite.github.io/context/sdo/organization_sdo_context.jsonld",
+            "https://datatagsuite.github.io/context/obo/organization_obo_context.jsonld"
+          ],
+          "@id": "TMPID:07c4fe93-abcb-4572-81bd-da7f94078057",
+          "name": "The National Institute of Health's National Heart, Lung and Blood Institute",
+          "abbreviation": "NHLBI"
+        }
+      ],
+      "dimensions": [
+        {
+          "@type": "Dimension",
+          "@context": [
+            "https://datatagsuite.github.io/context/sdo/dimension_sdo_context.jsonld",
+            "https://datatagsuite.github.io/context/obo/dimension_obo_context.jsonld"
+          ],
+          "@id": "TMPID:97ca4576-6014-4173-a7ce-a5afe15e4bfa",
+          "name": {
+            "value": "Actual Subject Count"
+          },
+          "description": "The actual number of subjects entered into a clinical trial.",
+          "types": [
+            {
+              "value": "Actual Subject Number",
+              "valueIRI": "http://purl.obolibrary.org/obo/NCIT_C98703"
+            }
+          ],
+          "values": [
+            10371
+          ]
+        }
+      ],
+      "extraProperties": [
+        {
+          "@type": "CategoryValuesPair",
+          "@context": [
+            "https://datatagsuite.github.io/context/sdo/category_values_pair_sdo_context.jsonld",
+            "https://datatagsuite.github.io/context/obo/category_values_pair_obo_context.jsonld"
+          ],
+          "@id": "TMPID:98b8d8e8-e6b8-4c64-a590-7a470c7deab7",
+          "category": "study_type",
+          "values": [
+            "Case-Control"
+          ]
+        }
+      ]
+    }
+  ]
+}

@@ -82,28 +82,63 @@ def main():
     print("\n")
 
     # ------------------------------------------
-    # List all subject metadata
+    # List subject characteristics
     # ------------------------------------------
 
+    # note that this query only retrieves 
     qres = g.query(
             """
-            SELECT DISTINCT ?subject_name ?propname ?propvalue
+            SELECT DISTINCT ?subject_name ?dbgap_var_acc ?pname ?propvalue
             WHERE {
                 ?subj1 a obo:BFO_0000040.
                 ?subj1 obo:IAO_0000590 ?subject_name.
                 ?subj1 obo:BFO_0000023 ?role.
                 ?role sdo:value ?rolename.
                 ?subj1 obo:RO_0000086 ?chars.
-                ?chars obo:IAO_0000300 ?propname.
                 ?chars obo:IAO_0000027 ?propvalue.
+                ?chars obo:IAO_0000577 ?chars_id.
+                ?chars_id sdo:identifier ?dbgap_var_acc.
+                ?chars obo:IAO_0000590 ?propname.
+                ?propname sdo:value ?pname.
                 FILTER (str(?rolename) = "donor").
             }
             """)
 
     print("[QUERY 3] Subject characteristics:\n")
-    print("Subject\tCharacteristic\tValue")
+    print("Subject\tdbGaP variable\tCharacteristic\tValue")
     for row in qres:
-        print("%s\t%s\t%s" % row)
+        print("%s\t%s\t%s\t%s" % row)
+    print("\n")
+
+    # ------------------------------------------
+    # List sample characteristics
+    # ------------------------------------------
+
+    # note that this query is identical to the previous one except that:
+    #  1. the selected role name is "specimen", not "donor"
+    #  2. the variable subj1 has been renamed to samp1
+    qres = g.query(
+            """
+            SELECT DISTINCT ?subject_name ?dbgap_var_acc ?pname ?propvalue
+            WHERE {
+                ?subj1 a obo:BFO_0000040.
+                ?subj1 obo:IAO_0000590 ?subject_name.
+                ?subj1 obo:BFO_0000023 ?role.
+                ?role sdo:value ?rolename.
+                ?subj1 obo:RO_0000086 ?chars.
+                ?chars obo:IAO_0000027 ?propvalue.
+                ?chars obo:IAO_0000577 ?chars_id.
+                ?chars_id sdo:identifier ?dbgap_var_acc.
+                ?chars obo:IAO_0000590 ?propname.
+                ?propname sdo:value ?pname.
+                FILTER (str(?rolename) = "specimen").
+            }
+            """)
+
+    print("[QUERY 4] Sample characteristics:\n")
+    print("Sample\tdbGaP variable\tCharacteristic\tValue")
+    for row in qres:
+        print("%s\t%s\t%s\t%s" % row)
     print("\n")
 
     # ------------------------------------------
@@ -119,23 +154,25 @@ def main():
 
     qres = g.query(
             """
-            SELECT DISTINCT ?dbgap_study_acc ?dbgap_var_acc ?name
+            SELECT DISTINCT ?dbgap_study_acc ?dbgap_var_acc ?pname ?descr
             WHERE {
                 ?study a obo:IAO_0000100.
                 ?study obo:IAO_0000577 ?study_id.
                 ?study_id sdo:identifier ?dbgap_study_acc.
                 ?study obo:BFO_0000051 ?dim1.
                 ?dim1 a obo:STATO_23367.
-                ?dim1 obo:IAO_0000300 ?name.
+                ?dim1 obo:IAO_0000300 ?descr.
                 ?dim1 obo:IAO_0000577 ?dim1_id.
                 ?dim1_id sdo:identifier ?dbgap_var_acc.
+                ?dim1 obo:IAO_0000590 ?propname.
+                ?propname sdo:value ?pname.
             }
             """)
 
-    print("[QUERY 4] Study variables:\n")
-    print("dbGaP Study\tdbGaP variable accession\tName")
+    print("[QUERY 5] Study variables:\n")
+    print("dbGaP Study\tdbGaP variable\tName\tDescription")
     for row in qres:
-        print("%s\t%s\t%s" % row)
+        print("%s\t%s\t%s\t%s" % row)
     print()
 
 if __name__ == '__main__':
