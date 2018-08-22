@@ -16,6 +16,40 @@ import os
 import re
 import sys
 
+# Record study variables as dimensions of the study/Dataset.
+def add_study_vars(study, study_md):
+    all_vars = []
+    dbgap_vars = {}
+
+    for var_type in ('Subject', 'Subject_Phenotypes', 'Sample', 'Sample_Attributes'):
+        if var_type in study_md:
+            var_data = study_md[var_type]['var_report']['data']
+            vars = var_data['vars']
+            all_vars.extend(vars)
+
+    # create a Dimension for each one
+    for var in all_vars:
+        var_name = var['var_name']
+        id = DatsObj("Identifier", [
+                ("identifier",  var['id']),
+                ("identifierSource", "dbGaP")])
+        
+        dim = DatsObj("Dimension", [
+                ("identifier", id),
+                ("name", DatsObj("Annotation", [("value", var_name)])),
+                ("description", var['description'])
+                # TODO: include stats
+                ])  
+        study.getProperty("dimensions").append(dim)
+
+        # track dbGaP variable Dimensions by dbGaP id
+        if var['id'] in dbgap_vars:
+            logging.fatal("duplicate definition found for dbGaP variable " + var_name + " with accession=" + var['id'])
+            sys.exit(1)
+        dbgap_vars[var['id']] = dim
+
+    return dbgap_vars
+
 # ------------------------------------------------------
 # main()
 # ------------------------------------------------------
@@ -57,46 +91,6 @@ def main():
     
     # Study Variables
     STUDY_VARS = OrderedDict([("value", "Property or Attribute"), ("valueIRI", "http://purl.obolibrary.org/obo/NCIT_C20189")])
-
-    # record study variables as dimensions of the study/Dataset
-    def add_study_vars(study, study_md):
-        all_vars = []
-        dbgap_vars = {}
-
-        # Subject Phenotype study variables
-        if 'Subject_Phenotypes' in study_md:
-            subj_data = study_md['Subject_Phenotypes']['var_report']['data']
-            subj_vars = subj_data['vars']
-            all_vars.extend(subj_vars)
-
-        # Sample Attribute study variables
-        if 'Sample_Attributes' in study_md:
-            samp_data = study_md['Sample_Attributes']['var_report']['data']
-            samp_vars = samp_data['vars']
-            all_vars.extend(samp_vars)
-
-        # create a Dimension for each one
-        for var in all_vars:
-            var_name = var['var_name']
-            id = DatsObj("Identifier", [
-                    ("identifier",  var['id']),
-                    ("identifierSource", "dbGaP")])
-
-            dim = DatsObj("Dimension", [
-                    ("identifier", id),
-                    ("name", DatsObj("Annotation", [("value", var_name)])),
-                    ("description", var['description'])
-                    #To do: include stats
-                    ])  
-            study.getProperty("dimensions").append(dim)
-
-            # track dbGaP variable Dimensions by dbGaP id
-            if var['id'] in dbgap_vars:
-                logging.fatal("duplicate definition found for dbGaP variable " + var_name + " with accession=" + var['id'])
-                sys.exit(1)
-            dbgap_vars[var['id']] = dim
-
-        return dbgap_vars
 
     # case 1: process public metadata only (i.e., data dictionaries and variable reports only)
     if restricted_mp is None:
