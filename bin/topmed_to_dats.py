@@ -54,25 +54,26 @@ def main():
     restricted_mp = args.dbgap_protected_metadata_path
     # read public metadata
     study_pub_md = ccmm.topmed.public_metadata.read_study_metadata(pub_xp)
-#        logging.debug("study_pub_md = " + str(study_pub_md))
     
     # Study Variables
     STUDY_VARS = OrderedDict([("value", "Property or Attribute"), ("valueIRI", "http://purl.obolibrary.org/obo/NCIT_C20189")])
 
     # record study variables as dimensions of the study/Dataset
     def add_study_vars(study, study_md):
+        all_vars = []
+        dbgap_vars = {}
+
         # Subject Phenotype study variables
         if 'Subject_Phenotypes' in study_md:
             subj_data = study_md['Subject_Phenotypes']['var_report']['data']
             subj_vars = subj_data['vars']
-        else:
-            subj_vars = []
+            all_vars.extend(subj_vars)
+
         # Sample Attribute study variables
-        samp_data = study_md['Sample_Attributes']['var_report']['data']
-        samp_vars = samp_data['vars']
-        all_vars = subj_vars[:]
-        all_vars.extend(samp_vars)
-        dbgap_vars = {}
+        if 'Sample_Attributes' in study_md:
+            samp_data = study_md['Sample_Attributes']['var_report']['data']
+            samp_vars = samp_data['vars']
+            all_vars.extend(samp_vars)
 
         # create a Dimension for each one
         for var in all_vars:
@@ -99,16 +100,17 @@ def main():
 
     # case 1: process public metadata only (i.e., data dictionaries and variable reports only)
     if restricted_mp is None:
-        # generate sample entry for each study for which we have metadata
         for study_id in study_pub_md:
             study = studies_by_id[study_id]
             study_md = study_pub_md[study_id]
             study_md['dbgap_vars'] = add_study_vars(study, study_md)
-            # create dummy/representative DATS instance based on variable reports
-            # TODO - signal somewhere directly in the DATS that this is not real subject-level data (subject/sample id may be sufficient)
-            dna_extract = ccmm.topmed.dna_extracts.get_synthetic_single_dna_extract_json_from_public_metadata(study, study_md)
-            # insert synthetic sample into relevant study/Dataset
-            study.set("isAbout", [dna_extract])
+            # only create DNA extracts if there are sample attributes
+            if 'Sample_Attributes' in study_md:
+                # create dummy/synthetic DATS instance based on variable reports
+                # note that this may result in nonsensical combinations of sample and/or subject variable values
+                dna_extract = ccmm.topmed.dna_extracts.get_synthetic_single_dna_extract_json_from_public_metadata(study, study_md)
+                # insert synthetic sample into relevant study/Dataset
+                study.set("isAbout", [dna_extract])
 
     # case 2: process both public metadata and access-controlled dbGaP metadata
     else:
@@ -117,8 +119,10 @@ def main():
             study = studies_by_id[study_id]
             study_md = study_pub_md[study_id]
             study_md['dbgap_vars'] = add_study_vars(study, study_md)
-            dna_extracts = ccmm.topmed.dna_extracts.get_dna_extracts_json_from_restricted_metadata(study, study_md, study_restricted_md[study_id])
-            study.set("isAbout", dna_extracts)
+            # only create DNA extracts if there are sample attributes
+            if 'Sample_Attributes' in study_md:
+                dna_extracts = ccmm.topmed.dna_extracts.get_dna_extracts_json_from_restricted_metadata(study, study_md, study_restricted_md[study_id])
+                study.set("isAbout", dna_extracts)
 
     # write Dataset to DATS JSON file
     with open(args.output_file, mode="w") as jf:
