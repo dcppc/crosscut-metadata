@@ -241,6 +241,20 @@ def make_multilevel_dict(items, keys):
 
     return md
 
+# check whether a given key exists within a multilevel dict. Returns True or False.
+def multilevel_dict_key_exists(d, key):
+    for k in d:
+        if k == key:
+            return True
+        v = d[k]
+        if v is None:
+            pass
+        elif isinstance(v, str):
+            pass
+        elif multilevel_dict_key_exists(v, key):
+            return True
+    return False
+
 # Find all dbGaP XML or .txt metadata files in a given directory.
 def get_study_metadata_files(dir, suffix):
     filenames = os.listdir(dir)
@@ -268,9 +282,13 @@ def get_study_metadata_files(dir, suffix):
                 "metadata_type": m.group(5), 
                 "file_type": m.group(6) 
                 }
+
             files.append(file)
 
-    return make_multilevel_dict(files, ["study_id", "metadata_type", "file_type"])
+        else:
+            logging.debug("ignoring metadata file " + f)
+
+    return make_multilevel_dict(files, ["study_id", "study_name", "metadata_type", "file_type"])
 
 # Read all dbGaP XML metadata files in a given directory and read and parse their contents.
 def read_study_metadata(dir):
@@ -283,44 +301,59 @@ def read_study_metadata(dir):
     logging.info("found metadata file(s) for " + str(n_studies) + " " + study_str + " in " + dir)
 
     # identify sub-studies
-    # and index their var_report files by phenotypic trait table accession
-    ss_var_reports = {}
+    # heuristic: studies with no data_dict files will be treated as sub-studies
     n_not_substudy = 0
-    for study in study_files:
-        file_types_d = {}
-        sd = study_files[study]
-        for datatype in sd:
-            dt_files = sd[datatype]
-            for filetype in dt_files:
-                file = sd[datatype][filetype]
-                file_types_d[filetype] = True
-                if filetype == 'var_report':
-                    ss_var_reports[file['phenotype_id']] = file            
-
-        # if only var_report files are present it will be treated as a sub-study
-        file_types = [x for x in file_types_d.keys()]
-        n_file_types = len(file_types)
-        if (n_file_types == 1) and (file_types[0] == 'var_report'):
-            sd['is_substudy'] = True
-        else:
-            sd['is_substudy'] = False
+    substudy_names = {}
+    for study_id in study_files:
+        sd = study_files[study_id]
+        if multilevel_dict_key_exists(sd, 'data_dict'):
             n_not_substudy += 1
+        else:
+            sd['_is_substudy'] = 1
+            # substudies should have only a single study name
+            ss_names = [x for x in sd.keys() if not x.startswith('_')]
+            n_ss_names = len(ss_names)
+            if n_ss_names != 1:
+                logging.fatal("Sub-study " + study_id + " maps to " + str(n_ss_names) + " substudy names: " + ",".join(ss_names))
+                sys.exit(1)
+            substudy_names[ss_names[0]] = True
+            logging.info(study_id + " | " + ss_names[0] + " is a sub-study")
 
     if n_not_substudy != 1:
         logging.fatal("Failed to identify main study - found " + str(n_not_substudy) + " main studies")
         sys.exit(1)
 
     # process one study at a time
-    for study in study_files:
-        if study_files[study]['is_substudy']:
-            logging.info("skipping sub-study " + study)
+    for study_id in study_files:
+
+        # find file data for parent study
+        sd = None
+
+        study = study_files[study_id]
+        if '_is_substudy' in study:
             continue
-        logging.info("processing metadata for study " + study)
-        sd = study_files[study]
+
+        for study_name in study:
+            if study_name.startswith('_'):
+                continue
+            if study_name in substudy_names:
+                logging.info("skipping sub-study " + study_name)
+                continue
+            if sd is not None:
+                logging.fatal("found multiple top-level studies under " + study_id)
+                sys.exit(1)
+            sd = study[study_name]
+
+        if sd is None:
+            logging.fatal("failed to find any top-level study under " + study_id)
+            sys.exit(1)
+
+        logging.info("processing metadata for study " + study_id + " | " + study_name)
+
         md = { 'files': sd }
-        study_md[study] = md
+        study_md[study_id] = md
         
-        # each study should have a data_dict and var_report for each of the following:
+        # each study may have a data_dict and var_report for each of the following:
         for datatype in ('Subject', 'Sample', 'Sample_Attributes', 'Subject_Phenotypes'):
             for filetype in ('data_dict', 'var_report'):
 
@@ -329,17 +362,11 @@ def read_study_metadata(dir):
                     logging.info("no XML found for " + datatype + "." + filetype)
                     continue
 
-                # skip any data_dict files whose corresponding var_report is from a sub-study
-                if filetype == 'data_dict':
-                    var_report_study = ss_var_reports[sd[datatype][filetype]['phenotype_id']]['study_id']
-                    if var_report_study != study:
-                        logging.info("skipping data_dict for sub-study " + var_report_study)
-                        break
-
                 if datatype not in md:
                     md[datatype] = {}
 
                 file_path = sd[datatype][filetype]['path']
+                logging.debug("parsing metadata file " + file_path)
 
                 xml_data = read_dbgap_data_dict_or_var_report_xml(file_path)
                 md[datatype][filetype] = { 'file': file_path, 'data': xml_data }
