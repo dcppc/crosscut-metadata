@@ -1,0 +1,181 @@
+{
+  "@type": "Dataset",
+  "@context": "https://w3id.org/dats/context/obo/dataset_context.jsonld",
+  "@id": "",
+  "identifier": {
+    "@type": "Identifier",
+    "@id": "",
+    "identifier": "TOPMed"
+  },
+  "title": "Trans-Omics for Precision Medicine (TOPMed)",
+  "description": "TOPMed generates scientific resources related to heart, lung, blood, and sleep disorders (HLBS). It is sponsored by the NIH NHLBI and is part of a broader Precision Medicine Initiative.",
+  "storedIn": {
+    "@type": "DataRepository",
+    "@context": "https://w3id.org/dats/context/obo/data_repository_context.jsonld",
+    "@id": "",
+    "name": "dbGaP"
+  },
+  "creators": [
+    {
+      "@type": "Organization",
+      "@context": "https://w3id.org/dats/context/obo/organization_context.jsonld",
+      "@id": "",
+      "name": "The National Institute of Health's National Heart, Lung and Blood Institute",
+      "abbreviation": "NHLBI"
+    }
+  ],
+  "distributions": [
+    {
+      "@type": "DatasetDistribution",
+      "@context": "https://w3id.org/dats/context/obo/dataset_distribution_context.jsonld",
+      "@id": "",
+      "access": {
+        "@type": "Access",
+        "@id": "",
+        "landingPage": "https://www.ncbi.nlm.nih.gov/gap/?term=topmed"
+      }
+    }
+  ],
+   "producedBy":{
+    "@type": "Study",
+        "@context": "https://w3id.org/dats/context/obo/study_context.jsonld",
+        "@id": "",
+        "identifier": {
+             "@type": "Identifier",
+             "@id": "",
+             "identifier": "uuid"
+           },
+         "studyGroups" : [
+         {
+         "@context": "https://w3id.org/dats/context/obo/studygroup_context.jsonld",
+        "@id": "",
+        "identifier": {
+             "@type": "Identifier",
+             "@id": "",
+             "identifier": "uuid"
+           },
+           "members":[
+           {
+          "@type": "Material",
+          "identifier": {
+             "@type": "Identifier",
+             "@id": "",
+             "identifier": "uuid"
+           }
+           }
+           ]
+           },
+         ],
+         "input": [
+         
+         {
+          "@type": "Material",
+          "identifier": {
+             "@type": "Identifier",
+             "@id": "",
+             "identifier": "uuid"
+           }
+           }
+         
+         ]        
+       
+   },
+  
+  "hasPart": [
+    {
+      "@type": "Dataset",
+      "@context": "https://w3id.org/dats/context/obo/dataset_context.jsonld",
+      "@id": "",
+      "identifier": {
+        "@type": "Identifier",
+        "@id": "",
+        "identifier": "uuid or amazon-web-service file id"
+      },
+      "version": "v3",
+      "title": "file name for sequence data for sample XYZ",
+      "storedIn": {
+        "@type": "DataRepository",
+        "@context": "https://w3id.org/dats/context/obo/data_repository_context.jsonld",
+        "@id": "",
+        "name": "dbGaP"
+      },
+      "types": [
+        {
+          "information": {
+            "value": "DNA sequencing",
+            "valueIRI": "http://purl.obolibrary.org/obo/OBI_0000626"
+          },
+          "method": {
+            "value": "whole genome sequencing assay",
+            "valueIRI": "http://purl.obolibrary.org/obo/OBI_0002117"
+          },
+          "platform": {
+            "value": "Illumina HiSeq X Ten",
+            "valueIRI": "http://purl.obolibrary.org/obo/OBI_0002129"
+          }
+        }
+      ],
+       "distributions": [
+     {
+       "@type": "DatasetDistribution",
+       "@context": "https://w3id.org/dats/context/obo/dataset_distribution_context.jsonld",
+       "@id": "",
+       "access": {
+         "@type": "Access",
+         "@id": "",
+         "landingPage": "uuid or amazon-web-service file id"
+       },
+    "conformsTo": [{
+            "@type": "DataStandard",
+            "@context": "https://w3id.org/dats/context/obo/dataset_standard_context.jsonld",
+            "name": "FASTQ",
+            "type": {"value":"format"},
+            "description": "FASTQ file format",
+            "identifier": {"identifier": ""}
+        }]          
+     }
+   ],
+      "producedBy":{
+        "@type": "DataAcquisition",
+        "@context": "https://w3id.org/dats/context/obo/data_acquisition_context.jsonld",
+        "@id": "",
+        "identifier": {
+             "@type": "Identifier",
+             "@id": "",
+             "identifier": "uuid"
+           },
+         "name" : "file name for sequence data for sample XYZ",  
+        "input" : [
+            {
+          "@type": "Material",
+          "identifier": {
+             "@type": "Identifier",
+             "@id": "",
+             "identifier": "uuid"
+           }
+          }  
+        ],
+        "output": [
+        {
+          "@type": "Dataset",
+          "identifier": {
+             "@type": "Identifier",
+             "@id": "",
+             "identifier": "uuid"
+           }
+          }  
+        ],
+        "uses" : [ {
+            "@type":"Software",
+            "name": "some_software",
+            "identifier": {
+             "@type": "Identifier",
+             "@id": "",
+             "identifier": "uuid"
+           }
+            
+        }]
+     }
+    }
+   ]
+  }
