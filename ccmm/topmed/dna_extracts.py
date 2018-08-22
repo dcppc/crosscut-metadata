@@ -18,10 +18,8 @@ import sys
 # DATS JSON Output
 # ------------------------------------------------------
 
-# Pick representative and/or legal value for each variable
-def pick_var_values(vars):
-    res = {}
-
+# Pick representative and/or legal value for each variable in vars and place it in vdict
+def pick_var_values(vars, vdict):
     for var in vars:
         vname = var['var_name']
         values = None
@@ -52,9 +50,12 @@ def pick_var_values(vars):
             sorted_values.sort(key=lambda x: x['name'])
             value = sorted_values[0]['name']
         
-        res[vname] = { "value": value, "var": var }
+        if vname in vdict:
+            logging.warn("previous value (" + vdict[vname]["value"] + ") for variable " + vname + " overwritten with " + value)
 
-    return res
+        vdict[vname] = { "value": value, "var": var }
+
+    return vdict
 
 # Generate DATS JSON for a single sample/DNA extract
 def get_single_dna_extract_json(study, study_md, subj_var_values, samp_var_values):
@@ -257,21 +258,24 @@ def get_single_dna_extract_json(study, study_md, subj_var_values, samp_var_value
 def get_synthetic_single_dna_extract_json_from_public_metadata(study, study_md):
 
     # Subject summary data
-    if 'Subject_Phenotypes' in study_md:
-        subj_data = study_md['Subject_Phenotypes']['var_report']['data']
+    subj_var_values = {}
+    for var_type in ('Subject', 'Subject_Phenotypes'):
+        if var_type not in study_md:
+            continue
+        subj_data = study_md[var_type]['var_report']['data']
         subj_vars = subj_data['vars']
         # pick representative and/or legal value for each variable
-        subj_var_values = pick_var_values(subj_vars)
-        logging.debug("subj_var_values=" + json.dumps(subj_var_values, indent=2))
-    else:
-        subj_var_values = {}
+        pick_var_values(subj_vars, subj_var_values)
 
     # Sample summary data
-    samp_data = study_md['Sample_Attributes']['var_report']['data']
-    samp_vars = samp_data['vars']
-    # pick representative and/or legal value for each variable
-    samp_var_values = pick_var_values(samp_vars)
-    logging.debug("samp_var_values=" + json.dumps(samp_var_values, indent=2))
+    samp_var_values = {}
+    for var_type in ('Sample', 'Sample_Attributes'):
+        if var_type not in study_md:
+            continue
+        samp_data = study_md[var_type]['var_report']['data']
+        samp_vars = samp_data['vars']
+        # pick representative and/or legal value for each variable
+        samp_var_values = pick_var_values(samp_vars, samp_var_values)
 
     # assign dummy ids: subject and sample ids are protected data
     samp_var_values['dbGaP_Sample_ID'] = { "value": "0000000" }
