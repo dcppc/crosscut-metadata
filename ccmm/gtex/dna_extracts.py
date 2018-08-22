@@ -52,8 +52,8 @@ def pick_var_values(vars):
             sorted_values.sort(key=lambda x: x['name'])
             value = sorted_values[0]['name']
         
-        if vname.upper() == 'BODY_SITE' or vname.upper() =='BODY SITE':
-            vname = 'BODY_SITE'
+#        if vname.upper() == 'BODY_SITE':
+#            vname = 'BODY_SITE'
         
         res[vname] = { "value": value, "var": var }
 
@@ -62,26 +62,27 @@ def pick_var_values(vars):
 # Generate DATS JSON for a single sample/DNA extract
 def get_single_dna_extract_json(study, study_md, subj_var_values, samp_var_values):
 
-    # Almost all samples in TOPMed WGS phase are blood samples, named "Blood", "Peripheral Blood"...
-    # Few samples are saliva samples probably due to  
-    if "blood" in samp_var_values['BODY_SITE']['value'].lower():
+    #Assign sample anatomy - tissue or blood   
+    if "blood" in samp_var_values['SMMTRLTP']['value'].lower():
         anatomy_name = "blood"
         anat_id = "0000178"
-    elif samp_var_values['BODY_SITE']['value'].lower() == "saliva":
-        anatomy_name = "saliva"
-        anat_id = "0001836"        
+    elif "tissue" in samp_var_values['SMMTRLTP']['value'].lower():
+        anatomy_name = "tissue"
+        anat_id = "0000479"
+    elif "cells" in samp_var_values['SMMTRLTP']['value'].lower():
+        anatomy_name = "cell group"
+        anat_id = "0014778"  
     else:
-        logging.fatal("encountered BODY_SITE other than 'Blood' and 'Saliva' in TOPMed sample metadata - " + samp_var_values['BODY_SITE']['value'])
+        logging.fatal("encountered Sample type (SMMTRLTP) other than 'Blood', 'Tissue', 'Cells' in GTEx sample metadata - " + samp_var_values['SMMTRLTP']['value'])
         sys.exit(1)
-
-
+        
     anatomy_identifier = OrderedDict([
             ("identifier",  "UBERON:" + str(anat_id)),
             ("identifierSource", "UBERON")])
     anatomy_alt_ids = [OrderedDict([
-                ("identifier", "http://purl.obolibrary.org/obo/UBERON_" + str(anat_id)),
-                ("identifierSource", "UBERON")])]
-
+            ("identifier", "http://purl.obolibrary.org/obo/UBERON_" + str(anat_id)),
+            ("identifierSource", "UBERON")])]
+    
     # extract subject attributes
     gender = None
     age = None
@@ -103,7 +104,7 @@ def get_single_dna_extract_json(study, study_md, subj_var_values, samp_var_value
             sys_bp = subj_var_values[name]['value']
         elif name_upper == "DIASBP":
             dias_bp = subj_var_values[name]['value']
-        elif name_upper == "HYPERTENSION" or name_upper == "HIGHBLOODPRES":
+        elif name_upper == "HYPERTENSION" or name_upper == "MHHTN":
             if subj_var_values[name]['value'].lower() == "yes" or subj_var_values[name]['value'] == 1:
                 disease['hypertension'] = "yes"
             else:

@@ -50,7 +50,8 @@ STAT_ATTRIBS = {
     "median": True,
     "min": True,
     "max": True,
-    "sd": True
+    "sd": True,
+    "distinct_vals": True
 }
 
 # expected attribute values for <variable>
@@ -180,12 +181,18 @@ def read_dbgap_data_dict_or_var_report_xml(xml_file):
             vars.append(var)
             # for type = "encoded value"
             cv_values = []
+            # for "values" where type is not "encoded value"
+            cv_list = []
 
             for gchild in child:
                 if gchild.tag == "value":
-                    code = gchild.attrib['code']
-                    value = gchild.text
-                    cv_values.append({ 'code': code, 'value': value })
+                    if var['type'] == "encoded value":
+                        code = gchild.attrib['code']
+                        value = gchild.text
+                        cv_values.append({ 'code': code, 'value': value })
+                    else:
+                        value = gchild.text
+                        cv_list.append(value)
                 elif gchild.tag == "total":
                     var['total'] = parse_var_report_subsection(gchild, "total")
                 elif gchild.tag == "cases":
@@ -200,6 +207,8 @@ def read_dbgap_data_dict_or_var_report_xml(xml_file):
 
             if var['type'] == "encoded value":
                 var['values'] = cv_values
+            if len(cv_list) > 0:
+                var['values'] = cv_list
 
         # TODO - check documentation for meaning of this dataset-level value
         elif child.tag == "has_coll":

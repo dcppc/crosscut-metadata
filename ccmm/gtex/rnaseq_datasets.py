@@ -138,7 +138,7 @@ GTEX_CONSORTIUM = DatsObj("Organization", [
 
 # TODO - where did  2017-06-30 release date come from?
 GTEX_V7_RELEASE_DATE = OrderedDict([
-        ("date", "2017-06-30"), 
+        ("date", "2017-06-30T00:00:00.000Z"), 
         ("type", {"value": "release date"})
         ])
 
