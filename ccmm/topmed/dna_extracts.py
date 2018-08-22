@@ -52,7 +52,7 @@ def pick_var_values(vars):
             sorted_values.sort(key=lambda x: x['name'])
             value = sorted_values[0]['name']
         
-        if vname.upper() == 'BODY_SITE':
+        if vname.upper() == 'BODY_SITE' or vname.upper() =='BODY SITE':
             vname = 'BODY_SITE'
         
         res[vname] = { "value": value, "var": var }
@@ -62,13 +62,18 @@ def pick_var_values(vars):
 # Generate DATS JSON for a single sample/DNA extract
 def get_single_dna_extract_json(study, study_md, subj_var_values, samp_var_values):
 
-    # all samples in TOPMed WGS phase are blood samples, named "Blood", "Peripheral Blood"...
-    if "blood" not in samp_var_values['BODY_SITE']['value'].lower():
-        logging.fatal("encountered BODY_SITE other than 'Blood' in TOPMed sample metadata - " + samp_var_values['BODY_SITE']['value'])
+    # Almost all samples in TOPMed WGS phase are blood samples, named "Blood", "Peripheral Blood"...
+    # Few samples are saliva samples probably due to  
+    if "blood" in samp_var_values['BODY_SITE']['value'].lower():
+        anatomy_name = "blood"
+        anat_id = "0000178"
+    elif samp_var_values['BODY_SITE']['value'].lower() == "saliva":
+        anatomy_name = "saliva"
+        anat_id = "0001836"        
+    else:
+        logging.fatal("encountered BODY_SITE other than 'Blood' and 'Saliva' in TOPMed sample metadata - " + samp_var_values['BODY_SITE']['value'])
         sys.exit(1)
 
-    anatomy_name = "blood"
-    anat_id = "0000178"
 
     anatomy_identifier = OrderedDict([
             ("identifier",  "UBERON:" + str(anat_id)),
