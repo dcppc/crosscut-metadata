@@ -74,6 +74,11 @@ def read_study_metadata(dir):
 
         filetype = list(sd['Sample_Attributes'].keys())[0]
         for datatype in ('Sample_Attributes', 'Subject_Phenotypes'):
+            # Subject_Phenotypes is not always present
+            if datatype not in sd:
+                logging.info("no XML found for " + datatype + "." + filetype)
+                continue
+            
             md[datatype] = {}
             file_path = sd[datatype][filetype]['path']
             txt_data = read_dbgap_restricted_metadata_txt(file_path)
