@@ -133,7 +133,7 @@ def get_single_dna_extract_json(study, study_md, subj_var_values, samp_var_value
     # harmonized/standardized characteristics
     if gender is not None:
         subject_sex = DatsObj("Dimension", [
-                ("name", { "value": "Gender" }),
+                ("name", DatsObj("Annotation", [("value", "Gender")])),
                 ("description", "Gender of the subject"),
                 ("values", [ gender ])
                 ])
@@ -141,7 +141,7 @@ def get_single_dna_extract_json(study, study_md, subj_var_values, samp_var_value
 
     if age is not None:
         subject_age = DatsObj("Dimension", [
-                ("name", { "value": "Age" }),
+                ("name", DatsObj("Annotation", [("value", "Age")])),
                 ("description", "Age of the subject"),
                 ("values", [ age ])
                 ])
@@ -149,7 +149,7 @@ def get_single_dna_extract_json(study, study_md, subj_var_values, samp_var_value
     
     if visit_year is not None:
         subject_visitYear = DatsObj("Dimension", [
-                ("name", { "value": "Visit year" }),
+                ("name", DatsObj("Annotation", [("value", "Visit year")])),
                 ("description", "Year of visit, to use for longitudinal analysis"),
                 ("values", [ visit_year ])
                 ])
@@ -157,7 +157,7 @@ def get_single_dna_extract_json(study, study_md, subj_var_values, samp_var_value
     
     if sys_bp is not None:
         subject_sysBP = DatsObj("Dimension", [
-                ("name", { "value": "Systolic blood pressure" }),
+                ("name", DatsObj("Annotation", [("value", "Systolic blood pressure")])),
                 ("description", "Systolic blood pressure of subject, measured in mmHg"),
                 ("values", [ sys_bp ])
                 ])
@@ -165,7 +165,7 @@ def get_single_dna_extract_json(study, study_md, subj_var_values, samp_var_value
         
     if dias_bp is not None:
         subject_diasBP = DatsObj("Dimension", [
-                ("name", { "value": "Diastolic blood pressure" }),
+                ("name", DatsObj("Annotation", [("value", "Diastolic blood pressure")])),
                 ("description", "Diastolic blood pressure of subject, measured in mmHg"),
                 ("values", [ dias_bp ])
                 ])
