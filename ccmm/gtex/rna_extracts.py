@@ -324,20 +324,23 @@ def get_single_sample_json(sample, dats_obj_cache):
 
     # human experimental subject/patient
     subject_sex = DatsObj("Dimension", [
-            ("name", { "value": "Gender" }),
+            ("name", DatsObj("Annotation", [("value", "Gender")])),
             ("description", "Gender of the subject"),
+            ("identifier", DatsObj("Identifier", [("identifier", "SEX"), ("identifierSource", "GTEx")])),
             ("values", [ subject['SEX']['mapped_value'] ])
             ])
 
     subject_age = DatsObj("Dimension", [
-            ("name", { "value": "Age range" }),
+            ("name", DatsObj("Annotation", [("value", "Age range")])),
             ("description", "Age range of the subject"),
+            ("identifier", DatsObj("Identifier", [("identifier", "AGE"), ("identifierSource", "GTEx")])),
             ("values", [ subject['AGE']['mapped_value'] ])
             ])
 
     subject_hardy_scale = DatsObj("Dimension", [
-            ("name", { "value": "Hardy scale" } ),
+            ("name", DatsObj("Annotation", [("value", "Hardy scale")])),
             ("description", "Hardy scale death classification for the subject"),
+            ("identifier", DatsObj("Identifier", [("identifier", "DTHHRDY"), ("identifierSource", "GTEx")])),
             ("values", [ subject['DTHHRDY']['mapped_value'] ])
             ])
 
