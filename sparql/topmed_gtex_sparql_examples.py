@@ -4,6 +4,8 @@ import argparse
 import logging
 import rdflib 
 
+# Run test round-trip queries on TOPMed and GTEx crosscut model instances using RDF and SPARQL.
+
 # ------------------------------------------------------
 # main()
 # ------------------------------------------------------
@@ -11,16 +13,16 @@ import rdflib
 def main():
 
     # input
-    parser = argparse.ArgumentParser(description='Run test queries on public TOPMed crosscut model instance using RDF/SPARQL.')
-    parser.add_argument('--topmed_file', help ='Path to TOPMed DATS JSON file.')
+    parser = argparse.ArgumentParser(description='Run test round-trip queries on public TOPMed and GTEx crosscut model instances using RDF/SPARQL.')
+    parser.add_argument('--dats_file', help ='Path to TOPMed or GTEx DATS JSON file.')
     args = parser.parse_args()
 
     # logging
     logging.basicConfig(level=logging.INFO)
 
-    # parse TOPMed JSON LD
-    logging.info("Reading TOPMed metadata from " + args.topmed_file)
-    with open(args.topmed_file, "r") as f:
+    # parse JSON LD
+    logging.info("Reading metadata from " + args.dats_file)
+    with open(args.dats_file, "r") as f:
         json_data = f.read()
 
     g = rdflib.Graph().parse(data=json_data, format='json-ld')
@@ -32,51 +34,67 @@ def main():
     print()
 
     # ------------------------------------------
-    # Enumerate TOPMed studies
+    # Enumerate 2nd-level Datasets
     # ------------------------------------------
+
+    # obo:IAO_0000100 - "data set"
+    # obo:BFO_0000051 - "has part"
+    # obo:OBI_0001622 - "a textual entity that denotes an investigation"
+    # obo:IAO_0000577 - "centrally registered identifier symbol"
+
     qres = g.query(
             """
             SELECT DISTINCT ?ident ?title
             WHERE {
-                ?tm_dataset a obo:IAO_0000100.
-                ?tm_dataset obo:BFO_0000051 ?dataset.
+                ?top_dataset a obo:IAO_0000100.
+                ?top_dataset obo:OBI_0001622 ?top_title.
+                ?top_dataset obo:BFO_0000051 ?dataset.
                 ?dataset a obo:IAO_0000100.
                 ?dataset obo:OBI_0001622 ?title.
                 ?dataset obo:IAO_0000577 ?identifier.
                 ?identifier sdo:identifier ?ident.
+                FILTER ((str(?top_title) = "Genotype-Tissue Expression Project (GTEx)") || (str(?top_title) = "Trans-Omics for Precision Medicine (TOPMed)")).
             }
             """)
 
-    print("[QUERY 1] TOPMed studies:\n")
-    print("TOPMed Study\tDescription")
+    print("[QUERY 1] 2nd-level DATS Datasets:\n")
+    print("Dataset\tDescription")
     for row in qres:
         print("%s\t%s" % row)
     print("\n")
 
     # ------------------------------------------
-    # DNA extract / sample / subject triples
+    # RNA/DNA extract / sample / subject triples
     # ------------------------------------------
+
+    # obo:IAO_0000100 - "data set"
+    # obo:BFO_0000040 - "material entity"
+    # obo:IAO_0000136 - "is about"
+    # obo:IAO_0000590 - "a textual entity that denotes a particular in reality"
+    # obo:BFO_0000023 - "role"
+    # obo:RO_0001000 - "derives from"
+    # obo:IAO_0000300 - "textual entity"
 
     qres = g.query(
             """
-            SELECT DISTINCT ?dna_extract ?sample_name ?subject_name
+            SELECT DISTINCT ?rna_or_dna_extract ?sample_name ?subject_name
             WHERE {
                 ?dataset a obo:IAO_0000100.
                 ?mat1 a obo:BFO_0000040.
                 ?dataset obo:IAO_0000136 ?mat1.
-                ?mat1 obo:IAO_0000590 ?dna_extract.
+                ?mat1 obo:IAO_0000590 ?rna_or_dna_extract.
                 ?mat1 obo:BFO_0000023 ?role.
                 ?role sdo:value ?rolename.
                 ?mat1 obo:RO_0001000 ?sample.
                 ?sample obo:IAO_0000300 ?sample_name.
                 ?sample obo:RO_0001000 ?subject.
                 ?subject obo:IAO_0000300 ?subject_name.
-                FILTER (str(?rolename) = "DNA extract").
+                FILTER ((str(?rolename) = "DNA extract") || (str(?rolename) = "RNA extract")).
             }
             """)
 
     print("[QUERY 2] DNA extracts:\n")
-    print("DNA extract\tSample\tSubject")
+    print("RNA/DNA extract\tSample\tSubject")
     for row in qres:
         print("%s\t%s\t%s" % row)
     print("\n")
@@ -85,7 +103,13 @@ def main():
     # List subject characteristics
     # ------------------------------------------
 
-    # note that this query only retrieves 
+    # obo:BFO_0000040 - "material entity"
+    # obo:IAO_0000590 - "a textual entity that denotes a particular in reality"
+    # obo:BFO_0000023 - "role"
+    # obo:RO_0000086 - "has quality"
+    # obo:IAO_0000027 - "data item"
+    # obo:IAO_0000577 - "centrally registered identifier symbol"
+
     qres = g.query(
             """
             SELECT DISTINCT ?subject_name ?dbgap_var_acc ?pname ?propvalue
@@ -114,9 +138,10 @@ def main():
     # List sample characteristics
     # ------------------------------------------
 
-    # note that this query is identical to the previous one except that:
+    # Note that this query is identical to the previous one except that:
     #  1. the selected role name is "specimen", not "donor"
     #  2. the variable subj1 has been renamed to samp1
+
     qres = g.query(
             """
             SELECT DISTINCT ?subject_name ?dbgap_var_acc ?pname ?propvalue
@@ -145,12 +170,12 @@ def main():
     # Study variables (DATS dimensions)
     # ------------------------------------------
 
-    # Query doesn't include the actual subject count, which looks like this:
-    #
-    # <tmpid:f661cd29-6cb1-4059-aaf9-de94b3913cc0> a obo:STATO_23367 ;
-    #   obo:IAO_0000027 1134 ;
-    #   obo:IAO_0000300 "The actual number of subjects entered into a clinical trial."@en ;
-    #   obo:IAO_0000590 [ ] .
+    # obo:IAO_0000100 - "data set"
+    # obo:IAO_0000577 - "centrally registered identifier symbol"
+    # obo:BFO_0000051 - "has part"
+    # obo:STATO_23367 - 
+    # obo:IAO_0000300 - "textual entity"
+    # obo:IAO_0000590 - "a textual entity that denotes a particular in reality"
 
     qres = g.query(
             """
