@@ -1,19 +1,25 @@
-0.4 (August 15 2018)
+0.4 (August 23 2018)
  -v0.4 release of KC7 crosscut metadata model instance for the following datasets:
-   -GTEx v7 public RNA-Seq metadata
-   -TOPMed public metadata for a single study, phs000946.v3
-   -MGI C57BL/6J reference genome, annotation, and human orthologs
- -v0.4 release of KC7 crosscut metadata model for all of the above, plus:
-   -TOPMed/dbGaP access-restricted metadata for a single study, phs000946.v3
+   -GTEx v7 public RNA-Seq metadata from the GTEx Portal
+   -GTEx v7 public metadata from dbGaP study phs000424.v7.p2
+   -TOPMed public metadata for dbGaP studies phs001024.v3.p1, phs000951.v2.p2, and phs000179.v5.p2
  -Added context files for all DATS types that did not already have them.
- -Fixed broken JSON-LD context file references (issue #17)
- -Added ER diagrams for the three current JSON LD files.
+ -Fixed broken JSON-LD context file references (issue #16, issue #17).
+ -Added OBO Foundry context files (issue #23).
  -Added missing OBO IRIs for several terms.
- -Updated/corrected list of TOPMed studies.
  -Added bearerOfDisease for hypertension status, using new diseaseStatus property.
  -Moved GTEx subject/sample Materials from top-level Dataset to 2nd-level Datasets
-   for consistency with TOPMed DATS JSON encoding and published ER diagrams.
- -Used JSON-LD id references to reduce redundancy in GTEx instance.
+   for consistency with TOPMed DATS JSON encoding and published ER diagrams (issue #26).
+ -Started using JSON-LD id references to reduce redundancy in the GTEx instance.
+ -Added a set of example Python RDFLib SPARQL queries showing how to extract study,
+   subject, and sample metadata from the DATS instances (issue #27.)
+ -Assigned a random uuid to any DATS entity without an existing JSON-LD identifier.
+ -Added Dataset level dimensions for each of the variables declared in a study.
+ -Converted subject and sample Material extraProperties to characteristics (issue #24, issue #29).
+ -Modified conversion code to handle the 8 saliva samples in TOPMed.
+ -Added proposed pattern for representing the links between individual samples and sequence 
+   (or other types of) data files.
+ -Added --max_output_samples option to bin/gtex_v7_to_dats.py for testing purposes.
 	
 0.3 (June 29 2018)
  -v0.3 release of KC7 crosscut metadata model instance for the following datasets:
