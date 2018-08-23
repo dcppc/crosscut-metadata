@@ -197,7 +197,7 @@ def get_dataset_json():
     parent_gtex_dataset = DatsObj("Dataset", [
             ("identifier", DatsObj("Identifier", [
                         # GTEx value - "GTEx_Analysis_2016-01-15_v7_RNA-SEQ"
-                        ("identifier", "GTEx")
+                        ("identifier", "Genotype-Tissue Expression Project (GTEx)")
                         ])),
             ("title",  "Genotype-Tissue Expression Project (GTEx)"),
             ("description", GTEX_DESCRIPTION),

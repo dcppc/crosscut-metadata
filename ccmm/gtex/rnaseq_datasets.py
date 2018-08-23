@@ -274,7 +274,7 @@ def get_dataset_json():
                         ])),
             ("version", "v7"),
             ("dates", [GTEX_V7_RELEASE_DATE]),
-            ("title",  "GTEx v7"),
+            ("title",  "Genotype-Tissue Expression Project (GTEx)"),
             ("storedIn", DB_GAP),
             # TODO add types for parent GTEx project
             ("types", GTEX_V7_TYPES),
