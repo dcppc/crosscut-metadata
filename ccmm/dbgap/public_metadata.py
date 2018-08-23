@@ -5,6 +5,7 @@ import os
 import re
 import sys
 import xml.etree.ElementTree as ET
+import ccmm.util as util
 
 # ------------------------------------------------------
 # Global variables
@@ -227,34 +228,6 @@ def read_dbgap_data_dict_or_var_report_xml(xml_file):
 
     return xml_info
 
-# nested dicts not natively supported in Python3?
-def make_multilevel_dict(items, keys):
-    md = {}
-    for item in items:
-        d = md
-        for k in keys[:-1]:
-            kv = item[k]
-            if kv not in d:
-                d[kv] = {}
-            d = d[kv]
-        d[item[keys[-1]]] = item
-
-    return md
-
-# check whether a given key exists within a multilevel dict. Returns True or False.
-def multilevel_dict_key_exists(d, key):
-    for k in d:
-        if k == key:
-            return True
-        v = d[k]
-        if v is None:
-            pass
-        elif isinstance(v, str):
-            pass
-        elif multilevel_dict_key_exists(v, key):
-            return True
-    return False
-
 # Find all dbGaP XML or .txt metadata files in a given directory.
 def get_study_metadata_files(dir, suffix):
     filenames = os.listdir(dir)
@@ -288,7 +261,7 @@ def get_study_metadata_files(dir, suffix):
         else:
             logging.debug("ignoring metadata file " + f)
 
-    return make_multilevel_dict(files, ["study_id", "study_name", "metadata_type", "file_type"])
+    return util.make_multilevel_dict(files, ["study_id", "study_name", "metadata_type", "file_type"])
 
 # Read all dbGaP XML metadata files in a given directory and read and parse their contents.
 def read_study_metadata(dir):
@@ -306,7 +279,7 @@ def read_study_metadata(dir):
     substudy_names = {}
     for study_id in study_files:
         sd = study_files[study_id]
-        if multilevel_dict_key_exists(sd, 'data_dict'):
+        if util.multilevel_dict_key_exists(sd, 'data_dict'):
             n_not_substudy += 1
         else:
             sd['_is_substudy'] = 1
