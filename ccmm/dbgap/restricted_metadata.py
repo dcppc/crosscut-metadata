@@ -7,7 +7,6 @@ import os
 import re
 import sys
 import xml.etree.ElementTree as ET
-import ccmm.util as util
 
 # ------------------------------------------------------
 # Global variables
