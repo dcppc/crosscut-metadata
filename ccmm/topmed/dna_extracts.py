@@ -68,6 +68,9 @@ def get_single_dna_extract_json(study, study_md, subj_var_values, samp_var_value
         name = 'Body_Site'
     elif 'Body Site' in samp_var_values:
         name = 'Body Site'
+
+    anat_id = None
+    anatomy_name = None
         
     if name is not None:
         if "blood" in samp_var_values[name]['value'].lower():
@@ -80,12 +83,13 @@ def get_single_dna_extract_json(study, study_md, subj_var_values, samp_var_value
             logging.fatal("encountered BODY_SITE other than 'Blood' and 'Saliva' in TOPMed sample metadata - " + samp_var_values['BODY_SITE']['value'])
             sys.exit(1)
 
-    anatomy_identifier = OrderedDict([
+    if anat_id is not None:
+        anatomy_identifier = OrderedDict([
             ("identifier",  "UBERON:" + str(anat_id)),
             ("identifierSource", "UBERON")])
-    anatomy_alt_ids = [OrderedDict([
-                ("identifier", "http://purl.obolibrary.org/obo/UBERON_" + str(anat_id)),
-                ("identifierSource", "UBERON")])]
+        anatomy_alt_ids = [OrderedDict([
+            ("identifier", "http://purl.obolibrary.org/obo/UBERON_" + str(anat_id)),
+            ("identifierSource", "UBERON")])]
 
     # extract subject attributes
     gender = None
@@ -115,11 +119,13 @@ def get_single_dna_extract_json(study, study_md, subj_var_values, samp_var_value
                 disease['hypertension'] = "no"
 
     # anatomical part
-    anatomical_part = DatsObj("AnatomicalPart", [
+    anatomical_part = None
+    if anatomy_name is not None:
+        anatomical_part = DatsObj("AnatomicalPart", [
             ("name", anatomy_name),
             ("identifier", anatomy_identifier),
             ("alternateIdentifiers", anatomy_alt_ids)
-            ])
+        ])
 
     subject_characteristics = []
     subject_bearerOfDisease = []
@@ -234,21 +240,31 @@ def get_single_dna_extract_json(study, study_md, subj_var_values, samp_var_value
 
     # biological/tissue sample
     sample_name = samp_id
+    sample_derives_from = [ subject_material ]
+    sample_descr = "specimen collected from subject " + subj_id
+    if anatomical_part is not None:
+        sample_derives_from.append(anatomical_part)
+        sample_descr = anatomy_name + " " + sample_descr
+
     biological_sample_material = DatsObj("Material", [
             ("name", sample_name),
             ("identifier", { "identifier": samp_id }),
             ("alternateIdentifiers", [ util.get_alt_id(dbgap_samp_id, "dbGaP") ]),
-            ("description", anatomy_name + " specimen collected from subject " + subj_id),
+            ("description", sample_descr),
             ("characteristics", sample_characteristics),
             ("taxonomy", human_t),
             ("roles", [ specimen_annot ]),
-            ("derivesFrom", [ subject_material, anatomical_part ])
+            ("derivesFrom", sample_derives_from )
             ])
 
     # DNA extracted from tissue sample
+    dna_descr = "DNA extracted from specimen collected from subject " + subj_id
+    if anatomical_part is not None:
+        dna_descr = "DNA extracted from " + anatomy_name + " specimen collected from subject " + subj_id
+
     dna_material = DatsObj("Material", [
             ("name", "DNA from " + sample_name),
-            ("description", "DNA extracted from " + anatomy_name + " specimen collected from subject " + subj_id),
+            ("description", dna_descr),
             ("taxonomy", human_t),
             ("roles", [ dna_extract_annot ]),
             ("derivesFrom", [ biological_sample_material ])
