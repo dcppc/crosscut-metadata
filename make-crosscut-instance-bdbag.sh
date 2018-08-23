@@ -36,7 +36,7 @@ mkdir -p $EXTERNAL_ID/datasets
 ./bin/gtex_v7_to_dats.py --output_file=$EXTERNAL_ID/datasets/GTEx_v7_rnaseq_public.jsonld 
 
 # limit to 20 samples to create smaller file for test purposes
-#./bin/gtex_v7_to_dats.py --output_file=$EXTERNAL_ID/datasets/GTEx_v7_rnaseq_20_SAMPLES_public.jsonld --max_output_samples=20
+./bin/gtex_v7_to_dats.py --output_file=$EXTERNAL_ID/datasets/GTEx_v7_rnaseq_20_SAMPLES_public.jsonld --max_output_samples=20
 
 ## -----------------------------------------------
 ## Public GTEx v7 dbGaP metadata
