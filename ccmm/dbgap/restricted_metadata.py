@@ -7,6 +7,7 @@ import os
 import re
 import sys
 import xml.etree.ElementTree as ET
+import ccmm.util as util
 
 # ------------------------------------------------------
 # Global variables
@@ -56,33 +57,38 @@ def read_study_metadata(dir):
     study_md = {}
     fileype = []
     study_files = ccmm.dbgap.public_metadata.get_study_metadata_files(dir, "txt")
+
     n_studies = len(study_files)
     logging.info("found restricted metadata file(s) for " + str(n_studies) + " study/studies in " + dir)
 
     # process one study at a time
-    for study in study_files:
-        logging.info("processing restricted metadata for study " + study)
-        sd = study_files[study]
-        md = { 'files': sd }
-        study_md[study] = md
-        
-        for datatype in ('Subject', 'Sample'):
-            md[datatype] = {}
-            file_path = sd[datatype]['MULTI']['path']
-            txt_data = read_dbgap_restricted_metadata_txt(file_path)
-            md[datatype] = { 'file': file_path, 'data': txt_data }
+    for study_id in study_files:
+        logging.info("processing restricted metadata for study " + study_id)
+        sd = study_files[study_id]
+        md = { 'files': {} }
+        study_md[study_id] = md
 
-        filetype = list(sd['Sample_Attributes'].keys())[0]
-        for datatype in ('Sample_Attributes', 'Subject_Phenotypes'):
-            # Subject_Phenotypes is not always present
-            if datatype not in sd:
-                logging.info("no XML found for " + datatype + "." + filetype)
-                continue
-            
-            md[datatype] = {}
-            file_path = sd[datatype][filetype]['path']
-            txt_data = read_dbgap_restricted_metadata_txt(file_path)
-            md[datatype] = { 'file': file_path, 'data': txt_data }
+        # study_name may include a consent group prefix
+        # TODO - ignoring consent group in this iteration
+        for study_name in sd:
+            ssd = sd[study_name]
+        
+            for datatype in ('Subject', 'Sample', 'Sample_Attributes', 'Subject_Phenotypes'):
+                if datatype not in ssd:
+                    logging.info("no XML found for " + datatype)
+                    continue
+
+                # this is a consequence of ignoring the consent group prefix:
+                if datatype in md:
+                    logging.warn("ignoring file for duplicate datatype " + datatype )
+                    continue
+
+                # consent_type e.g., MULTI, HMB
+                consent_type = list(ssd[datatype].keys())[0]
+                file_path = ssd[datatype][consent_type]['path']
+                txt_data = read_dbgap_restricted_metadata_txt(file_path)
+                md[datatype] = { 'file': file_path, 'data': txt_data }
+                md['files'][datatype] = ssd[datatype]
 
     return study_md
 

@@ -61,6 +61,7 @@ def pick_var_values(vars, vdict):
 def get_single_dna_extract_json(study, study_md, subj_var_values, samp_var_values):
     # Almost all samples in TOPMed WGS phase are blood samples, named "Blood", "Peripheral Blood"...
     # Few samples are saliva samples probably due to sample collection issues
+    name = None
     if 'BODY_SITE' in samp_var_values:
         name = 'BODY_SITE'
     elif 'Body_Site' in samp_var_values:
@@ -68,15 +69,16 @@ def get_single_dna_extract_json(study, study_md, subj_var_values, samp_var_value
     elif 'Body Site' in samp_var_values:
         name = 'Body Site'
         
-    if "blood" in samp_var_values[name]['value'].lower():
-        anatomy_name = "blood"
-        anat_id = "0000178"
-    elif samp_var_values[name]['value'].lower() == "saliva":
-        anatomy_name = "saliva"
-        anat_id = "0001836"        
-    else:
-        logging.fatal("encountered BODY_SITE other than 'Blood' and 'Saliva' in TOPMed sample metadata - " + samp_var_values['BODY_SITE']['value'])
-        sys.exit(1)
+    if name is not None:
+        if "blood" in samp_var_values[name]['value'].lower():
+            anatomy_name = "blood"
+            anat_id = "0000178"
+        elif samp_var_values[name]['value'].lower() == "saliva":
+            anatomy_name = "saliva"
+            anat_id = "0001836"        
+        else:
+            logging.fatal("encountered BODY_SITE other than 'Blood' and 'Saliva' in TOPMed sample metadata - " + samp_var_values['BODY_SITE']['value'])
+            sys.exit(1)
 
     anatomy_identifier = OrderedDict([
             ("identifier",  "UBERON:" + str(anat_id)),
@@ -366,9 +368,12 @@ def get_dna_extracts_json_from_restricted_metadata(study, pub_md, restricted_md)
 
     # Sample_Attributes
     # e.g., ['dbGaP_Sample_ID', 'SAMPLE_ID', 'BODY_SITE', 'ANALYTE_TYPE', 'IS_TUMOR', 'SEQUENCING_CENTER', 'Funding_Source', 'TOPMed_Phase', 'TOPMed_Project', 'Study_Name']
-    sample_att_md = restricted_md['Sample_Attributes']
-    logging.debug("indexing restricted Sample_Attributes file")
-    sample_atts = index_dicts(sample_att_md['data']['rows'], 'dbGaP_Sample_ID')
+    if 'Sample_Attributes' in restricted_md:
+        sample_att_md = restricted_md['Sample_Attributes']
+        logging.debug("indexing restricted Sample_Attributes file")
+        sample_atts = index_dicts(sample_att_md['data']['rows'], 'dbGaP_Sample_ID')
+    else:
+        sample_atts = {}
     
     # Subject_Phenotypes
     # e.g., ['dbGaP_Subject_ID', 'SUBJECT_ID', 'GENDER', 'RACE', 'VISIT_AGE', 'DNA_AGE', 'FORMER_SMOKER', 'CURRENT_SMOKER', 'CIGSPERDAY', 'CIGSPERDAY_AVERAGE', 'PACKYEARS', 'PREGNANCY', 'WEIGHT', 'HEIGHT', 'BMI']
@@ -385,8 +390,9 @@ def get_dna_extracts_json_from_restricted_metadata(study, pub_md, restricted_md)
     # merge sample attribute info
     for dbgap_samp_id in samples:
         sample = samples[dbgap_samp_id]
-        sample_att = sample_atts[dbgap_samp_id]
-        add_properties(sample, sample_att)
+        if dbgap_samp_id in sample_atts:
+            sample_att = sample_atts[dbgap_samp_id]
+            add_properties(sample, sample_att)
 
     # merge subject phenotype info
     if 'Subject_Phenotypes' in restricted_md:
