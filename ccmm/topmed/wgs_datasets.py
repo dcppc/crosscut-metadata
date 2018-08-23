@@ -148,8 +148,8 @@ TOPMED_TYPES = [
     # TODO - add other types for which data/analyses have not yet been generated, e.g., SNP/GWAS
     ]
 
-# 
-def get_dbgap_studies(qterm):
+# acc_d - dict whose keys are the dbGaP accession numbers of studies to include
+def get_dbgap_studies(acc_d):
     studies = []
     study = None
     lnum  = 0
@@ -201,6 +201,10 @@ def get_dbgap_studies(qterm):
         # parse error
         logging.fatal("unexpected content at line " + str(lnum) + " of dbGaP studies: " + line)
         sys.exit(1)
+
+    # filter studies by acc_d
+    filtered_studies = [s for s in studies if s['id'] in acc_d]
+    studies = filtered_studies
 
     n_studies = len(studies)
     logging.info("found " + str(n_studies) + " TOPMed studies in dbGaP")
@@ -260,12 +264,13 @@ def get_dbgap_studies(qterm):
         
     return datasets
 
-def get_dataset_json():
+# acc_d - dict whose keys are the dbGaP accession numbers of studies to include
+def get_dataset_json(acc_d):
     # individual datasets corresponding to studies within TOPMed
     data_subsets = [];
 
     # pull studies from dbGaP
-    data_subsets = get_dbgap_studies("topmed")
+    data_subsets = get_dbgap_studies(acc_d)
 
     # parent TOPMed Dataset that represents the entire TOPMed program
     parent_topmed_dataset = DatsObj("Dataset", [
