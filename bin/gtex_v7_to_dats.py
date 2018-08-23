@@ -27,7 +27,8 @@ def main():
 
     # input
     parser = argparse.ArgumentParser(description='Create DATS JSON for GTEx v7 public RNA-Seq data.')
-    parser.add_argument('--output_file', default='.', help ='Output file path for the DATS JSON file containing the top-level DATS Dataset.')
+    parser.add_argument('--output_file', required=True, help ='Output file path for the DATS JSON file containing the top-level DATS Dataset.')
+    parser.add_argument('--max_output_samples', required=False, help ='Impose a limit on the number of sample Materials in the output DATS. For testing purposes only.')
     args = parser.parse_args()
 
     # logging
@@ -51,6 +52,12 @@ def main():
 
     # samples
     samples_json = ccmm.gtex.rna_extracts.get_samples_json(samples, subjects)
+
+    # option to limit number of samples in the output
+    if args.max_output_samples is not None:
+        samples_json = samples_json[:int(args.max_output_samples)]
+        logging.warn("limiting output to " + str(len(samples_json)) + " sample(s) due to value of --max_output_samples")
+
     # JSON-LD id references for samples
     sample_refs_json = [ s.getIdRef() for s in samples_json ]
 
