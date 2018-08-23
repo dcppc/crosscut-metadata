@@ -65,7 +65,7 @@ def main():
 
     # write Dataset to DATS JSON file
     with open(args.output_file, mode="w") as jf:
-        jf.write(json.dumps(rnaseq_dataset, indent=2, cls=DATSEncoder))
+        jf.write(json.dumps(gtex_dataset, indent=2, cls=DATSEncoder))
 
 if __name__ == '__main__':
     main()
