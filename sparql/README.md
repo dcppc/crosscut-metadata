@@ -51,7 +51,8 @@ context files:
 git clone git@github.com:datatagsuite/context.git
 ```
 
-Step 2 is to rewrite the context file URIs in the JSON-LD files, for example with the following set of Perl 1-liners:
+Step 2 is to rewrite the context file URIs in the JSON-LD files, for example with the following set of Perl 
+1-liners excerpted from the script:
 
 ```
 # rewrite JSON-LD files to use local contexts
@@ -63,10 +64,11 @@ perl -ne 's/https:\/\/(datatagsuite.github.io|w3id.org)\//.\//; print;' <$JSON_D
 
 Each of the JSON-LD files in the BDBag should now have a "_local_contexts" counterpart that uses
 the newly-downloaded context files. Running the queries on these files should yield reasonable
-performance for all of the v0.4 files except one. Here are the commands (from the script) used 
+performance for all of the v0.4 files except one. Here are the commands (also from the script) used 
 to run the queries on each of the files. Note the expected parse/query times indicated in the 
 comments, and also the fact that the same queries work on both the TOPMed and GTEx files, providing
-some assurance that the overall structure of the DATS encoding is consistent across data source:
+some assurance that the overall structure of the DATS encoding is consistent across the different
+data sources:
 
 ```
 # takes about 2-3 seconds using local context files (vs ~95 seconds using GitHub context URIs)
@@ -117,7 +119,7 @@ a simple JSON-LD file by about a factor of 2.
 It appears to be the case that--at least in its default configuration--the RDFLib JSON-LD parser plugin 
 attempts to individually resolve each and every context file URI reference, without doing any caching, 
 either of the context files themselves or of any redirects encountered while resolving the URI found in
-the JSON-LD file. As a result our limiting testing also determined that a 2-3X speedup could be obtained
+the JSON-LD file. As a result our testing also determined that a 2-3X speedup could be obtained
 by replacing the w3id.org context file URIs like those shown below:
 
 ```
@@ -127,7 +129,7 @@ by replacing the w3id.org context file URIs like those shown below:
   ],
 ```
 
-with the corrsponding GitHub URIs (to which the above w3id.org URIs redirect):
+with the corresponding GitHub URIs (to which the above w3id.org URIs redirect):
 
 ```
   "@context": [
@@ -142,16 +144,17 @@ However, even with the github.io URIs the RDFLib JSON-LD parser plugin still app
 one HTTPS request for each and every context file reference. Switching to context files stored on the local
 file system therefore results in a further speedup of at least 10X and in any many cases much more, depending 
 on the complexity of the input DATS JSON and the number of embedded context file URIs. This is the technique 
-used by the `run-sparql-queries-faster.sh` script mentioned above. There is some room for improving the 
-DATS JSON encoding in such way that parsing should take less time regardless of the parser used. For example,
-the following changes could be implemented:
+used by the `run-sparql-queries-faster.sh` script mentioned above. Beyond making the context files local, there 
+is some room for improving the DATS JSON encoding in such way that parsing should take less time regardless 
+of the particular parser used. For example, the following changes could be implemented:
 
  * Merge the two separate sets of context files into one set.
  * Make more extensive use of JSON-LD id references to avoid excessive duplication of JSON entities.
 
-However, the best long-term solution would be to switch to a JSON-LD parser that caches the parsed 
+However, the best long-term solution is probably to switch to a JSON-LD parser that caches the parsed 
 representation of each context file in-memory. Even with the local context file technique used above 
 it is still likely that the RDFLib plugin is having to read each context file from the file system
-every time a reference to one is encountered (i.e., twice for each and every DATS entity.)
+every time a reference to one is encountered (i.e., twice for each and every DATS entity in each JSON 
+file.)
 
 
