@@ -146,11 +146,11 @@ def main():
             """
             SELECT DISTINCT ?subject_name ?dbgap_var_acc ?pname ?propvalue
             WHERE {
-                ?subj1 a obo:BFO_0000040.
-                ?subj1 obo:IAO_0000590 ?subject_name.
-                ?subj1 obo:BFO_0000023 ?role.
+                ?samp1 a obo:BFO_0000040.
+                ?samp1 obo:IAO_0000590 ?subject_name.
+                ?samp1 obo:BFO_0000023 ?role.
                 ?role sdo:value ?rolename.
-                ?subj1 obo:RO_0000086 ?chars.
+                ?samp1 obo:RO_0000086 ?chars.
                 ?chars obo:IAO_0000027 ?propvalue.
                 ?chars obo:IAO_0000577 ?chars_id.
                 ?chars_id sdo:identifier ?dbgap_var_acc.
