@@ -52,6 +52,16 @@ mkdir -p $EXTERNAL_ID/datasets
 ./bin/dbgap_gtex_to_dats.py --dbgap_public_xml_path=./dbgap-data/phs000424.v7.p2 --output_file=$EXTERNAL_ID/datasets/GTEx_v7_dbGaP_public.jsonld
 
 ## -----------------------------------------------
+## RESTRICTED ACCESS GTEx v7 dbGaP metadata
+## -----------------------------------------------
+
+# Convert RESTRICTED ACCESS dbGaP metadata for GTEx to DATS JSON.
+
+#./bin/dbgap_gtex_to_dats.py --dbgap_public_xml_path=./dbgap-data/phs000424.v7.p2 \
+#  --dbgap_protected_metadata_path=./restricted-access-dbgap-data/phs000424.v7.p2 \
+#  --output_file=$EXTERNAL_ID/datasets/GTEx_v7_dbGaP_public.jsonld
+
+## -----------------------------------------------
 ## Public TOPMed metadata
 ## -----------------------------------------------
 
