@@ -297,42 +297,6 @@ def link_samples_to_subjects(samples, subjects):
         dbgap_subj_id = sample['dbGaP_Subject_ID']
         sample['subject'] = subjects[dbgap_subj_id]
 
-# TODO - cut and paste from ccmm.gtex.rna_extracts
-def print_subject_sample_count_histogram(samples):
-    print("Histogram of number of subjects that have a given number of samples")
-
-    # count samples per subject
-    subject_sample_count = {}
-    for s in samples:
-        sample = samples[s]
-        subject = sample['dbGaP_Subject_ID']
-        if subject in subject_sample_count:
-            subject_sample_count[subject] += 1
-        else:
-            subject_sample_count[subject] = 1
-
-    # convert to histogram
-    ssc_hist = {}
-    for s in subject_sample_count:
-        ct = subject_sample_count[s]
-        if ct in ssc_hist:
-            ssc_hist[ct] += 1
-        else:
-            ssc_hist[ct] = 1
-#        print(s + " has " + str(ct) + " sample(s)")
-
-    # print histogram
-    n_total_samples = 0
-    n_total_subjects = 0
-    print("n_samples\tn_subjects")
-    for n_samples in sorted(ssc_hist):
-        n_subjects = ssc_hist[n_samples]
-        print(str(n_samples) + "\t" + str(n_subjects))
-        n_total_subjects += n_subjects
-        n_total_samples += (n_subjects * n_samples)
-    print("n_total_samples=" + str(n_total_samples))
-    print("n_total_subjects=" + str(n_total_subjects))
-
 def add_properties(o1, o2):
     for p in o2:
         if p in o1:
