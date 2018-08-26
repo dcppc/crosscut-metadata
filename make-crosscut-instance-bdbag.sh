@@ -32,9 +32,14 @@ mkdir -p $EXTERNAL_ID/datasets
 # First retrieve the pheno_variable_summaries files for GTEx into a local directory:
 #  1. create local directory dbgap-data if it does not already exist
 #  2. pull ftp://ftp.ncbi.nlm.nih.gov/dbgap/studies/phs000424/phs000424.v7.p2/pheno_variable_summaries/ into dbgap-data/phs000424.v7.p2
-#  3. run the command below
-
+#
+# Then make sure the dcppc/data-stewards repo is cloned or downloaded locally:
+#  3. git clone https://github.com/dcppc/data-stewards.git
+#  4. modify --data_stewards_repo_path accordingly
+# 
+# Run script:
 ./bin/gtex_v7_to_dats.py --dbgap_public_xml_path=./dbgap-data/phs000424.v7.p2 \
+  --data_stewards_repo_path=./data-stewards \
   --output_file=$EXTERNAL_ID/datasets/GTEx_v7_public.jsonld
 exit
 
