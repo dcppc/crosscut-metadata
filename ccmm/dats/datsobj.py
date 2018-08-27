@@ -21,8 +21,8 @@ JSON_LD_SDO_CONTEXT_URI_PREFIX = 'https://datatagsuite.github.io/context/sdo/'
 JSON_LD_OBO_FOUNDRY_CONTEXT_URI_PREFIX = 'https://datatagsuite.github.io/context/obo/'
 
 # use local context files (further 10X improvement in rdflib parse speed)
-#JSON_LD_SDO_CONTEXT_URI_PREFIX = './contexts/sdo/'
-#JSON_LD_OBO_FOUNDRY_CONTEXT_URI_PREFIX = './contexts/obo/'
+#JSON_LD_SDO_CONTEXT_URI_PREFIX = './context/sdo/'
+#JSON_LD_OBO_FOUNDRY_CONTEXT_URI_PREFIX = './context/obo/'
 
 # All known DATS object types
 # from schema dir of https://github.com/datatagsuite/schema.git:
@@ -78,7 +78,6 @@ class DatsObj:
             sys.exit(1)
             
         dt = DATS_TYPES[dats_type]
-
         dats_atts = [("@type", dats_type)]
 
         # @context
@@ -91,11 +90,23 @@ class DatsObj:
             dats_atts.append(("@context", [ sdo_json_ld_context, obo_foundry_ld_context ] ))
 
         # @id
+        # use identifier URI if one is specified
+        id_uri = None
+        for att in atts:
+            (key, val) = att
+            if key == "identifier" and isinstance(val, DatsObj):
+                if val.get("@type") == "Identifier":
+                    idval = val.get("identifier")
+                    # TODO - this only catches HTTP and HTTPS URIs
+                    if re.match(r'^http', idval):
+                        id_uri = idval
 
         # assign random uuid if no id specified
-        # TODO - use minids/stable ids where possible
         if id == "":
-            id = "TMPID:" + str(uuid.uuid4())
+            if id_uri is not None:
+                id = id_uri
+            else:
+                id = "TMPID:" + str(uuid.uuid4())
 
         # TODO - id should be a URI according to dataset_schema.json
         dats_atts.append(("@id", id))
