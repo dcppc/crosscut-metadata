@@ -2,7 +2,6 @@
 
 from ccmm.dats.datsobj import DatsObj
 import ccmm.dats.util as util
-import ccmm.gtex.parsers.portal_files as portal_files
 from collections import OrderedDict
 import csv
 import json

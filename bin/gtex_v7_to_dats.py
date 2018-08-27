@@ -10,6 +10,7 @@ import ccmm.gtex.dna_extracts
 import ccmm.gtex.wgs_datasets
 import ccmm.gtex.public_metadata
 import ccmm.gtex.restricted_metadata
+import ccmm.gtex.subjects
 #import ccmm.gtex.parsers.github_files as github_files
 import ccmm.gtex.parsers.portal_files as portal_files
 import ccmm.gtex.parsers.github_files as github_files
@@ -138,52 +139,84 @@ def main():
     cross_check_ids(p_subjects, p_samples, protected_rnaseq_files, protected_rnaseq_manifest, "RNA-Seq", "GTEx Portal metadata")
     cross_check_ids(p_subjects, p_samples, protected_wgs_files, protected_wgs_manifest, "WGS","GTEx Portal metadata")
 
-    # TODO - create DATS subjects and samples based on the manifest files
-
     # create top-level dataset
     gtex_dataset = ccmm.gtex.wgs_datasets.get_dataset_json()
 
-    # index studies by id
-    studies_by_id = {}
+    # index dbGaP study Datasets by id
+    dbgap_study_datasets_by_id = {}
     for tds in gtex_dataset.get("hasPart"):
-        study_id = tds.get("identifier").get("identifier")
-        if study_id in studies_by_id:
-            logging.fatal("encountered duplicate study_id " + study_id)
+        dbgap_study_id = tds.get("identifier").get("identifier")
+        if dbgap_study_id in dbgap_study_datasets_by_id:
+            logging.fatal("encountered duplicate study_id " + dbgap_study_id)
             sys.exit(1)
-        m = re.match(r'^(phs\d+\.v\d+)\.p\d+$', study_id)
+        m = re.match(r'^(phs\d+\.v\d+)\.p\d+$', dbgap_study_id)
         if m is None:
-            logging.fatal("unable to parse study_id " + study_id)
+            logging.fatal("unable to parse study_id " + dbgap_study_id)
             sys.exit(1)
-        studies_by_id[m.group(1)] = tds
+        dbgap_study_datasets_by_id[m.group(1)] = tds
 
     # read public dbGaP metadata
     pub_xp = args.dbgap_public_xml_path
     restricted_mp = args.dbgap_protected_metadata_path
     # read public metadata
-    study_pub_md = ccmm.gtex.public_metadata.read_study_metadata(pub_xp)
+    dbgap_study_pub_md = ccmm.gtex.public_metadata.read_study_metadata(pub_xp)
+    # there should be only one study
+    study_ids = [k for k in dbgap_study_pub_md.keys()]
+    n_study_ids =len(study_ids)
+    study_id = study_ids[0]
+    if n_study_ids != 1:
+        logging.fatal("read " + str(n_study_ids) + " dbGaP studies from " + pub_xp)
+        sys.exit(1)
 
-    # case 1: process public metadata only (i.e., data dictionaries and variable reports only)
-    if restricted_mp is None:
-        # generate sample entry for each study for which we have metadata
-        for study_id in study_pub_md:
-            study = studies_by_id[study_id]
-            study_md = study_pub_md[study_id]
-            study_md['dbgap_vars'] = ccmm.gtex.public_metadata.add_study_vars(study, study_md)
-            # create dummy/representative DATS instance based on variable reports
-            # TODO - signal somewhere directly in the DATS that this is not real subject-level data (subject/sample id may be sufficient)
-            dna_extract = ccmm.gtex.dna_extracts.get_synthetic_single_dna_extract_json_from_public_metadata(study, study_md)
-            # insert synthetic sample into relevant study/Dataset
-            study.set("isAbout", [dna_extract])
+    dbgap_study_dataset = dbgap_study_datasets_by_id[study_id]
+    dbgap_study_md = dbgap_study_pub_md[study_id]
+    dbgap_study_md['dbgap_vars'] = ccmm.gtex.public_metadata.add_study_vars(dbgap_study_dataset, dbgap_study_md)
 
-    # case 2: process both public metadata and access-controlled dbGaP metadata
-    else:
-        study_restricted_md = ccmm.gtex.restricted_metadata.read_study_metadata(restricted_mp)
-        for study_id in study_pub_md:
-            study = studies_by_id[study_id]
-            study_md = study_pub_md[study_id]
-            study_md['dbgap_vars'] = ccmm.gtex.public_metadata.add_study_vars(study, study_md)
-            dna_extracts = ccmm.gtex.dna_extracts.get_dna_extracts_json_from_restricted_metadata(study, study_md, study_restricted_md[study_id])
-            study.set("isAbout", dna_extracts)
+    # create subjects based on GTEx Portal subject phenotype file and GitHub data-stewards id dump
+    dats_subjects_d = ccmm.gtex.subjects.get_subjects_dats_materials(p_subjects, gh_subjects)
+    # sorted list of subjects
+    dats_subjects_l = [dats_subjects_d[s] for s in dats_subjects_d]
+
+    # DEBUG - limit to 10 subjects for testing
+#    dats_subjects_l = dats_subjects_l[0:10]
+
+    # TODO - add consent groups, of which GTEx has 2: 0=didn't particiapte, 1=General Research Use (GRU)
+    
+    # create StudyGroup that lists all the subjects
+    all_subjects = DatsObj("StudyGroup", [
+            ("name", "all subjects"),
+            # subjects appear in full here, but id references will be used elsewhere in the instance:
+                ("members", dats_subjects_l)
+            ])
+
+    # create link back from each subject to the parent StudyGroup
+    for s in dats_subjects_l:
+        cl = s.get("characteristics")
+        cl.append(DatsObj("Dimension", [("name", "member of study group"), ("values", [ all_subjects.getIdRef() ])]))
+
+    dats_study = DatsObj("Study", [
+            ("name", "GTEx"),
+            ("studyGroups", [ all_subjects ])
+            ])
+
+    # link Study to Dataset
+    dbgap_study_dataset.set("producedBy", dats_study)
+
+    # TODO - create subjects and samples based on public metadata
+    # TODO - create RNA and DNA extracts
+    # TODO - add Datasets for file-level links
+    # TODO - write queries using public metadata
+
+#        dna_extract = ccmm.gtex.dna_extracts.get_synthetic_single_dna_extract_json_from_public_metadata(study, study_md)
+#            study.set("isAbout", [dna_extract])
+
+    # TODO - handle restricted-access (meta)data
+    if restricted_mp is not None:
+        logging.fatal("restricted-access metadata conversion not yet supported in this version of the script")
+        sys.exit(1)
+#            study_restricted_md = ccmm.gtex.restricted_metadata.read_study_metadata(restricted_mp)
+#            dna_extracts = ccmm.gtex.dna_extracts.get_dna_extracts_json_from_restricted_metadata(study, study_md, study_restricted_md[study_id])
+#            study.set("isAbout", dna_extracts)
 
     # write Dataset to DATS JSON file
     with open(args.output_file, mode="w") as jf:
