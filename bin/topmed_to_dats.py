@@ -16,40 +16,6 @@ import os
 import re
 import sys
 
-# Record study variables as dimensions of the study/Dataset.
-def add_study_vars(study, study_md):
-    all_vars = []
-    dbgap_vars = {}
-
-    for var_type in ('Subject', 'Subject_Phenotypes', 'Sample', 'Sample_Attributes'):
-        if var_type in study_md:
-            var_data = study_md[var_type]['var_report']['data']
-            vars = var_data['vars']
-            all_vars.extend(vars)
-
-    # create a Dimension for each one
-    for var in all_vars:
-        var_name = var['var_name']
-        id = DatsObj("Identifier", [
-                ("identifier",  var['id']),
-                ("identifierSource", "dbGaP")])
-        
-        dim = DatsObj("Dimension", [
-                ("identifier", id),
-                ("name", DatsObj("Annotation", [("value", var_name)])),
-                ("description", var['description'])
-                # TODO: include stats
-                ])  
-        study.getProperty("dimensions").append(dim)
-
-        # track dbGaP variable Dimensions by dbGaP id
-        if var['id'] in dbgap_vars:
-            logging.fatal("duplicate definition found for dbGaP variable " + var_name + " with accession=" + var['id'])
-            sys.exit(1)
-        dbgap_vars[var['id']] = dim
-
-    return dbgap_vars
-
 # ------------------------------------------------------
 # main()
 # ------------------------------------------------------
@@ -107,7 +73,7 @@ def main():
             for study_id in study_pub_md:
                 study = studies_by_id[study_id]
                 study_md = study_pub_md[study_id]
-                study_md['dbgap_vars'] = add_study_vars(study, study_md)
+                study_md['dbgap_vars'] = ccmm.topmed.public_metadata.add_study_vars(study, study_md)
                 # only create DNA extracts if there are sample attributes
                 if 'Sample_Attributes' in study_md:
                     # create dummy/synthetic DATS instance based on variable reports
@@ -122,7 +88,7 @@ def main():
             for study_id in study_pub_md:
                 study = studies_by_id[study_id]
                 study_md = study_pub_md[study_id]
-                study_md['dbgap_vars'] = add_study_vars(study, study_md)
+                study_md['dbgap_vars'] = ccmm.topmed.public_metadata.add_study_vars(study, study_md)
                 # only create DNA extracts if there are sample attributes
                 if 'Sample_Attributes' in study_md:
                     dna_extracts = ccmm.topmed.dna_extracts.get_dna_extracts_json_from_restricted_metadata(study, study_md, study_restricted_md[study_id])

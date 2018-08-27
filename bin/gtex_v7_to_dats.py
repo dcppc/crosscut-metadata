@@ -74,7 +74,7 @@ def cross_check_ids(subjects, samples, manifest, filename, manifest_descr, sourc
             n_subj_found += 1
         else:
             n_subj_not_found += 1
-#            logging.warn("found subject id '" + subject_id + "' in manifest file but not id_dump file")
+            logging.warn("found subject id '" + subject_id + "' in manifest file but not id_dump file")
 
     logging.info("comparing GitHub GTEx " + manifest_descr + " manifest files with " + source_descr)
     samp_compare_str = '{:>10s}  sample_ids in {:>20s}: {:-6} / {:-6}'.format(manifest_descr, source_descr, n_samp_found, n_id_dump_samples) 
@@ -161,44 +161,6 @@ def main():
     restricted_mp = args.dbgap_protected_metadata_path
     # read public metadata
     study_pub_md = ccmm.gtex.public_metadata.read_study_metadata(pub_xp)
-    
-    # record study variables as dimensions of the study/Dataset
-    def add_study_vars(study, study_md):
-        # Subject Phenotype study variables
-        if 'Subject_Phenotypes' in study_md:
-            subj_data = study_md['Subject_Phenotypes']['var_report']['data']
-            subj_vars = subj_data['vars']
-        else:
-            subj_vars = []
-        # Sample Attribute study variables
-        samp_data = study_md['Sample_Attributes']['var_report']['data']
-        samp_vars = samp_data['vars']
-        all_vars = subj_vars[:]
-        all_vars.extend(samp_vars)
-        dbgap_vars = {}
-
-        # create a Dimension for each one
-        for var in all_vars:
-            var_name = var['var_name']
-            id = DatsObj("Identifier", [
-                    ("identifier",  var['id']),
-                    ("identifierSource", "dbGaP")])
-
-            dim = DatsObj("Dimension", [
-                    ("identifier", id),
-                    ("name", DatsObj("Annotation", [("value", var_name)])),
-                    ("description", var['description'])
-                    #To do: include stats
-                    ])  
-            study.getProperty("dimensions").append(dim)
-
-            # track dbGaP variable Dimensions by dbGaP id
-            if var['id'] in dbgap_vars:
-                logging.fatal("duplicate definition found for dbGaP variable " + var_name + " with accession=" + var['id'])
-                sys.exit(1)
-            dbgap_vars[var['id']] = dim
-
-        return dbgap_vars
 
     # case 1: process public metadata only (i.e., data dictionaries and variable reports only)
     if restricted_mp is None:
@@ -206,7 +168,7 @@ def main():
         for study_id in study_pub_md:
             study = studies_by_id[study_id]
             study_md = study_pub_md[study_id]
-            study_md['dbgap_vars'] = add_study_vars(study, study_md)
+            study_md['dbgap_vars'] = ccmm.gtex.public_metadata.add_study_vars(study, study_md)
             # create dummy/representative DATS instance based on variable reports
             # TODO - signal somewhere directly in the DATS that this is not real subject-level data (subject/sample id may be sufficient)
             dna_extract = ccmm.gtex.dna_extracts.get_synthetic_single_dna_extract_json_from_public_metadata(study, study_md)
@@ -219,7 +181,7 @@ def main():
         for study_id in study_pub_md:
             study = studies_by_id[study_id]
             study_md = study_pub_md[study_id]
-            study_md['dbgap_vars'] = add_study_vars(study, study_md)
+            study_md['dbgap_vars'] = ccmm.gtex.public_metadata.add_study_vars(study, study_md)
             dna_extracts = ccmm.gtex.dna_extracts.get_dna_extracts_json_from_restricted_metadata(study, study_md, study_restricted_md[study_id])
             study.set("isAbout", dna_extracts)
 

@@ -5,6 +5,7 @@ import os
 import re
 import sys
 import xml.etree.ElementTree as ET
+from ccmm.dats.datsobj import DatsObj
 import ccmm.util as util
 
 # ------------------------------------------------------
@@ -345,3 +346,37 @@ def read_study_metadata(dir):
                 md[datatype][filetype] = { 'file': file_path, 'data': xml_data }
 
     return study_md
+
+# Record study variables as dimensions of the study/Dataset.
+def add_study_vars(study, study_md):
+    all_vars = []
+    dbgap_vars = {}
+
+    for var_type in ('Subject', 'Subject_Phenotypes', 'Sample', 'Sample_Attributes'):
+        if var_type in study_md:
+            var_data = study_md[var_type]['var_report']['data']
+            vars = var_data['vars']
+            all_vars.extend(vars)
+
+    # create a Dimension for each one
+    for var in all_vars:
+        var_name = var['var_name']
+        id = DatsObj("Identifier", [
+                ("identifier",  var['id']),
+                ("identifierSource", "dbGaP")])
+        
+        dim = DatsObj("Dimension", [
+                ("identifier", id),
+                ("name", DatsObj("Annotation", [("value", var_name)])),
+                ("description", var['description'])
+                # TODO: include stats
+                ])  
+        study.getProperty("dimensions").append(dim)
+
+        # track dbGaP variable Dimensions by dbGaP id
+        if var['id'] in dbgap_vars:
+            logging.fatal("duplicate definition found for dbGaP variable " + var_name + " with accession=" + var['id'])
+            sys.exit(1)
+        dbgap_vars[var['id']] = dim
+
+    return dbgap_vars
