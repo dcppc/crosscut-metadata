@@ -3,13 +3,14 @@
 # Create DATS JSON description of GTEx public data.
 
 import argparse
-from ccmm.dats.datsobj import DatsObj
+from ccmm.dats.datsobj import DatsObj, DatsObjCache
 from collections import OrderedDict
 from ccmm.dats.datsobj import DATSEncoder
 import ccmm.gtex.dna_extracts
 import ccmm.gtex.wgs_datasets
 import ccmm.gtex.public_metadata
 import ccmm.gtex.restricted_metadata
+import ccmm.gtex.samples
 import ccmm.gtex.subjects
 #import ccmm.gtex.parsers.github_files as github_files
 import ccmm.gtex.parsers.portal_files as portal_files
@@ -100,7 +101,7 @@ def main():
     parser.add_argument('--output_file', required=True, help ='Output file path for the DATS JSON file containing the top-level DATS Dataset.')
     parser.add_argument('--dbgap_public_xml_path', required=True, help ='Path to directory that contains public dbGaP metadata files e.g., *.data_dict.xml and *.var_report.xml')
     parser.add_argument('--dbgap_protected_metadata_path', required=False, help ='Path to directory that contains access-controlled dbGaP tab-delimited metadata files.')
-##    parser.add_argument('--max_output_samples', required=False, help ='Impose a limit on the number of sample Materials in the output DATS. For testing purposes only.')
+#    parser.add_argument('--max_output_samples', required=False, help ='Impose a limit on the number of sample Materials in the output DATS. For testing purposes only.')
     parser.add_argument('--subject_phenotypes_path', default=V7_SUBJECT_PHENOTYPES_FILE, required=False, help ='Path to ' + V7_SUBJECT_PHENOTYPES_FILE)
     parser.add_argument('--sample_attributes_path', default=V7_SAMPLE_ATTRIBUTES_FILE, required=False, help ='Path to ' + V7_SAMPLE_ATTRIBUTES_FILE)
     parser.add_argument('--data_stewards_repo_path', default='data-stewards', required=False, help ='Path to local copy of https://github.com/dcppc/data-stewards')
@@ -172,10 +173,14 @@ def main():
     dbgap_study_md = dbgap_study_pub_md[study_id]
     dbgap_study_md['dbgap_vars'] = ccmm.gtex.public_metadata.add_study_vars(dbgap_study_dataset, dbgap_study_md)
 
+    # --------------------------
+    # subjects
+    # --------------------------
+
     # create subjects based on GTEx Portal subject phenotype file and GitHub data-stewards id dump
     dats_subjects_d = ccmm.gtex.subjects.get_subjects_dats_materials(p_subjects, gh_subjects)
     # sorted list of subjects
-    dats_subjects_l = [dats_subjects_d[s] for s in dats_subjects_d]
+    dats_subjects_l = sorted([dats_subjects_d[s] for s in dats_subjects_d], key=lambda s: s.get("name"))
 
     # DEBUG - limit to 10 subjects for testing
 #    dats_subjects_l = dats_subjects_l[0:10]
@@ -202,13 +207,32 @@ def main():
     # link Study to Dataset
     dbgap_study_dataset.set("producedBy", dats_study)
 
-    # TODO - create subjects and samples based on public metadata
-    # TODO - create RNA and DNA extracts
-    # TODO - add Datasets for file-level links
-    # TODO - write queries using public metadata
+    # --------------------------
+    # sample Materials
+    # --------------------------
 
-#        dna_extract = ccmm.gtex.dna_extracts.get_synthetic_single_dna_extract_json_from_public_metadata(study, study_md)
-#            study.set("isAbout", [dna_extract])
+    cache = DatsObjCache()
+    # create samples based on GTEx Portal sample attributes file and GitHub data-stewards id dump
+    dats_samples_d = ccmm.gtex.samples.get_samples_dats_materials(cache, dats_subjects_d, p_samples, gh_samples)
+    # sorted list of samples
+    dats_samples_l = sorted([dats_samples_d[s] for s in dats_samples_d], key=lambda s: s.get("name"))
+    dbgap_study_dataset.set("isAbout", dats_samples_l)
+
+    # --------------------------
+    # file Datasets
+    # --------------------------
+
+    file_datasets_l = []
+
+    # WGS CRAM
+    wgs_dats_file_datasets_l = ccmm.gtex.samples.get_files_dats_datasets(cache, dats_samples_d, p_samples, gh_samples, protected_wgs_files)
+    file_datasets_l.extend(wgs_dats_file_datasets_l)
+
+    # RNA-Seq CRAM
+    rnaseq_dats_file_datasets_l = ccmm.gtex.samples.get_files_dats_datasets(cache, dats_samples_d, p_samples, gh_samples, protected_rnaseq_files)
+    file_datasets_l.extend(rnaseq_dats_file_datasets_l)
+
+    dbgap_study_dataset.set("hasPart", file_datasets_l)
 
     # TODO - handle restricted-access (meta)data
     if restricted_mp is not None:
