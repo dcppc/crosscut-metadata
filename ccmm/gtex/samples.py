@@ -71,30 +71,49 @@ def get_sample_dats_material(cache, dats_subject, p_sample, gh_sample):
             ("derivesFrom", [ dats_subject.getIdRef(), anatomical_part ])
             ])
 
-    # sample type
+    # analysis freeze classification
     smafrze = p_sample['SMAFRZE']['mapped_value']
+    # expected sequence type depending on data freeze classification
+    expected_stype = None
+
     stype = None
     if smafrze == "RNASEQ":
-        stype = "RNA"
+        expected_stype = "RNA"
     elif smafrze == "WGS":
-        stype = "DNA"
+        expected_stype = "DNA"
     elif smafrze == "WES":
-        stype = "DNA"
-    elif smafrze == "EXCLUDE":
-        # TODO - other options here?
-        return None
+        expected_stype = "DNA"
     # Illumina OMNI SNP Array
-    elif smafrze == "OMNI":
-        stype = "DNA"
+    elif smafrze == "OMNI": 
+        expected_stype = "DNA"
+    elif smafrze == "EXCLUDE":
+        pass
     else:
-        print("unknown stype")
-        import pprint
-        pp = pprint.PrettyPrinter(indent=4)
-        print("p_sample=")
-        pp.pprint(p_sample)
-        print("g_sample=")
-        pp.pprint(gh_sample)
+        logging.fatal("unknown SMAFRZE " + smafrze)
         sys.exit(1)
+
+    # sample type - DNA or RNA
+    stype = None
+    smnabtcht = p_sample['SMNABTCHT']['mapped_value']
+    if re.match(r'^DNA ([iI]solation|[eE]xtraction).*', smnabtcht):
+        stype = 'DNA'
+    elif re.match(r'^RNA ([iI]solation|[eE]xtraction).*', smnabtcht):
+        stype = 'RNA'
+    elif re.match(r'DNA or RNA Extraction from Paxgene-derived Lysate Plate Based', smnabtcht):
+        stype = 'RNA'
+    elif re.match(r'Transfer To Matrix \(Manual\)', smnabtcht):
+        stype = 'DNA'
+
+    if stype is None:
+        if expected_stype is not None:
+            stype = expected_stype
+        else:
+            print("couldn't determine sequence type for smafrze=" + smafrze + " smnabtcht=" + smnabtcht)
+            return None
+    else:
+        if (expected_stype is not None) and (stype != expected_stype):
+            logging.fatal("seq type " + stype + " doesn't match expected stype " + expected_stype)
+            sys.exit(1)
 
     # DNA or RNA extract
     dna_or_rna_material = DatsObj("Material", [
