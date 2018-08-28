@@ -97,8 +97,8 @@ class DatsObj:
             if key == "identifier" and isinstance(val, DatsObj):
                 if val.get("@type") == "Identifier":
                     idval = val.get("identifier")
-                    # TODO - this only catches HTTP and HTTPS URIs
-                    if re.match(r'^http', idval):
+                    # TODO - this only catches the handful of URI schemes used in the current encodings
+                    if re.match(r'^(https?|s3|gs|ftp):', idval):
                         id_uri = idval
 
         # assign random uuid if no id specified
@@ -138,3 +138,23 @@ class DATSEncoder(json.JSONEncoder):
         else:
             return json.JSONEncoder.default(self, o)
         
+
+# ------------------------------------------------------
+# DatsObjCache
+# ------------------------------------------------------
+
+class DatsObjCache:
+    cache = {}
+
+    def __init__(self):
+        pass
+
+    # return the object if it's new, the id reference if it's not
+    def get_obj_or_ref(self, obj_key, obj_fn):
+        if obj_key in self.cache:
+            return self.cache[obj_key].getIdRef()
+        new_obj = obj_fn()
+        self.cache[obj_key] = new_obj
+        return new_obj
+
+    
