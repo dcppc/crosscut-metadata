@@ -231,10 +231,9 @@ def get_files_dats_datasets(cache, dats_samples_d, p_samples, gh_samples, protec
                 ])
 
         # input RNA/DNA extract that was sequenced
-        # TODO - these appear to be the samples marked 'EXCLUDE'
         if sample_id not in dats_samples_d:
-            logging.warn("no sample exists for " + sample_id + " found in file " + file['cram_file_aws']['raw_value'])
-            continue
+            logging.fatal("no sample exists for " + sample_id + " found in file " + file['cram_file_aws']['raw_value'])
+            sys.exit(1)
 
         dats_sample = dats_samples_d[sample_id]
         da = DatsObj("DataAcquisition", [
