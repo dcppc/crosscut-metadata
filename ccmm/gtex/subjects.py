@@ -2,7 +2,6 @@
 
 from ccmm.dats.datsobj import DatsObj
 import ccmm.dats.util as util
-#import ccmm.gtex.parsers.portal_files as portal_files
 import logging
 import sys
 
@@ -64,10 +63,8 @@ def get_subjects_dats_materials(p_subjects, gh_subjects):
     for s in p_subjects:
         # subject phenotype info from GTEx Portal file
         p_subject = p_subjects[s]
-        # subject info from GTEx GitHub id dump (may be None)
-        gh_subject = None
-        if s in gh_subjects:
-            gh_subject = gh_subjects[s]
+        # subject info from GTEx GitHub id dump
+        gh_subject = gh_subjects[s]
         subj_id = p_subject['SUBJID']['mapped_value']
         subj_material = get_subject_dats_material(p_subject, gh_subject)
         dats_subjects[subj_id] = subj_material
