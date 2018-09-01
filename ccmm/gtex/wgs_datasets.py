@@ -2,6 +2,7 @@
 
 from ccmm.dats.datsobj import DatsObj
 from collections import OrderedDict
+import ccmm.dats.util as util
 import logging
 import re
 import sys
@@ -31,28 +32,10 @@ HiSeq X Ten
 DBGAP_QUERY_URL_PREFIX = 'https://www.ncbi.nlm.nih.gov/gap/?term='
 DBGAP_GTEX_QUERY_URL = DBGAP_QUERY_URL_PREFIX + 'phs000424'
 
-## Ontology for Biomedical Investigations
-# "DNA sequencing"
-DNA_SEQUENCING_TYPE = OrderedDict([("value", "DNA sequencing"), ("valueIRI", "http://purl.obolibrary.org/obo/OBI_0000626")])
-# "whole genome sequencing assay"
-WGS_ASSAY_TYPE = OrderedDict([("value", "whole genome sequencing assay"), ("valueIRI", "http://purl.obolibrary.org/obo/OBI_0002117")])
-# "Illumina"
-ILLUMINA_TYPE = OrderedDict([("value", "Illumina"), ("valueIRI", "http://purl.obolibrary.org/obo/OBI_0000759")])
-# "Illumina HiSeq 2000"
-HISEQ_2000_TYPE = OrderedDict([("value", "Illumina HiSeq 2000"), ("valueIRI", "http://purl.obolibrary.org/obo/OBI_0002001")])
-# "Illumina HiSeq X Ten"
-HISEQ_X10_TYPE = OrderedDict([("value", "Illumina HiSeq X Ten"), ("valueIRI", "http://purl.obolibrary.org/obo/OBI_0002129")])
-# "exome sequencing assay"
-#EXOME_ASSAY_TYPE = OrderedDict([("value", "exome sequencing assay"), ("valueIRI", "http://purl.obolibrary.org/obo/OBI_0002118")])
-
 HISEQ_TYPES = {
-    "HiSeq 2000": HISEQ_2000_TYPE,
-    "HiSeq X Ten": HISEQ_X10_TYPE
+    "HiSeq 2000": util.get_annotation("Illumina HiSeq 2000"),
+    "HiSeq X Ten": util.get_annotation("Illumina HiSeq X Ten"),
 }
-
-# NCI Thesaurus OBO Edition
-# "Actual Subject Number"
-N_SUBJECTS_TYPE = OrderedDict([("value", "Actual Subject Number"), ("valueIRI", "http://purl.obolibrary.org/obo/NCIT_C98703")])
 
 # TODO - duplicated from rnaseq_datasets.py
 DB_GAP = DatsObj("DataRepository", [("name", "dbGaP")])
@@ -65,10 +48,10 @@ NIH_NHGRI = DatsObj("Organization", [
 GTEX_TYPES = [
     # WGS sequencing
     OrderedDict([
-            ("information", DNA_SEQUENCING_TYPE),
-            ("method", WGS_ASSAY_TYPE),
+            ("information", util.get_annotation("DNA sequencing")),
+            ("method", util.get_annotation("whole genome sequencing assay")),
             # WGS platform is either HiSeq 2000 or HiSeq X 10
-            ("platform", ILLUMINA_TYPE)
+            ("platform", util.get_annotation("Illumina"))
             ])
     # TODO - add other types for which data/analyses have not yet been generated, e.g., SNP/GWAS
     ]
@@ -143,14 +126,14 @@ def get_dbgap_studies(qterm):
             DatsObj("Dimension", [
                     ("name", { "value": "Actual Subject Count" } ),
                     ("description", "The actual number of subjects entered into a clinical trial."),
-                    ("types", [ N_SUBJECTS_TYPE ]),
+                    ("types", [ util.get_annotation("Actual Subject Number") ]),
                     ("values", [ s['n_participants'] ])
                     ])
             ]
 
         types = [OrderedDict([
-            ("information", DNA_SEQUENCING_TYPE),
-            ("method", WGS_ASSAY_TYPE),
+            ("information", util.get_annotation("DNA sequencing")),
+            ("method", util.get_annotation("whole genome sequencing assay")),
             ("platform", HISEQ_TYPES[s['platform']])
             ])]
 
@@ -168,7 +151,7 @@ def get_dbgap_studies(qterm):
                 ("version", version),
 #                ("dates", []),
                 #("title", s['descr']),
-                ("title",  "Genotype-Tissue Expression Project (GTEx)"),
+                ("title",  "Genotype-Tissue Expression Project (GTEx) WGS and RNA-Seq data"),
                 ("storedIn", DB_GAP),
                 ("types", types),
                 ("creators", creators),
