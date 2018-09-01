@@ -221,10 +221,11 @@ def get_single_dna_extract_json(study, study_md, subj_var_values, samp_var_value
             ("description", study_title + " subject " + subj_id),
             ("characteristics", subject_characteristics),
             ("bearerOfDisease", subject_bearerOfDisease),
-            ("taxonomy", human_t),
+            ("taxonomy", [ human_t ]),
             ("roles", util.get_donor_roles())
             ])
 
+    # TODO - use DatsObjCache
     specimen_annot = util.get_annotation("specimen")
     dna_extract_annot = util.get_annotation("DNA extract")
 

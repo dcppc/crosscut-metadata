@@ -134,13 +134,13 @@ def get_single_sample_json(sample, dats_obj_cache):
                 ("identifier", { "identifier": subj_id }),
                 ("description", "GTEx subject " + subj_id),
                 ("characteristics", subject_characteristics),
-                ("taxonomy", util.get_taxon_human()),
-                ("roles", util.get_donor_roles())
+                ("taxonomy", [ util.get_taxon_human(dats_obj_cache) ]),
+                ("roles", util.get_donor_roles(dats_obj_cache))
                 ])
         dats_obj_cache[subj_key] = subject_material
 
-    specimen_annot = util.get_annotation("specimen")
-    rna_extract_annot = util.get_annotation("RNA extract")
+    specimen_annot = util.get_annotation("specimen", dats_obj_cache)
+    rna_extract_annot = util.get_annotation("RNA extract", dats_obj_cache)
 
     # biological/tissue sample
     sample_name = samp_id
@@ -148,7 +148,7 @@ def get_single_sample_json(sample, dats_obj_cache):
             ("name", sample_name),
             ("identifier", { "identifier": samp_id }),
             ("description", anatomy_name + " specimen collected from subject " + subj_id),
-            ("taxonomy", util.get_taxon_human()),
+            ("taxonomy", [ util.get_taxon_human(dats_obj_cache) ]),
             ("roles", [ specimen_annot ]),
             ("derivesFrom", [ subject_material, anatomical_part ])
             ])
@@ -157,7 +157,7 @@ def get_single_sample_json(sample, dats_obj_cache):
     rna_material = DatsObj("Material", [
             ("name", "RNA from " + sample_name),
             ("description", "total RNA extracted from " + anatomy_name + " specimen collected from subject " + subj_id),
-            ("taxonomy", util.get_taxon_human()),
+            ("taxonomy", [ util.get_taxon_human(dats_obj_cache) ]),
             ("roles", [ rna_extract_annot ]),
             ("derivesFrom", [ biological_sample_material ])
             ])
