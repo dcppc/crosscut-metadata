@@ -72,13 +72,13 @@ RNASEQ_MANIFEST_COLS = [
 #  2. index file suffix of ".crai", not ".cram.crai"
 WGS_MANIFEST_COLS = [
     {'id': 'sample_id', 'regex': SAMPLE_ID_REGEX, 'empty_ok': False },
-    {'id': 'firecloud_id', 'regex': '^G\d+_GTEX-[A-Z0-9]+-\d+$', 'empty_ok': False },
-    {'id': 'cram_file', 'regex': '^gs:\/\/\S+\.cram$', 'empty_ok': False },             # Google Storage URI
+    {'id': 'cram_file_gcp', 'regex': '^gs:\/\/\S+\.cram$', 'empty_ok': False },          # Google Storage URI
+    {'id': 'cram_index_gcp', 'regex': '^gs:\/\/\S+\.crai$', 'empty_ok': False },         # Google Storage URI
+    {'id': 'cram_file_aws', 'regex': '^s3:\/\/\S+\.cram$', 'empty_ok': False },          # S3 URI
+    {'id': 'cram_index_aws', 'regex': '^s3:\/\/\S+\.crai$', 'empty_ok': False },         # S3 URI
     {'id': 'cram_file_md5', 'regex': MD5_REGEX, 'empty_ok': False },
     {'id': 'cram_file_size', 'regex': r'\d+', 'empty_ok': False },
-    {'id': 'cram_index', 'regex': '^gs:\/\/\S+\.crai$', 'empty_ok': False },            # Google Storage URI
-    {'id': 'cram_file_aws', 'regex': '^s3:\/\/\S+\.cram$', 'empty_ok': False },         # S3 URI
-    {'id': 'cram_index_aws', 'regex': '^s3:\/\/\S+\.crai$', 'empty_ok': False }         # S3 URI
+    {'id': 'cram_index_md5', 'regex': MD5_REGEX, 'empty_ok': False }
 ]
 
 # ------------------------------------------------------
