@@ -3,7 +3,7 @@
 # Create DATS JSON description of TOPMed public data.
 
 import argparse
-from ccmm.dats.datsobj import DatsObj
+from ccmm.dats.datsobj import DatsObj, DatsObjCache
 from collections import OrderedDict
 from ccmm.dats.datsobj import DATSEncoder
 import ccmm.topmed.dna_extracts
@@ -33,6 +33,9 @@ def main():
     # logging
     logging.basicConfig(level=logging.INFO)
 #    logging.basicConfig(level=logging.DEBUG)
+
+    # cache used to minimize duplication of JSON objects in JSON-LD output
+    cache = DatsObjCache()
 
     # convert accession list to dict
     acc_d = {}
@@ -78,7 +81,7 @@ def main():
                 if 'Sample_Attributes' in study_md:
                     # create dummy/synthetic DATS instance based on variable reports
                     # note that this may result in nonsensical combinations of sample and/or subject variable values
-                    dna_extract = ccmm.topmed.dna_extracts.get_synthetic_single_dna_extract_json_from_public_metadata(study, study_md)
+                    dna_extract = ccmm.topmed.dna_extracts.get_synthetic_single_dna_extract_json_from_public_metadata(cache, study, study_md)
                     # insert synthetic sample into relevant study/Dataset
                     study.set("isAbout", [dna_extract])
 
@@ -91,7 +94,7 @@ def main():
                 study_md['dbgap_vars'] = ccmm.topmed.public_metadata.add_study_vars(study, study_md)
                 # only create DNA extracts if there are sample attributes
                 if 'Sample_Attributes' in study_md:
-                    dna_extracts = ccmm.topmed.dna_extracts.get_dna_extracts_json_from_restricted_metadata(study, study_md, study_restricted_md[study_id])
+                    dna_extracts = ccmm.topmed.dna_extracts.get_dna_extracts_json_from_restricted_metadata(cache, study, study_md, study_restricted_md[study_id])
                     study.set("isAbout", dna_extracts)
 
     # write Dataset to DATS JSON file

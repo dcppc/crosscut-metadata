@@ -58,7 +58,7 @@ def pick_var_values(vars, vdict):
     return vdict
 
 # Generate DATS JSON for a single sample/DNA extract
-def get_single_dna_extract_json(study, study_md, subj_var_values, samp_var_values):
+def get_single_dna_extract_json(cache, study, study_md, subj_var_values, samp_var_values):
     # Almost all samples in TOPMed WGS phase are blood samples, named "Blood", "Peripheral Blood"...
     # Few samples are saliva samples probably due to sample collection issues
     name = None
@@ -215,7 +215,7 @@ def get_single_dna_extract_json(study, study_md, subj_var_values, samp_var_value
     subject_characteristics.extend(subject_dimensions)
     sample_characteristics = sample_dimensions
     
-    human_t = util.get_taxon_human()
+    human_t = util.get_taxon_human(cache)
     subj_id = subj_var_values['SUBJECT_ID']['value']
     dbgap_subj_id = subj_var_values['dbGaP_Subject_ID']['value']
     samp_id = samp_var_values['SAMPLE_ID']['value']
@@ -231,10 +231,11 @@ def get_single_dna_extract_json(study, study_md, subj_var_values, samp_var_value
             ("description", study_title + " subject " + subj_id),
             ("characteristics", subject_characteristics),
             ("bearerOfDisease", subject_bearerOfDisease),
-            ("taxonomy", human_t),
-            ("roles", util.get_donor_roles())
+            ("taxonomy", [ human_t ]),
+            ("roles", util.get_donor_roles(cache))
             ])
 
+    # TODO - use DatsObjCache
     specimen_annot = util.get_annotation("specimen")
     dna_extract_annot = util.get_annotation("DNA extract")
 
@@ -273,7 +274,7 @@ def get_single_dna_extract_json(study, study_md, subj_var_values, samp_var_value
     return dna_material
 
 # Generate synthetic data for a single sample based on the public variable summaries.
-def get_synthetic_single_dna_extract_json_from_public_metadata(study, study_md):
+def get_synthetic_single_dna_extract_json_from_public_metadata(cache, study, study_md):
 
     # Subject summary data
     subj_var_values = {}
@@ -302,7 +303,7 @@ def get_synthetic_single_dna_extract_json_from_public_metadata(study, study_md):
     subj_var_values['dbGaP_Subject_ID'] = { "value" : "0000000" }
     subj_var_values['SUBJECT_ID'] = { "value" : "SU0000000" }
 
-    return get_single_dna_extract_json(study, study_md, subj_var_values, samp_var_values)
+    return get_single_dna_extract_json(cache, study, study_md, subj_var_values, samp_var_values)
 
 def index_dicts(dict_list, key):
     index = {}
@@ -365,7 +366,7 @@ def add_properties(o1, o2):
         else:
             o1[p] = o2[p]    
 
-def get_dna_extracts_json_from_restricted_metadata(study, pub_md, restricted_md):
+def get_dna_extracts_json_from_restricted_metadata(cache, study, pub_md, restricted_md):
     dna_extracts = []
 
     # Subject
@@ -431,7 +432,7 @@ def get_dna_extracts_json_from_restricted_metadata(study, pub_md, restricted_md)
         for sa in subject:
             subject_atts[sa] = { "value" : subject[sa] } # TODO - add corresponding dbgap var identifier from pub md
 
-        dna_extract = get_single_dna_extract_json(study, pub_md, subject_atts, sample_atts)
+        dna_extract = get_single_dna_extract_json(cache, study, pub_md, subject_atts, sample_atts)
         dna_extracts.append(dna_extract)
 
     return dna_extracts
