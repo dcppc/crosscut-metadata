@@ -59,6 +59,9 @@ def get_sample_dats_material(cache, dats_subject, p_sample, gh_sample):
     identifier = samp_id
     if gh_sample is not None:
         identifier_id = gh_sample['Destination URL']['raw_value']
+
+    subj_key = ":".join(["Material", dats_subject.get("name")])
+    dats_subj = cache.get_obj_or_ref(subj_key, lambda: dats_subject)
         
     # biological/tissue sample
     biological_sample_material = DatsObj("Material", [
@@ -66,9 +69,9 @@ def get_sample_dats_material(cache, dats_subject, p_sample, gh_sample):
             ("identifier", { "identifier": identifier }),
             ("description", anatomy_name + " specimen collected from subject " + subj_id),
             # TODO - use id refs for these too:
-            ("taxonomy", util.get_taxon_human()),
-            ("roles", [ util.get_annotation("specimen") ]),
-            ("derivesFrom", [ dats_subject.getIdRef(), anatomical_part ])
+            ("taxonomy", [ util.get_taxon_human(cache) ]),
+            ("roles", [ util.get_annotation("specimen", cache) ]),
+            ("derivesFrom", [ dats_subj, anatomical_part ])
             ])
 
     # analysis freeze classification
@@ -120,8 +123,8 @@ def get_sample_dats_material(cache, dats_subject, p_sample, gh_sample):
             ("name", stype + " from " + samp_id),
             ("description", "total " + stype + " extracted from " + anatomy_name + " specimen collected from subject " + subj_id),
             # TODO - use id ref for this:
-            ("taxonomy", util.get_taxon_human()),
-            ("roles", [ util.get_annotation(stype + " extract") ]),
+            ("taxonomy", [ util.get_taxon_human(cache) ]),
+            ("roles", [ util.get_annotation(stype + " extract", cache) ]),
             ("derivesFrom", [ biological_sample_material ])
             ])
 
@@ -153,10 +156,22 @@ def get_samples_dats_materials(cache, dats_subjects, p_samples, gh_samples):
 def get_files_dats_datasets(cache, dats_samples_d, p_samples, gh_samples, protected_cram_files):
     file_datasets = []
 
-    # ideally these should be pointers to entities defined in the parent dataset:
-    rnaseq_types = [] # TODO
-    wgs_types = [] # TODO
-    creators = [] # TODO
+    rnaseq_types = DatsObj("DataType", [
+            ("information", util.get_annotation("transcription profiling", cache)),
+            ("method", util.get_annotation("RNA-seq assay", cache)),
+            ("platform", util.get_annotation("Illumina", cache))
+            ])
+
+    wgs_types = DatsObj("DataType", [
+            ("information", util.get_annotation("DNA sequencing", cache)),
+            ("method", util.get_annotation("whole genome sequencing assay", cache)),
+            ("platform", util.get_annotation("Illumina", cache))
+            ])
+
+
+    broad_key = ":".join(["Organization", "Broad Institute"])
+    broad = cache.get_obj_or_ref(broad_key, lambda: DatsObj("Organization", [("name", "Broad Institute")]))
+    creators = [broad]
 
     def make_data_standard(format):
         return DatsObj("DataStandard", [
@@ -180,30 +195,42 @@ def get_files_dats_datasets(cache, dats_samples_d, p_samples, gh_samples, protec
         if re.search(r'wgs\/', file['cram_file_aws']['raw_value']):
             material_type = 'DNA'
             ds_types = wgs_types
+            gcp_suffix = '_gcp'
         elif re.search(r'rnaseq\/', file['cram_file_aws']['raw_value']):
             material_type = 'RNA'
             ds_types = rnaseq_types
+            gcp_suffix = ''
         else:
             logging.fatal("unable to determine material/sequence type from cram_file_aws=" + file['cram_file_aws']['raw_value'])
             sys.exit(1)
 
-        # TODO - where to put .crai URIs?
-        # TODO - where to put md5 checksum and firecloud_id?
-        
         # RNA-Seq keys = sample_id	cram_file	cram_file_md5	cram_file_size	cram_index	cram_file_aws	cram_index_aws
         # WGS keys = same as above + firecloud_id
-        cram_file = file['cram_file']['raw_value']
+        cram_file = file['cram_file' + gcp_suffix]['raw_value']
         cram_file_md5 = file['cram_file_md5']['raw_value']
+
+        # TODO - review the following encoding decisions:
+        #  - storing .crai URI as relatedIdentifier of the DatasetDistribution for the .cram file
+        #  - storing MD5 checksum of the .cram file as an extraProperty of the DatasetDistribution
+        #  - storing firecloud_id as a relatedIdentifier of the Dataset (not the DatasetDistribution)
 
         # Google Cloud Platform / Google Storage copy
         gs_access = DatsObj("Access", [
-                ("landingPage", file['cram_file']['raw_value'])
+                ("landingPage", file['cram_file' + gcp_suffix]['raw_value'])
                 ])
         gs_distro = DatsObj("DatasetDistribution", [
                 ("access", gs_access),
-                ("identifier", DatsObj("Identifier", [("identifier", file['cram_file']['raw_value'])])),
-                ("size", file['cram_file_size']['raw_value']),
-                ("conformsTo", [cache.get_obj_or_ref(cram_ds_key, lambda: make_data_standard("CRAM"))])
+                ("identifier", DatsObj("Identifier", [("identifier", file['cram_file' + gcp_suffix]['raw_value'])])),
+                ("relatedIdentifiers", [ DatsObj("RelatedIdentifier", [("identifier", file['cram_index' + gcp_suffix]['raw_value']), ("relationType", "cram_index") ])]),
+                ("size", int(file['cram_file_size']['raw_value'])),
+                # TODO - add unit for bytes
+#                ("unit", DatsObj("Annotation", []))
+                ("conformsTo", [cache.get_obj_or_ref(cram_ds_key, lambda: make_data_standard("CRAM"))]),
+                ("extraProperties", [DatsObj("CategoryValuesPair", [
+                                ("category", "md5_checksum"),
+#                                ("categoryIRI", ""),
+                                ("values", [ file['cram_file_md5']['raw_value'] ])
+                                ])])
                 ])
 
         # AWS / S3 copy
@@ -213,8 +240,16 @@ def get_files_dats_datasets(cache, dats_samples_d, p_samples, gh_samples, protec
         s3_distro = DatsObj("DatasetDistribution", [
                 ("access", s3_access),
                 ("identifier", DatsObj("Identifier", [("identifier", file['cram_file_aws']['raw_value'])])),
-                ("size", file['cram_file_size']['raw_value']),
-                ("conformsTo", [cache.get_obj_or_ref(cram_ds_key, lambda: make_data_standard("CRAM"))])
+                ("relatedIdentifiers", [ DatsObj("RelatedIdentifier", [("identifier", file['cram_index_aws']['raw_value']), ("relationType", "cram_index") ])]),
+                ("size", int(file['cram_file_size']['raw_value'])),
+                # TODO - add unit for bytes
+#                ("unit", DatsObj("Annotation", []))
+                ("conformsTo", [cache.get_obj_or_ref(cram_ds_key, lambda: make_data_standard("CRAM"))]),
+                ("extraProperties", [DatsObj("CategoryValuesPair", [
+                                ("category", "md5_checksum"),
+#                                ("categoryIRI", ""),
+                                ("values", [ file['cram_file_md5']['raw_value'] ])
+                                ])])
                 ])
 
         m = re.match(r'^.*\/([^\/]+)$', cram_file)
@@ -226,9 +261,17 @@ def get_files_dats_datasets(cache, dats_samples_d, p_samples, gh_samples, protec
         ds = DatsObj("Dataset", [
                 ("distributions", [gs_distro, s3_distro]),
                 ("title", filename),
-                ("types", ds_types),
+                ("types", [ ds_types ]),
                 ("creators", creators),
                 ])
+
+        # add firecloud_id for WGS
+        if 'firecloud_id' in file:
+            f_id = DatsObj("RelatedIdentifier", [
+                    ("identifier", file['firecloud_id']['raw_value']),
+                    ("identifierSource", "FireCloud")
+                    ])
+            ds.set("relatedIdentifiers", [f_id])
 
         # input RNA/DNA extract that was sequenced
         if sample_id not in dats_samples_d:
@@ -236,13 +279,17 @@ def get_files_dats_datasets(cache, dats_samples_d, p_samples, gh_samples, protec
             sys.exit(1)
 
         dats_sample = dats_samples_d[sample_id]
+        dats_samp_key = ":".join(["Material", dats_sample.get("name")])
+        dats_samp = cache.get_obj_or_ref(dats_samp_key, lambda: dats_sample)
+
         da = DatsObj("DataAcquisition", [
                 ("name", filename),
-                ("input", [dats_sample.getIdRef()]),
-                ("output", [ds.getIdRef()]),             # link back to Dataset
-#                ("uses", [])                            # software used
+                ("input", [dats_samp])
+                # TODO - circular links not yet supported by validator
+#                ("output", [ds.getIdRef()])           # link back to Dataset
+#                ("uses", [])                          # software used
                 ])
-        ds.set("producedBy", [da])
+        ds.set("producedBy", da)
         file_datasets.append(ds)
 
     return file_datasets

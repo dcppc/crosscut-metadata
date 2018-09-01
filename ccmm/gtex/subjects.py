@@ -7,7 +7,7 @@ import sys
 
 # Produce a DATS Material for a single subject/donor.
 
-def get_subject_dats_material(p_subject, gh_subject):
+def get_subject_dats_material(cache, p_subject, gh_subject):
     subj_id = p_subject['SUBJID']['mapped_value']
 
     # human experimental subject/patient
@@ -49,15 +49,15 @@ def get_subject_dats_material(p_subject, gh_subject):
             ("identifier", DatsObj("Identifier", [("identifier", identifier)] )),
             ("description", "GTEx subject " + subj_id),
             ("characteristics", subject_characteristics),
-            ("taxonomy", util.get_taxon_human()),
-            ("roles", util.get_donor_roles())
+            ("taxonomy", [util.get_taxon_human(cache)]),
+            ("roles", util.get_donor_roles(cache))
             ])
 
     return subject_material
 
 # Produce a dict of DATS subject/donor Materials, indexed by GTEx subject id.
 
-def get_subjects_dats_materials(p_subjects, gh_subjects):
+def get_subjects_dats_materials(cache, p_subjects, gh_subjects):
     dats_subjects = {}
 
     for s in p_subjects:
@@ -66,7 +66,7 @@ def get_subjects_dats_materials(p_subjects, gh_subjects):
         # subject info from GTEx GitHub id dump
         gh_subject = gh_subjects[s]
         subj_id = p_subject['SUBJID']['mapped_value']
-        subj_material = get_subject_dats_material(p_subject, gh_subject)
+        subj_material = get_subject_dats_material(cache, p_subject, gh_subject)
         dats_subjects[subj_id] = subj_material
     
     return dats_subjects
