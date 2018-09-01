@@ -24,6 +24,9 @@ JSON_LD_OBO_FOUNDRY_CONTEXT_URI_PREFIX = 'https://datatagsuite.github.io/context
 #JSON_LD_SDO_CONTEXT_URI_PREFIX = './context/sdo/'
 #JSON_LD_OBO_FOUNDRY_CONTEXT_URI_PREFIX = './context/obo/'
 
+# debug flag - should remove all id references from the resulting instance when True
+DEBUG_NO_ID_REFS = False
+
 # All known DATS object types
 # from schema dir of https://github.com/datatagsuite/schema.git:
 # egrep '@type' *.json | perl -ne 'if (/^(\S+):.*\"enum\":\s*\[\s*\"([^\"]+)\"/) { print "\"$2\": { \"name\": \"$2\", \"schema\": \"$1\", \"has_context\": False },\n"; }' | sort | uniq
@@ -106,9 +109,8 @@ class DatsObj:
             if id_uri is not None:
                 id = id_uri
             else:
-                id = "TMPID:" + str(uuid.uuid4())
+                id = "http://127.0.0.1/TMPID/" + str(uuid.uuid4())
 
-        # TODO - id should be a URI according to dataset_schema.json
         dats_atts.append(("@id", id))
         dats_atts.extend(atts)
         self.data = OrderedDict(dats_atts)
@@ -152,7 +154,10 @@ class DatsObjCache:
     # return the object if it's new, the id reference if it's not
     def get_obj_or_ref(self, obj_key, obj_fn):
         if obj_key in self.cache:
-            return self.cache[obj_key].getIdRef()
+            if DEBUG_NO_ID_REFS:
+                return self.cache[obj_key]
+            else:
+                return self.cache[obj_key].getIdRef()
         new_obj = obj_fn()
         self.cache[obj_key] = new_obj
         return new_obj
