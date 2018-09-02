@@ -114,6 +114,8 @@ def main():
     #                ?identifier sdo:identifier ?ident.
     #            }
 
+    # Retrieve title and id for each 2nd-level Dataset. Using parallel arrays, which assumes
+    # that each Dataset will have exactly one of each.
     titles = []
     ids = []
 
@@ -136,6 +138,7 @@ def main():
     #  ---->         ?identifier sdo:identifier ?ident.
     #            }
 
+    # One more step needed to get from DATS Identifier to the actual id.
     idents = []
     for i in ids:
         for (s,p,o) in g.triples((i, ru.SDO_IDENT_TERM, None)):
