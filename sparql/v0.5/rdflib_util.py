@@ -14,13 +14,16 @@ import sys
 RDF_TYPE_TERM = rdflib.term.URIRef('http://www.w3.org/1999/02/22-rdf-syntax-ns#type')
 
 CENTRAL_ID_TERM = rdflib.term.URIRef('http://purl.obolibrary.org/obo/IAO_0000577')
-NAME_TERM = rdflib.term.URIRef('http://purl.obolibrary.org/obo/IAO_0000300')
+NAME_TERM = rdflib.term.URIRef('http://purl.obolibrary.org/obo/IAO_0000590')
+DESCR_TERM = rdflib.term.URIRef('http://purl.obolibrary.org/obo/IAO_0000300')
 TITLE_TERM = rdflib.term.URIRef('http://purl.obolibrary.org/obo/OBI_0001622')
 HAS_PART_TERM = rdflib.term.URIRef('http://purl.obolibrary.org/obo/BFO_0000051')
 
 DATS_DATASET_TERM = rdflib.term.URIRef('http://purl.obolibrary.org/obo/IAO_0000100')
+DATS_DIMENSION_TERM = rdflib.term.URIRef('http://purl.obolibrary.org/obo/STATO_23367')
 
 SDO_IDENT_TERM = rdflib.term.URIRef('https://schema.org/identifier')
+SDO_VALUE_TERM = rdflib.term.URIRef('https://schema.org/value')
 
 # ------------------------------------------------------
 # rdflib_util
