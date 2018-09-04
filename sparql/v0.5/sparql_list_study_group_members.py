@@ -42,11 +42,7 @@ def main():
     if args.dataset_id is not None:
         bindings['dbgap_study_acc'] = rdflib.term.Literal(args.dataset_id)
     if args.study_group_name is not None:
-        # TODO - this does not work for some reason
-        bindings['study_group_name'] = rdflib.term.Literal(args.study_group_name)
-        logging.fatal("--study_group_name not yet supported")
-        sys.exit(1)
-        
+        bindings['study_group_name'] = rdflib.term.Literal(args.study_group_name, lang="en")
 
     qres = g.query(
             """
