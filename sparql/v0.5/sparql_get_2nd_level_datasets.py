@@ -3,6 +3,7 @@
 import argparse
 import logging
 import rdflib 
+import rdflib_util as ru 
 import re
 import sys
 
@@ -23,14 +24,12 @@ def main():
     logging.basicConfig(level=logging.INFO)
 
     # parse JSON LD
-    logging.info("Reading DATS JSON metadata from " + args.dats_file)
-    with open(args.dats_file, "r") as f:
-        json_data = f.read()
-    logging.info("read JSON data")
+    g = ru.read_json_ld_graph(args.dats_file)
 
-    logging.info("parsing JSON data")
-    g = rdflib.Graph().parse(data=json_data, format='json-ld')
-    logging.info("parsing complete")
+    # obo:IAO_0000100 - "data set"
+    # obo:BFO_0000051 - "has part"
+    # obo:OBI_0001622 - "a textual entity that denotes an investigation"
+    # obo:IAO_0000577 - "centrally registered identifier symbol"
 
     qres = g.query(
             """

@@ -18,9 +18,14 @@ NAME_TERM = rdflib.term.URIRef('http://purl.obolibrary.org/obo/IAO_0000590')
 DESCR_TERM = rdflib.term.URIRef('http://purl.obolibrary.org/obo/IAO_0000300')
 TITLE_TERM = rdflib.term.URIRef('http://purl.obolibrary.org/obo/OBI_0001622')
 HAS_PART_TERM = rdflib.term.URIRef('http://purl.obolibrary.org/obo/BFO_0000051')
+PRODUCED_BY_TERM = rdflib.term.URIRef('http://purl.obolibrary.org/obo/RO_0003001')
+HAS_MEMBER_TERM = rdflib.term.URIRef('http://purl.obolibrary.org/obo/RO_0002351')
 
 DATS_DATASET_TERM = rdflib.term.URIRef('http://purl.obolibrary.org/obo/IAO_0000100')
 DATS_DIMENSION_TERM = rdflib.term.URIRef('http://purl.obolibrary.org/obo/STATO_23367')
+DATS_MATERIAL_TERM = rdflib.term.URIRef('http://purl.obolibrary.org/obo/BFO_0000040') # "material entity"
+DATS_STUDY_TERM = rdflib.term.URIRef('http://purl.obolibrary.org/obo/OBI_0000066') # "investigation"
+DATS_STUDY_GROUP_TERM = rdflib.term.URIRef('http://purl.obolibrary.org/obo/STATO_0000193') # "study group population"
 
 SDO_IDENT_TERM = rdflib.term.URIRef('https://schema.org/identifier')
 SDO_VALUE_TERM = rdflib.term.URIRef('https://schema.org/value')

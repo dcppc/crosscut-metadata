@@ -41,7 +41,7 @@ def main():
     #            }
 
     # find ALL Datasets
-    all_datasets = [s for (s,p,o) in g.triples((None, None, ru.DATS_DATASET_TERM))]
+    all_datasets = [s for (s,p,o) in g.triples((None, ru.RDF_TYPE_TERM, ru.DATS_DATASET_TERM))]
 
     #    SELECT ?ident ?title
     #            WHERE {
@@ -57,7 +57,7 @@ def main():
     
     # filter Datasets, get those with a title matching one of these two strings:
     titles = ['Genotype-Tissue Expression Project (GTEx)', 'Trans-Omics for Precision Medicine (TOPMed)']
-    title_terms = [rdflib.term.Literal(t, datatype=ru.NAME_TERM) for t in titles]
+    title_terms = [rdflib.term.Literal(t, datatype=ru.DESCR_TERM) for t in titles]
     datasets = []
 
     for d in all_datasets:
