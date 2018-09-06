@@ -102,10 +102,11 @@ def main():
     parser.add_argument('--output_file', required=True, help ='Output file path for the DATS JSON file containing the top-level DATS Dataset.')
     parser.add_argument('--dbgap_public_xml_path', required=True, help ='Path to directory that contains public dbGaP metadata files e.g., *.data_dict.xml and *.var_report.xml')
     parser.add_argument('--dbgap_protected_metadata_path', required=False, help ='Path to directory that contains access-controlled dbGaP tab-delimited metadata files.')
-    parser.add_argument('--max_output_samples', required=False, help ='Impose a limit on the number of sample Materials in the output DATS. For testing purposes only.')
+    parser.add_argument('--max_output_samples', required=False, type=int, help ='Impose a limit on the number of sample Materials in the output DATS. For testing purposes only.')
     parser.add_argument('--subject_phenotypes_path', default=V7_SUBJECT_PHENOTYPES_FILE, required=False, help ='Path to ' + V7_SUBJECT_PHENOTYPES_FILE)
     parser.add_argument('--sample_attributes_path', default=V7_SAMPLE_ATTRIBUTES_FILE, required=False, help ='Path to ' + V7_SAMPLE_ATTRIBUTES_FILE)
     parser.add_argument('--data_stewards_repo_path', default='data-stewards', required=False, help ='Path to local copy of https://github.com/dcppc/data-stewards')
+    parser.add_argument('--no_circular_links', default=False, required=False, type=bool, help ='Whether to disallow circular links/paths within the JSON-LD output.')
     args = parser.parse_args()
 
     # logging
@@ -196,10 +197,12 @@ def main():
             ])
 
     # create link back from each subject to the parent StudyGroup
-    # TODO - circular links not yet supported by validator
-#    for s in dats_subjects_l:
-#        cl = s.get("characteristics")
-#        cl.append(DatsObj("Dimension", [("name", "member of study group"), ("values", [ all_subjects.getIdRef() ])]))
+    if args.no_circular_links:
+        logging.warn("not creating Subject level circular links because of --no_circular_links option")
+    else:
+        for s in dats_subjects_l:
+            cl = s.get("characteristics")
+            cl.append(DatsObj("Dimension", [("name", "member of study group"), ("values", [ all_subjects.getIdRef() ])]))
 
     dats_study = DatsObj("Study", [
             ("name", "GTEx"),
@@ -229,12 +232,12 @@ def main():
     file_datasets_l = []
 
     # WGS CRAM
-    wgs_dats_file_datasets_l = ccmm.gtex.samples.get_files_dats_datasets(cache, dats_samples_d, p_samples, gh_samples, protected_wgs_files)
+    wgs_dats_file_datasets_l = ccmm.gtex.samples.get_files_dats_datasets(cache, dats_samples_d, p_samples, gh_samples, protected_wgs_files, args.no_circular_links)
     logging.info("adding Datasets for " + str(len(wgs_dats_file_datasets_l)) + " WGS CRAM files")
     file_datasets_l.extend(wgs_dats_file_datasets_l)
 
     # RNA-Seq CRAM
-    rnaseq_dats_file_datasets_l = ccmm.gtex.samples.get_files_dats_datasets(cache, dats_samples_d, p_samples, gh_samples, protected_rnaseq_files)
+    rnaseq_dats_file_datasets_l = ccmm.gtex.samples.get_files_dats_datasets(cache, dats_samples_d, p_samples, gh_samples, protected_rnaseq_files, args.no_circular_links)
     logging.info("adding Datasets for " + str(len(rnaseq_dats_file_datasets_l)) + " RNA-Seq CRAM files")
     file_datasets_l.extend(rnaseq_dats_file_datasets_l)
 

@@ -153,7 +153,7 @@ def get_samples_dats_materials(cache, dats_subjects, p_samples, gh_samples):
     return dats_samples
 
 # create Datasets for file-level links based on GitHub manifest files
-def get_files_dats_datasets(cache, dats_samples_d, p_samples, gh_samples, protected_cram_files):
+def get_files_dats_datasets(cache, dats_samples_d, p_samples, gh_samples, protected_cram_files, no_circular_links):
     file_datasets = []
 
     rnaseq_types = DatsObj("DataType", [
@@ -285,10 +285,13 @@ def get_files_dats_datasets(cache, dats_samples_d, p_samples, gh_samples, protec
         da = DatsObj("DataAcquisition", [
                 ("name", filename),
                 ("input", [dats_samp])
-                # TODO - circular links not yet supported by validator
-#                ("output", [ds.getIdRef()])           # link back to Dataset
 #                ("uses", [])                          # software used
                 ])
+
+        if not no_circular_links:
+            # circular link back to enclosing Dataset as the output
+            da.set("output", [ds.getIdRef()])
+            
         ds.set("producedBy", da)
         file_datasets.append(ds)
 
