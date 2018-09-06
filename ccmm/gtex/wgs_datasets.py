@@ -45,18 +45,23 @@ NIH_NHGRI = DatsObj("Organization", [
         ("abbreviation", "NHGRI")
         ])
 
-GTEX_TYPES = [
-    # WGS sequencing
-    OrderedDict([
-            ("information", util.get_annotation("DNA sequencing")),
-            ("method", util.get_annotation("whole genome sequencing assay")),
-            # WGS platform is either HiSeq 2000 or HiSeq X 10
-            ("platform", util.get_annotation("Illumina"))
-            ])
-    # TODO - add other types for which data/analyses have not yet been generated, e.g., SNP/GWAS
-    ]
+# TODO - use DatsObjCache
+cache = None
+GTEX_V7_RNASEQ_TYPE = DatsObj("DataType", [
+        ("information", util.get_annotation("transcription profiling", cache)),
+        ("method", util.get_annotation("RNA-seq assay", cache)),
+        ("platform", util.get_annotation("Illumina", cache))
+        ])
 
-# 
+GTEX_V7_WGS_TYPE = DatsObj("DataType", [
+        ("information", util.get_annotation("DNA sequencing", cache)),
+        ("method", util.get_annotation("whole genome sequencing assay", cache)),
+        ("platform", util.get_annotation("Illumina", cache))
+        ])
+
+GTEX_V7_TYPES = [ GTEX_V7_WGS_TYPE, GTEX_V7_RNASEQ_TYPE ]
+
+
 def get_dbgap_studies(qterm):
     studies = []
     study = None
@@ -185,7 +190,7 @@ def get_dataset_json():
             ("title",  "Genotype-Tissue Expression Project (GTEx)"),
             ("description", GTEX_DESCRIPTION),
             ("storedIn", DB_GAP),
-            ("types", GTEX_TYPES),
+            ("types", GTEX_V7_TYPES),
             ("creators", [NIH_NHGRI]),
             ("distributions", [DatsObj("DatasetDistribution", [
                                     ("access", DatsObj("Access", [
