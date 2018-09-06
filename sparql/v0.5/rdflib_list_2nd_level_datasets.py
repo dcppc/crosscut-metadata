@@ -7,7 +7,7 @@ import rdflib_util as ru
 import re
 import sys
 
-# Implementation of "get 2nd level datasets" query directly in Python using
+# Implementation of "list 2nd level datasets" query directly in Python using
 # rdflib API calls. 121X faster than equivalent SPARQL query for current
 # GTEx JSON-LD file.
 

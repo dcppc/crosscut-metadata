@@ -7,7 +7,7 @@ import rdflib_util as ru
 import re
 import sys
 
-# Implementation of "get 2nd level datasets" query in SPARQL/RDFLib.
+# Implementation of "list 2nd level datasets" query in SPARQL/RDFLib.
 
 # ------------------------------------------------------
 # main()
