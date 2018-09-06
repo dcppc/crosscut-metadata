@@ -168,7 +168,6 @@ def get_files_dats_datasets(cache, dats_samples_d, p_samples, gh_samples, protec
             ("platform", util.get_annotation("Illumina", cache))
             ])
 
-
     broad_key = ":".join(["Organization", "Broad Institute"])
     broad = cache.get_obj_or_ref(broad_key, lambda: DatsObj("Organization", [("name", "Broad Institute")]))
     creators = [broad]
