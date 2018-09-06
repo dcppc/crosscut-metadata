@@ -41,7 +41,7 @@ def main():
 
     qres = g.query(
             """
-            SELECT DISTINCT ?dbgap_study_acc ?dbgap_var_acc ?pname ?descr
+            SELECT ?dbgap_study_acc ?dbgap_var_acc ?pname ?descr
             WHERE {
                 ?dataset a obo:IAO_0000100.
                 ?dataset obo:IAO_0000577 ?dataset_id.
