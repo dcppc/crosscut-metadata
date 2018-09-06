@@ -175,6 +175,9 @@ def main():
     dbgap_study_md = dbgap_study_pub_md[study_id]
     dbgap_study_md['dbgap_vars'] = ccmm.gtex.public_metadata.add_study_vars(dbgap_study_dataset, dbgap_study_md)
 
+    # set 2nd level types to be the same as the top-level types: WGS and RNA-Seq
+    dbgap_study_dataset.set("types", gtex_dataset.get("types"))
+
     # cache used to minimize duplication of JSON objects in JSON-LD output
     cache = DatsObjCache()
 
