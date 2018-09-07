@@ -9,9 +9,13 @@ import sys
 
 # Produce a DATS Material for a single sample.
 
-def get_sample_dats_material(cache, dats_subject, p_sample, gh_sample):
+def get_sample_dats_material(cache, dats_subject, p_sample, gh_sample, var_lookup):
     samp_id = p_sample['SAMPID']['mapped_value']
     subj_id = p_sample['SUBJID']['mapped_value']
+
+    # retrieve id reference for the Identifier of the DATS Dimension for the "all subjects" consent group version of the variable
+    def get_var_id(name):
+        return var_lookup[name][""].get("identifier").getIdRef()
 
     # Uberon id (or EFO id, contrary to the documentation)
     anat_id = p_sample['SMUBRID']['mapped_value']
@@ -62,12 +66,31 @@ def get_sample_dats_material(cache, dats_subject, p_sample, gh_sample):
 
     subj_key = ":".join(["Material", dats_subject.get("name")])
     dats_subj = cache.get_obj_or_ref(subj_key, lambda: dats_subject)
-        
+
+    # add sample characteristics from p_sample metadata
+    sample_chars = []
+    for key in p_sample:
+        if re.match(r'^(subject|id)$', key):
+            continue
+        # TODO - currently including only a small subset of the available values for demonstration purposes
+        if not re.match(r'^(SMATSSCR|SMRIN|SMMAPRT|SMGNSDTC)$',key):
+            continue
+        var = p_sample[key]
+#        print("got key=" + key + " var=" + str(var))
+        mapped_val = var['mapped_value']
+        char = DatsObj("Dimension", [
+                ("name", DatsObj("Annotation", [("value", key)])),
+                ("identifier", get_var_id(key)),
+                ("values", [mapped_val])
+                ])
+        sample_chars.append(char)
+
     # biological/tissue sample
     biological_sample_material = DatsObj("Material", [
             ("name", samp_id),
             ("identifier", { "identifier": identifier }),
             ("description", anatomy_name + " specimen collected from subject " + subj_id),
+            ("characteristics", sample_chars),
             # TODO - use id refs for these too:
             ("taxonomy", [ util.get_taxon_human(cache) ]),
             ("roles", [ util.get_annotation("specimen", cache) ]),
@@ -132,7 +155,7 @@ def get_sample_dats_material(cache, dats_subject, p_sample, gh_sample):
 
 # Produce a dict of DATS subject/donor Materials, indexed by GTEx sample id.
 
-def get_samples_dats_materials(cache, dats_subjects, p_samples, gh_samples):
+def get_samples_dats_materials(cache, dats_subjects, p_samples, gh_samples, var_lookup):
     dats_samples = {}
 
     for s in p_samples:
@@ -145,7 +168,7 @@ def get_samples_dats_materials(cache, dats_subjects, p_samples, gh_samples):
         samp_id = p_sample['SAMPID']['mapped_value']
         subj_id = p_sample['SUBJID']['mapped_value']
         dats_subject = dats_subjects[subj_id]
-        samp_material = get_sample_dats_material(cache, dats_subject, p_sample, gh_sample)
+        samp_material = get_sample_dats_material(cache, dats_subject, p_sample, gh_sample, var_lookup)
         if samp_material is None:
             continue
         dats_samples[samp_id] = samp_material
@@ -248,7 +271,10 @@ def get_files_dats_datasets(cache, dats_samples_d, p_samples, gh_samples, protec
         filename = m.group(1)
         
         # TODO - replace this with DATS-specific MD5 checksum encoding (TBD)
-        md5_dimension = DatsObj("Dimension", [("name", "MD5"), ("values", [ file['cram_file_md5']['raw_value'] ])])
+        md5_dimension = DatsObj("Dimension", [
+                ("name", DatsObj("Annotation", [("value", "MD5")])),
+                ("values", [ file['cram_file_md5']['raw_value'] ])
+                ])
 
         ds = DatsObj("Dataset", [
                 ("distributions", [gs_distro, s3_distro]),
