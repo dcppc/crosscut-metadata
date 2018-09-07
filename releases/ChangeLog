@@ -1,3 +1,15 @@
+0.5 (September 7 2018)
+ -v0.5 release of KC7 crosscut metadata model instance for the following datasets:
+   -GTEx v7 public RNA-Seq metadata from the GTEx Portal and dbGaP study phs000424.v7.p2 (single file)
+   -TOPMed public metadata for dbGaP studies phs001024.v3.p1, phs000951.v2.p2, and phs000179.v5.p2
+ -Combined two public GTEx JSON-LD files into a single file with subjects linked to StudyGroup
+   and sample-level WGS and RNA-Seq CRAM files represented as individual Datasets.
+ -Added scripts to emulate SPARQL queries directly with RDFLib API calls, to address 
+   SPARQL query performance issues (at least in RDFLib.)
+ -Added example RDFLib script to parse GTEx JSON-LD document and generate tab-delimited summary file.
+ -Identified and added workarounds for limitations of the DATS validator.
+ -Updated ER diagram with v0.5 StudyGroup and file/sample-level Dataset encoding.
+	
 0.4 (August 23 2018)
  -v0.4 release of KC7 crosscut metadata model instance for the following datasets:
    -GTEx v7 public RNA-Seq metadata from the GTEx Portal

@@ -1,10 +1,9 @@
 
-v0.4 Release Notes
+v0.5 Release Notes
 
-This is the v0.4 release of the KC7 crosscut metadata model instance for the following datasets:
+This is the v0.5 release of the KC7 crosscut metadata model instance for the following datasets:
 
-   -GTEx v7 public RNA-Seq metadata from the GTEx Portal
-   -GTEx v7 public metadata from dbGaP study phs000424.v7.p2
+   -GTEx v7 public RNA-Seq metadata from the GTEx Portal and dbGaP study phs000424.v7.p2
    -TOPMed public metadata from dbGaP studies phs001024.v3.p1, phs000951.v2.p2, and phs000179.v5.p2
 
 The Python scripts used to generate this release may also be run on dbGAP access-restricted metadata 
