@@ -24,6 +24,7 @@ HAS_INPUT_TERM = rdflib.term.URIRef('http://purl.obolibrary.org/obo/RO_0002233')
 HAS_MEMBER_TERM = rdflib.term.URIRef('http://purl.obolibrary.org/obo/RO_0002351')
 HAS_QUALITY_TERM = rdflib.term.URIRef('http://purl.obolibrary.org/obo/RO_0000086')
 DATA_ITEM_TERM = rdflib.term.URIRef('http://purl.obolibrary.org/obo/IAO_0000027')
+VARIABLE_TERM = rdflib.term.URIRef('http://purl.obolibrary.org/obo/STATO_0000258')
 
 DATS_ANATOMICAL_ENTITY_TERM = rdflib.term.URIRef('http://purl.obolibrary.org/obo/UBERON_0001062')
 DATS_DATASET_TERM = rdflib.term.URIRef('http://purl.obolibrary.org/obo/IAO_0000100')

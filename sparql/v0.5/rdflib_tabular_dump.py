@@ -149,6 +149,21 @@ def main():
         md5_checksum = None
         file_size = None
 
+        # MD5 checksum
+        # TODO - this is currently stored as a Dimension of Dataset, but will be moved
+        md5_checksum = "TBD"
+
+        for (s2,p2,o2) in g.triples((d, ru.HAS_PART_TERM, None)):
+            for (s3,p3,o3) in g.triples((o2, ru.RDF_TYPE_TERM, ru.VARIABLE_TERM)):
+                name = None
+                value = None
+                for (s4,p4,o4) in g.triples((o2, ru.NAME_TERM, None)):
+                    name = str(o4)
+                for (s4,p4,o4) in g.triples((o2, ru.DATA_ITEM_TERM, None)):
+                    value = str(o4)
+                if name == "MD5":
+                    md5_checksum = value
+
         # link Dataset to DatasetDistributions
         for (s,p,o) in g.triples((d, ru.SDO_DISTRIBUTIONS_TERM, None)):
 
@@ -160,21 +175,6 @@ def main():
                 else:
                     if file_size != fsize:
                         logging.fatal("file size mismatch")
-                        sys.exit(1)
-
-            # MD5 checksum
-            # TODO - replace with actual checksum when DATS encoding is resolved
-            # currently it's in DatasetDistribution.extraProperties, which isn't mapped in the context files
-            # may need to move the MD5 checksum to the dimensions of the enclosing Dataset
-
-#            for (s2,p2,o2) in g.triples((o, None, None)):
-#                print("got p2=" + str(p2) + " o2=" + str(o2))
-                md5 = "TBD"
-                if md5_checksum is None:
-                    md5_checksum = md5
-                else:
-                    if md5_checksum != md5:
-                        logging.fatal("MD5 checksum mismatch")
                         sys.exit(1)
 
             for (s2,p2,o2) in g.triples((o, ru.RDF_TYPE_TERM, ru.SDO_DATA_DOWNLOAD_TERM)):
