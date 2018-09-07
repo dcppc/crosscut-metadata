@@ -224,12 +224,7 @@ def get_files_dats_datasets(cache, dats_samples_d, p_samples, gh_samples, protec
                 ("size", int(file['cram_file_size']['raw_value'])),
                 # TODO - add unit for bytes
 #                ("unit", DatsObj("Annotation", []))
-                ("conformsTo", [cache.get_obj_or_ref(cram_ds_key, lambda: make_data_standard("CRAM"))]),
-                ("extraProperties", [DatsObj("CategoryValuesPair", [
-                                ("category", "md5_checksum"),
-#                                ("categoryIRI", ""),
-                                ("values", [ file['cram_file_md5']['raw_value'] ])
-                                ])])
+                ("conformsTo", [cache.get_obj_or_ref(cram_ds_key, lambda: make_data_standard("CRAM"))])
                 ])
 
         # AWS / S3 copy
@@ -243,12 +238,7 @@ def get_files_dats_datasets(cache, dats_samples_d, p_samples, gh_samples, protec
                 ("size", int(file['cram_file_size']['raw_value'])),
                 # TODO - add unit for bytes
 #                ("unit", DatsObj("Annotation", []))
-                ("conformsTo", [cache.get_obj_or_ref(cram_ds_key, lambda: make_data_standard("CRAM"))]),
-                ("extraProperties", [DatsObj("CategoryValuesPair", [
-                                ("category", "md5_checksum"),
-#                                ("categoryIRI", ""),
-                                ("values", [ file['cram_file_md5']['raw_value'] ])
-                                ])])
+                ("conformsTo", [cache.get_obj_or_ref(cram_ds_key, lambda: make_data_standard("CRAM"))])
                 ])
 
         m = re.match(r'^.*\/([^\/]+)$', cram_file)
@@ -257,8 +247,12 @@ def get_files_dats_datasets(cache, dats_samples_d, p_samples, gh_samples, protec
             sys.exit(1)
         filename = m.group(1)
         
+        # TODO - replace this with DATS-specific MD5 checksum encoding (TBD)
+        md5_dimension = DatsObj("Dimension", [("name", "MD5"), ("values", [ file['cram_file_md5']['raw_value'] ])])
+
         ds = DatsObj("Dataset", [
                 ("distributions", [gs_distro, s3_distro]),
+                ("dimensions", [ md5_dimension ]),
                 ("title", filename),
                 ("types", [ ds_types ]),
                 ("creators", creators),
