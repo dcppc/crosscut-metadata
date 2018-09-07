@@ -128,6 +128,7 @@ def main():
                 char_values.append(None)
 
             if len(char_values) != 1 or len(char_names) != 1 or len(dbgap_ids) != 1:
+                continue
                 logging.fatal("subject=" + str(s) + " names=" + str(char_names) + " values=" + str(char_values) + " ids=" + str(dbgap_ids))
                 sys.exit(1)
 
@@ -185,8 +186,6 @@ def main():
                     else:
                         s3_URI = str(o)
                 
-                
-
         # link Dataset to DataAcquisition (should be 1-1)
         data_acqs = []
         for (s,p,o) in g.triples((d, ru.PRODUCED_BY_TERM, None)):
@@ -241,12 +240,28 @@ def main():
                     if n_anat_parts != 1:
                         logging.fatal("found " + str(n_anat_parts) + " AnatomicalParts for subject " + str(o3))
                         sys.exit(1)
+                    
+                    datatype = None
+                    # HACK - this is specific to GTEx
+                    if re.search(r'GTEx', project_name):
+                        if re.search(r'\/wgs\/', s3_URI):
+                            datatype = 'WGS'
+                        elif re.search(r'\/rnaseq/', s3_URI):
+                            datatype = 'RNA-Seq'
+                        else:
+                            logging.fatal("couldn't parse seq type from URI " + s3_URI)
+                            sys.exit(1)
+                    else:
+                        logging.fatal("couldn't determine seq datatype from URI " + s3_URI)
+                        sys.exit(1)
+
                         
                     file_info = { 
                         'anatomical_part_name': anatomical_parts[0]['name'],
                         'anatomical_part_id': anatomical_parts[0]['id'],
                         'S3_URI': s3_URI,
                         'GS_URI': gs_URI,
+                        'datatype': datatype,
                         'distribs': distribs,
                         'file_size': file_size,
                         'md5_checksum': md5_checksum
@@ -302,6 +317,7 @@ def main():
                 
                 # data files linked to the subject
                 data_files = subject_to_files[s]
+                data_files.sort(key=lambda d: (d['anatomical_part_name'], d['datatype']))
 
                 for d in data_files:
                     col_vals_copy = col_vals[:]
@@ -312,20 +328,10 @@ def main():
                     col_vals_copy.append(d['anatomical_part_name'])
                     col_vals_copy.append(d['anatomical_part_id'])
 
-                    # TODO - add sample characteristics 
+                    # data/file type
+                    col_vals_copy.append(d['datatype'])
 
-                    # HACK - this is specific to GTEx
-                    if re.search(r'GTEx', project_name):
-                        if re.search(r'\/wgs\/', d['S3_URI']):
-                            col_vals_copy.append('WGS')
-                        elif re.search(r'\/rnaseq/', d['S3_URI']):
-                            col_vals_copy.append('RNA-Seq')
-                        else:
-                            logging.fatal("couldn't parse seq type from URI " + d['S3_URI'])
-                            sys.exit(1)
-                    else:
-                        logging.fatal("couldn't determine seq datatype from URI " + d['S3_URI'])
-                        sys.exit(1)
+                    # TODO - add sample characteristics 
 
                     # add file size and MD5 checksum
                     col_vals_copy.append(d['file_size'])
