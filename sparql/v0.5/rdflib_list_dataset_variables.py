@@ -31,7 +31,7 @@ def main():
     # obo:IAO_0000100 - "data set"
     # obo:IAO_0000577 - "centrally registered identifier symbol"
     # obo:BFO_0000051 - "has part"
-    # obo:STATO_23367 - ? (doesn't appear in stato.owl from https://www.ebi.ac.uk/ols/ontologies/stato, but CHEBI_23367 = molecular entity)
+    # obo:STATO_0000258 - "variable"
     # obo:IAO_0000300 - "textual entity"
     # obo:IAO_0000590 - "a textual entity that denotes a particular in reality"
 
@@ -41,7 +41,7 @@ def main():
     #                ?dataset obo:IAO_0000577 ?dataset_id.
     #                ?dataset_id sdo:identifier ?dbgap_study_acc.
     #                ?dataset obo:BFO_0000051 ?dim1.
-    #                ?dim1 a obo:STATO_23367.
+    #                ?dim1 a obo:STATO_0000258.
     #                ?dim1 obo:IAO_0000300 ?descr.
     #                ?dim1 obo:IAO_0000577 ?dim1_id.
     #                ?dim1_id sdo:identifier ?dbgap_var_acc.
@@ -59,7 +59,7 @@ def main():
     #  ---->         ?dataset obo:IAO_0000577 ?dataset_id.
     #  ---->         ?dataset_id sdo:identifier ?dbgap_study_acc.
     #                ?dataset obo:BFO_0000051 ?dim1.
-    #                ?dim1 a obo:STATO_23367.
+    #                ?dim1 a obo:STATO_0000258.
     #                ?dim1 obo:IAO_0000300 ?descr.
     #                ?dim1 obo:IAO_0000577 ?dim1_id.
     #                ?dim1_id sdo:identifier ?dbgap_var_acc.
@@ -84,7 +84,7 @@ def main():
     #                ?dataset obo:IAO_0000577 ?dataset_id.
     #                ?dataset_id sdo:identifier ?dbgap_study_acc.
     #  ---->         ?dataset obo:BFO_0000051 ?dim1.
-    #  ---->         ?dim1 a obo:STATO_23367.
+    #  ---->         ?dim1 a obo:STATO_0000258
     #                ?dim1 obo:IAO_0000300 ?descr.
     #                ?dim1 obo:IAO_0000577 ?dim1_id.
     #                ?dim1_id sdo:identifier ?dbgap_var_acc.
@@ -109,7 +109,7 @@ def main():
     #                ?dataset obo:IAO_0000577 ?dataset_id.
     #                ?dataset_id sdo:identifier ?dbgap_study_acc.
     #                ?dataset obo:BFO_0000051 ?dim1.
-    #                ?dim1 a obo:STATO_23367.
+    #                ?dim1 a obo:STATO_0000258.
     #  ---->         ?dim1 obo:IAO_0000300 ?descr.
     #  ---->         ?dim1 obo:IAO_0000577 ?dim1_id.
     #  ---->         ?dim1_id sdo:identifier ?dbgap_var_acc.
@@ -147,7 +147,7 @@ def main():
     #                ?dataset obo:IAO_0000577 ?dataset_id.
     #                ?dataset_id sdo:identifier ?dbgap_study_acc.
     #                ?dataset obo:BFO_0000051 ?dim1.
-    #                ?dim1 a obo:STATO_23367.
+    #                ?dim1 a obo:STATO_0000258.
     #                ?dim1 obo:IAO_0000300 ?descr.
     #                ?dim1 obo:IAO_0000577 ?dim1_id.
     #                ?dim1_id sdo:identifier ?dbgap_var_acc.

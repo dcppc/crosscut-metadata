@@ -154,7 +154,7 @@ def main():
         md5_checksum = "TBD"
 
         for (s2,p2,o2) in g.triples((d, ru.HAS_PART_TERM, None)):
-            for (s3,p3,o3) in g.triples((o2, ru.RDF_TYPE_TERM, ru.VARIABLE_TERM)):
+            for (s3,p3,o3) in g.triples((o2, ru.RDF_TYPE_TERM, ru.DATS_DIMENSION_TERM)):
                 name = None
                 value = None
                 for (s4,p4,o4) in g.triples((o2, ru.NAME_TERM, None)):

@@ -24,12 +24,11 @@ HAS_INPUT_TERM = rdflib.term.URIRef('http://purl.obolibrary.org/obo/RO_0002233')
 HAS_MEMBER_TERM = rdflib.term.URIRef('http://purl.obolibrary.org/obo/RO_0002351')
 HAS_QUALITY_TERM = rdflib.term.URIRef('http://purl.obolibrary.org/obo/RO_0000086')
 DATA_ITEM_TERM = rdflib.term.URIRef('http://purl.obolibrary.org/obo/IAO_0000027')
-VARIABLE_TERM = rdflib.term.URIRef('http://purl.obolibrary.org/obo/STATO_0000258')
 
 DATS_ANATOMICAL_ENTITY_TERM = rdflib.term.URIRef('http://purl.obolibrary.org/obo/UBERON_0001062')
 DATS_DATASET_TERM = rdflib.term.URIRef('http://purl.obolibrary.org/obo/IAO_0000100')
 DATS_DATA_ACQUISITION_TERM = rdflib.term.URIRef('http://purl.obolibrary.org/obo/OBI_0600013') # information acquisition
-DATS_DIMENSION_TERM = rdflib.term.URIRef('http://purl.obolibrary.org/obo/STATO_23367')
+DATS_DIMENSION_TERM = rdflib.term.URIRef('http://purl.obolibrary.org/obo/STATO_0000258')
 DATS_MATERIAL_TERM = rdflib.term.URIRef('http://purl.obolibrary.org/obo/BFO_0000040') # "material entity"
 DATS_STUDY_TERM = rdflib.term.URIRef('http://purl.obolibrary.org/obo/OBI_0000066') # "investigation"
 DATS_STUDY_GROUP_TERM = rdflib.term.URIRef('http://purl.obolibrary.org/obo/STATO_0000193') # "study group population"
