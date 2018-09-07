@@ -158,7 +158,8 @@ def main():
                 name = None
                 value = None
                 for (s4,p4,o4) in g.triples((o2, ru.NAME_TERM, None)):
-                    name = str(o4)
+                    for (s5,p5,o5) in g.triples((o4, ru.SDO_VALUE_TERM, None)):
+                        name = str(o5)
                 for (s4,p4,o4) in g.triples((o2, ru.DATA_ITEM_TERM, None)):
                     value = str(o4)
                 if name == "MD5":
