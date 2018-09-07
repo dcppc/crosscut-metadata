@@ -156,7 +156,7 @@ def main():
     #            }
     #  ---->     ORDER BY ?dbgap_study_acc ?dbgap_var_acc
 
-    datasets_with_ids = [{"d":d, "i":dataset_ids[d]} for d in datasets]
+    datasets_with_ids = [{"d":d, "i":dataset_ids[d]} for d in datasets if d in dataset_ids]
     datasets_with_ids.sort(key=lambda x: x["i"])
 
     print()
