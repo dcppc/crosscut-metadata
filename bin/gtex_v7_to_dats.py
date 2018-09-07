@@ -175,6 +175,41 @@ def main():
     dbgap_study_md = dbgap_study_pub_md[study_id]
     dbgap_study_md['dbgap_vars'] = ccmm.gtex.public_metadata.add_study_vars(dbgap_study_dataset, dbgap_study_md)
 
+    # build index into dbGaP variables - indexed by variable name and then consent group suffix ("", "c1", "c2")
+    name_to_vars = {}
+    logging.info("indexing " + str(len(dbgap_study_md['dbgap_vars'].keys())) + " dbGaP variables")
+
+    for dbgap_id in sorted(dbgap_study_md['dbgap_vars']):
+        dbv = dbgap_study_md['dbgap_vars'][dbgap_id]
+        name = dbv.get("name").get("value")
+        dbgap_id = dbv.get("identifier").get("identifier")
+        m = re.match(r'^(.*)(\.(c\d+))$', dbgap_id)
+
+        if m is None:
+            prefix = dbgap_id
+            suffix = ""
+        else:
+            prefix = m.group(1)
+            suffix = m.group(3)
+
+        if name not in name_to_vars:
+            name_to_vars[name] = {}
+        if suffix in name_to_vars[name]:
+            name_to_vars[name][suffix].append(dbv)
+        else:
+            name_to_vars[name][suffix] = [ dbv ]
+
+    # mapping may be ambiguous for SUBJID, SAMPID
+    # workaround - use lexical order to break ties
+    # TODO - use SUBJID mapping from Subject file, SAMPID from Sample file
+    for n in name_to_vars:
+        nv = name_to_vars[n]
+        suffixes = [k for k in nv.keys()]
+        for suffix in suffixes:
+            list = nv[suffix]
+            list.sort(key=lambda x: x.get("name").get("value"))
+            nv[suffix] = list[0]
+            
     # set 2nd level types to be the same as the top-level types: WGS and RNA-Seq
     dbgap_study_dataset.set("types", gtex_dataset.get("types"))
 
@@ -186,7 +221,7 @@ def main():
     # --------------------------
 
     # create subjects based on GTEx Portal subject phenotype file and GitHub data-stewards id dump
-    dats_subjects_d = ccmm.gtex.subjects.get_subjects_dats_materials(cache, p_subjects, gh_subjects)
+    dats_subjects_d = ccmm.gtex.subjects.get_subjects_dats_materials(cache, p_subjects, gh_subjects, name_to_vars)
     # sorted list of subjects
     dats_subjects_l = sorted([dats_subjects_d[s] for s in dats_subjects_d], key=lambda s: s.get("name"))
 
