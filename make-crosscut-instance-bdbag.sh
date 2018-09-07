@@ -37,13 +37,23 @@ mkdir -p $EXTERNAL_ID/datasets
 #  3. git clone https://github.com/dcppc/data-stewards.git
 #  4. modify --data_stewards_repo_path accordingly
 # 
-# Run script:
+#  5. Run the command below
+
 ./bin/gtex_v7_to_dats.py --dbgap_public_xml_path=./dbgap-data/phs000424.v7.p2 \
   --data_stewards_repo_path=./data-stewards \
-  --output_file=$EXTERNAL_ID/datasets/GTEx_v7_public.jsonld
-exit
+  --output_file=$EXTERNAL_ID/datasets/GTEx_v7_public.jsonld 
 
-# TODO - limit to 20 samples to create smaller file for test purposes
+# Command used to create instance for validation. Due to limitations with the current DATS
+# validator, the following 2 changes must be applied to generate an instance that can 
+# pass validation:
+#
+#  1. Run gtex_v7_to_dats.py with the --no_circular_links flag
+#  2. Set datsobj.DEBUG_NO_ID_REFS to True (for both GTEx and TOPMed)
+#
+#./bin/gtex_v7_to_dats.py --dbgap_public_xml_path=./dbgap-data/phs000424.v7.p2 \
+#  --data_stewards_repo_path=./data-stewards \
+#  --no_circular_links \
+#  --output_file=$EXTERNAL_ID/datasets/GTEx_v7_public_no_cycles.jsonld 
 
 ## -----------------------------------------------
 ## RESTRICTED ACCESS GTEx v7 dbGaP metadata
