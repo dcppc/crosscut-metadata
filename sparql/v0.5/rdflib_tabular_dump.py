@@ -317,7 +317,7 @@ def main():
                 
                 # data files linked to the subject
                 data_files = subject_to_files[s]
-                data_files.sort(key=lambda d: (d['anatomical_part_name'], d['datatype']))
+                data_files.sort(key=lambda d: (d['anatomical_part_name'], d['datatype'], d['S3_URI']))
 
                 for d in data_files:
                     col_vals_copy = col_vals[:]
