@@ -106,7 +106,7 @@ def main():
     parser.add_argument('--subject_phenotypes_path', default=V7_SUBJECT_PHENOTYPES_FILE, required=False, help ='Path to ' + V7_SUBJECT_PHENOTYPES_FILE)
     parser.add_argument('--sample_attributes_path', default=V7_SAMPLE_ATTRIBUTES_FILE, required=False, help ='Path to ' + V7_SAMPLE_ATTRIBUTES_FILE)
     parser.add_argument('--data_stewards_repo_path', default='data-stewards', required=False, help ='Path to local copy of https://github.com/dcppc/data-stewards')
-    parser.add_argument('--no_circular_links', default=False, required=False, type=bool, help ='Whether to disallow circular links/paths within the JSON-LD output.')
+    parser.add_argument('--no_circular_links', action='store_true', help ='Whether to disallow circular links/paths within the JSON-LD output.')
     args = parser.parse_args()
 
     # logging
@@ -201,7 +201,7 @@ def main():
 
     # mapping may be ambiguous for SUBJID, SAMPID
     # workaround - use lexical order to break ties
-    # TODO - use SUBJID mapping from Subject file, SAMPID from Sample file
+    # TODO - explicitly use SUBJID mapping from Subject file, SAMPID from Sample file
     for n in name_to_vars:
         nv = name_to_vars[n]
         suffixes = [k for k in nv.keys()]
@@ -255,7 +255,7 @@ def main():
     # --------------------------
 
     # create samples based on GTEx Portal sample attributes file and GitHub data-stewards id dump
-    dats_samples_d = ccmm.gtex.samples.get_samples_dats_materials(cache, dats_subjects_d, p_samples, gh_samples)
+    dats_samples_d = ccmm.gtex.samples.get_samples_dats_materials(cache, dats_subjects_d, p_samples, gh_samples, name_to_vars)
     # sorted list of samples
     dats_samples_l = sorted([dats_samples_d[s] for s in dats_samples_d], key=lambda s: s.get("name"))
     if args.max_output_samples is not None:
