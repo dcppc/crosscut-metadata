@@ -95,6 +95,42 @@ phs001368.v1.p1
 NHLBI TOPMed: Cardiovascular Health StudyVersion 1: passed embargo
 VDAS3622LongitudinalLinks
 HiSeq X Ten
+phs000007.v29.p10
+NHLBI TOPMed: Framingham CohortVersions 1-29: passed embargo
+VDAS15172LongitudinalLinks
+HiSeq X Ten
+phs000209.v13.p3
+NHLBI TOPMed: Multi-Ethnic Study of Atherosclerosis (MESA) CohortVersions 1-13: passed embargo
+VDAS8296Longitudinal, FamilyLinks
+HiSeq X Ten
+phs000284.v1.p1
+NHLBI TOPMed: Cleveland Family Study (CFS) Candidate Gene Association Resource (CARe)Version 1: passed embargo
+VDAS1473LongitudinalLinks
+HiSeq X Ten
+phs000285.v3.p2
+NHLBI TOPMed: CARDIA CohortVersions 1-3: passed embargo
+VDAS3622LongitudinalLinks
+HiSeq X Ten
+phs000286.v5.p1
+NHLBI TOPMed: Jackson Heart Study (JHS) CohortVersions 1-5: passed embargo
+VDAS3602CohortLinks
+HiSeq X Ten
+phs000287.v6.p1
+NHLBI TOPMed: Cardiovascular Health Study (CHS) CohortVersions 1-6: passed embargo
+VDAS5609LongitudinalLinks
+HiSeq X Ten
+phs001013.v3.p2
+NHLBI TOPMed: Heart and Vascular Health Study (HVH)Versions 1-3: passed embargo
+VDAS1204Case-ControlLinks
+HiSeq X Ten
+phs000200.v11.p3
+NHLBI TOPMed: Women's Health InitiativeVersions 1-11: passed embargo
+VDAS143213Partial Factorial Randomized, Double-Blind, Placebo-Controlled, Cohort, LongitudinalLinks
+HiSeq X Ten
+phs000280.v4.p1
+NHLBI TOPMed: Atherosclerosis Risk in Communities (ARIC) CohortVersions 1-4: passed embargo
+VDAS15676Longitudinal, CohortLinks
+HiSeq X Ten
 phs000179.v5.p2
 NHLBI TOPMed: Genetic Epidemiology of COPD (COPDGene)Versions 1-5: passed embargo
 VDAS10371Case-ControlLinks
