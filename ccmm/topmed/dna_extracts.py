@@ -253,7 +253,7 @@ def get_single_dna_extract_json(cache, study, study_md, subj_var_values, samp_va
             ("alternateIdentifiers", [ util.get_alt_id(dbgap_samp_id, "dbGaP") ]),
             ("description", sample_descr),
             ("characteristics", sample_characteristics),
-            ("taxonomy", human_t),
+            ("taxonomy", [ human_t ]),
             ("roles", [ specimen_annot ]),
             ("derivesFrom", sample_derives_from )
             ])
@@ -266,7 +266,7 @@ def get_single_dna_extract_json(cache, study, study_md, subj_var_values, samp_va
     dna_material = DatsObj("Material", [
             ("name", "DNA from " + sample_name),
             ("description", dna_descr),
-            ("taxonomy", human_t),
+            ("taxonomy", [ human_t ]),
             ("roles", [ dna_extract_annot ]),
             ("derivesFrom", [ biological_sample_material ])
             ])
