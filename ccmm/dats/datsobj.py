@@ -38,6 +38,7 @@ DATS_TYPES = {
     "Annotation": { "name": "Annotation", "schema": "annotation_schema.json", "has_context": True },
     "BiologicalEntity": { "name": "BiologicalEntity", "schema": "biological_entity_schema.json", "has_context": True },
     "CategoryValuesPair": { "name": "CategoryValuesPair", "schema": "category_values_pair_schema.json", "has_context": True },
+    "ConsentInfo": { "name": "ConsentInfo", "schema": "consent_info_schema.json", "has_context": True },
     "DataAcquisition": { "name": "DataAcquisition", "schema": "data_acquisition_schema.json", "has_context": True },
     "DataAnalysis": { "name": "DataAnalysis", "schema": "data_analysis_schema.json", "has_context": True },
     "DataRepository": { "name": "DataRepository", "schema": "data_repository_schema.json", "has_context": True },
