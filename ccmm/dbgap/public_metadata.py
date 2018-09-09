@@ -31,6 +31,7 @@ METADATA_TYPES = [
     # TODO - handle use codes separately and ensure all combinations are handled:
     'DS-CS-RD',
     'DS-LD',
+    'GRU',
     'HMB',
     'DS-LD-RD',
     ''
