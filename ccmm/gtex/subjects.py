@@ -16,7 +16,7 @@ def get_subject_dats_material(cache, p_subject, gh_subject, var_lookup):
 
     # human experimental subject/patient
     subject_sex = DatsObj("Dimension", [
-            ("name", DatsObj("Annotation", [("value", "Gender")])),
+            ("name", util.get_value_annotation("Gender", cache)),
             ("description", "Gender of the subject"),
             ("identifier", get_var_id("SEX")),
 #            ("identifier", DatsObj("Identifier", [("identifier", "SEX"), ("identifierSource", "GTEx")])),
@@ -24,7 +24,7 @@ def get_subject_dats_material(cache, p_subject, gh_subject, var_lookup):
             ])
 
     subject_age = DatsObj("Dimension", [
-            ("name", DatsObj("Annotation", [("value", "Age range")])),
+            ("name", util.get_value_annotation("Age range", cache)),
             ("description", "Age range of the subject"),
             ("identifier", get_var_id("AGE")),
 #            ("identifier", DatsObj("Identifier", [("identifier", "AGE"), ("identifierSource", "GTEx")])),
@@ -32,7 +32,7 @@ def get_subject_dats_material(cache, p_subject, gh_subject, var_lookup):
             ])
 
     subject_hardy_scale = DatsObj("Dimension", [
-            ("name", DatsObj("Annotation", [("value", "Hardy scale")])),
+            ("name", util.get_value_annotation("Hardy scale", cache)),
             ("description", "Hardy scale death classification for the subject"),
             ("identifier", get_var_id("DTHHRDY")),
 #            ("identifier", DatsObj("Identifier", [("identifier", "DTHHRDY"), ("identifierSource", "GTEx")])),

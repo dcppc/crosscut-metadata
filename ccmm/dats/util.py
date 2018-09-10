@@ -53,8 +53,15 @@ def get_donor_roles(cache):
     roles = ["patient", "donor"]
     return [get_annotation(r, cache) for r in roles]
 
+# retrieve one of a number of predefined Annotations with value and valueIRI
 def get_annotation(name, cache=None):
     if cache is not None:
         key = ".".join(["Annotation", name])
         return cache.get_obj_or_ref(key, lambda: DATS_ANNOTATIONS[name])
     return DATS_ANNOTATIONS[name]
+
+# retrieve a "bare" annotation with value but not valueIRI
+def get_value_annotation(value, cache):
+    key = ".".join(["Annotation", "Value", value])
+    fn = lambda: DatsObj("Annotation", [("value", value)])
+    return cache.get_obj_or_ref(key, fn)

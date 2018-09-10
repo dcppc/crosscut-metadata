@@ -79,7 +79,7 @@ def get_sample_dats_material(cache, dats_subject, p_sample, gh_sample, var_looku
 #        print("got key=" + key + " var=" + str(var))
         mapped_val = var['mapped_value']
         char = DatsObj("Dimension", [
-                ("name", DatsObj("Annotation", [("value", key)])),
+                ("name", util.get_value_annotation(key, cache)),
                 ("identifier", get_var_id(key)),
                 ("values", [mapped_val])
                 ])
@@ -179,17 +179,25 @@ def get_samples_dats_materials(cache, dats_subjects, p_samples, gh_samples, var_
 def get_files_dats_datasets(cache, dats_samples_d, p_samples, gh_samples, protected_cram_files, no_circular_links):
     file_datasets = []
 
-    rnaseq_types = DatsObj("DataType", [
+    rnaseq_datatype = DatsObj("DataType", [
             ("information", util.get_annotation("transcription profiling", cache)),
             ("method", util.get_annotation("RNA-seq assay", cache)),
             ("platform", util.get_annotation("Illumina", cache))
             ])
 
-    wgs_types = DatsObj("DataType", [
+    def get_rnaseq_datatype():
+        dkey = ".".join(["DataType", "RNA-seq"])
+        return cache.get_obj_or_ref(dkey, lambda: rnaseq_datatype)
+
+    wgs_datatype = DatsObj("DataType", [
             ("information", util.get_annotation("DNA sequencing", cache)),
             ("method", util.get_annotation("whole genome sequencing assay", cache)),
             ("platform", util.get_annotation("Illumina", cache))
             ])
+
+    def get_wgs_datatype():
+        dkey = ".".join(["DataType", "WGS"])
+        return cache.get_obj_or_ref(dkey, lambda: wgs_datatype)
 
     broad_key = ":".join(["Organization", "Broad Institute"])
     broad = cache.get_obj_or_ref(broad_key, lambda: DatsObj("Organization", [("name", "Broad Institute")]))
@@ -198,7 +206,7 @@ def get_files_dats_datasets(cache, dats_samples_d, p_samples, gh_samples, protec
     def make_data_standard(format):
         return DatsObj("DataStandard", [
             ("name", format),
-            ("type", DatsObj("Annotation", [("value", "format")])),
+            ("type", util.get_value_annotation("format", cache)),
             ("description", format + " file format")
             ])
     
@@ -216,11 +224,11 @@ def get_files_dats_datasets(cache, dats_samples_d, p_samples, gh_samples, protec
         # determine file type
         if re.search(r'wgs\/', file['cram_file_aws']['raw_value']):
             material_type = 'DNA'
-            ds_types = wgs_types
+            ds_types = get_wgs_datatype()
             gcp_suffix = '_gcp'
         elif re.search(r'rnaseq\/', file['cram_file_aws']['raw_value']):
             material_type = 'RNA'
-            ds_types = rnaseq_types
+            ds_types = get_rnaseq_datatype()
             gcp_suffix = ''
         else:
             logging.fatal("unable to determine material/sequence type from cram_file_aws=" + file['cram_file_aws']['raw_value'])
@@ -245,8 +253,8 @@ def get_files_dats_datasets(cache, dats_samples_d, p_samples, gh_samples, protec
                 ("identifier", DatsObj("Identifier", [("identifier", file['cram_file' + gcp_suffix]['raw_value'])])),
                 ("relatedIdentifiers", [ DatsObj("RelatedIdentifier", [("identifier", file['cram_index' + gcp_suffix]['raw_value']), ("relationType", "cram_index") ])]),
                 ("size", int(file['cram_file_size']['raw_value'])),
-                # TODO - add unit for bytes
-#                ("unit", DatsObj("Annotation", []))
+                # TODO - add unit for bytes, include IRI?
+#                ("unit", util.get_value_annotation("bytes", cache))
                 ("conformsTo", [cache.get_obj_or_ref(cram_ds_key, lambda: make_data_standard("CRAM"))])
                 ])
 
@@ -259,8 +267,8 @@ def get_files_dats_datasets(cache, dats_samples_d, p_samples, gh_samples, protec
                 ("identifier", DatsObj("Identifier", [("identifier", file['cram_file_aws']['raw_value'])])),
                 ("relatedIdentifiers", [ DatsObj("RelatedIdentifier", [("identifier", file['cram_index_aws']['raw_value']), ("relationType", "cram_index") ])]),
                 ("size", int(file['cram_file_size']['raw_value'])),
-                # TODO - add unit for bytes
-#                ("unit", DatsObj("Annotation", []))
+                # TODO - add unit for bytes, include IRI?
+#                ("unit", util.get_value_annotation("bytes", cache))
                 ("conformsTo", [cache.get_obj_or_ref(cram_ds_key, lambda: make_data_standard("CRAM"))])
                 ])
 
@@ -272,7 +280,7 @@ def get_files_dats_datasets(cache, dats_samples_d, p_samples, gh_samples, protec
         
         # TODO - replace this with DATS-specific MD5 checksum encoding (TBD)
         md5_dimension = DatsObj("Dimension", [
-                ("name", DatsObj("Annotation", [("value", "MD5")])),
+                ("name", util.get_value_annotation("MD5", cache)),
                 ("values", [ file['cram_file_md5']['raw_value'] ])
                 ])
 
