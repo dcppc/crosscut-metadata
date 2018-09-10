@@ -90,9 +90,8 @@ def cross_check_ids(subjects, samples, manifest, filename, manifest_descr, sourc
     subj_compare_str += '{:>10s} subject_ids  NOT in {:>20s}: {:-6} / {:-6}'.format(manifest_descr, source_descr, n_subj_not_found, n_id_dump_subjects)
     logging.info(subj_compare_str)
 
-
 # ------------------------------------------------------
-# main()
+# Handle restricted-access metadata
 # ------------------------------------------------------
 
 # Create DATS StudyGroup corresponding to a consent group
@@ -221,24 +220,14 @@ def add_restricted_data(cache, args, study_md, subjects_l, samples_d, study, stu
         study.get("studyGroups").append(study_group)
 
     # update subject materials with protected subject phenotype info
-    logging.info("updating subjects with restricted metadata")
     ccmm.gtex.dna_extracts.update_subjects_from_restricted_metadata(cache, study, study_md, study_restricted_md[study_id], subjects_d)
-    logging.info("finished updating subjects with restricted metadata")
 
-    # update sample/DNA extract materials wtih protected sample attribute info (if present)
-#    ccmm.gtex.dna_extracts.update_dna_extracts_from_restricted_metadata(cache, study, study_md, study_restricted_md[study_id], samples_d)
+    # TODO - update sample/DNA extract materials wtih protected sample attribute info (if present)
+    # e.g.,  ccmm.gtex.dna_extracts.update_dna_extracts_from_restricted_metadata(cache, study, study_md, study_restricted_md[study_id], samples_d)
 
-# TODO - the following function call should handle updating both subjects and samples and the check for 'Sample_Attributes'
-# will need to happen inside the function
-
-# change this:
-#                if 'Sample_Attributes' in study_md:
-#                    dna_extracts = ccmm.gtex.dna_extracts.get_dna_extracts_json_from_restricted_metadata(cache, study, study_md, study_restricted_md[study_id])
-
-# to this:
-#                    
-# (check Sample_Attributes in function call)
-# also need to add DatsObjCache and check for updates present in topmed code but not GTEx
+# ------------------------------------------------------
+# main()
+# ------------------------------------------------------
 
 def main():
 
