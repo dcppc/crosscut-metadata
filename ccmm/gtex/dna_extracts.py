@@ -59,6 +59,126 @@ def pick_var_values(vars):
 
     return res
 
+# Update a single DATS subject MAterial
+def update_single_subject(study, study_md, subj, subj_var_values):
+
+    # extract subject attributes
+    gender = None
+    age = None
+    visit_year = None
+    sys_bp = None
+    dias_bp = None
+    disease = {}
+    disease['hypertension'] = "unknown"
+    
+    for name in subj_var_values:
+        name_upper = name.upper()
+        if name_upper == "GENDER" or name_upper == "SEX":
+            gender = subj_var_values[name]['value'].lower()
+        elif name_upper == "VISIT_AGE" or name_upper == "AGE" or name_upper == "AGE_ENROLL": #need to confirm that these  allmean the same thing
+            age = subj_var_values[name]['value']
+        elif name_upper == "VISIT_YEAR":
+            visit_year =  subj_var_values[name]['value']
+        elif name_upper == "SYSBP":
+            sys_bp = subj_var_values[name]['value']
+        elif name_upper == "DIASBP":
+            dias_bp = subj_var_values[name]['value']
+        elif name_upper == "HYPERTENSION" or name_upper == "MHHTN":
+            if subj_var_values[name]['value'].lower() == "yes" or subj_var_values[name]['value'] == 1:
+                disease['hypertension'] = "yes"
+            else:
+                disease['hypertension'] = "no"
+
+    subject_characteristics = []
+    subject_bearerOfDisease = []
+
+    # harmonized/standardized characteristics
+    if gender is not None:
+        subject_sex = DatsObj("Dimension", [
+                ("name", { "value": "Gender" }),
+                ("description", "Gender of the subject"),
+                ("values", [ gender ])
+                ])
+        subject_characteristics.append(subject_sex)
+
+    if age is not None:
+        subject_age = DatsObj("Dimension", [
+                ("name", { "value": "Age" }),
+                ("description", "Age of the subject"),
+                ("values", [ age ])
+                ])
+        subject_characteristics.append(subject_age)
+    
+    if visit_year is not None:
+        subject_visitYear = DatsObj("Dimension", [
+                ("name", { "value": "Visit year" }),
+                ("description", "Year of visit, to use for longitudinal analysis"),
+                ("values", [ visit_year ])
+                ])
+        subject_characteristics.append(subject_visitYear)
+    
+    if sys_bp is not None:
+        subject_sysBP = DatsObj("Dimension", [
+                ("name", { "value": "Systolic blood pressure" }),
+                ("description", "Systolic blood pressure of subject, measured in mmHg"),
+                ("values", [ sys_bp ])
+                ])
+        subject_characteristics.append(subject_sysBP)
+        
+    if dias_bp is not None:
+        subject_diasBP = DatsObj("Dimension", [
+                ("name", { "value": "Diastolic blood pressure" }),
+                ("description", "Diastolic blood pressure of subject, measured in mmHg"),
+                ("values", [ dias_bp ])
+                ])
+        subject_characteristics.append(subject_diasBP)                                      
+    
+    if disease['hypertension'] != "unknown":
+        disease_name = "hypertension"
+        disease_id = "10763"
+        disease_identifier = OrderedDict([
+            ("identifier",  "DOID:" + str(disease_id)),
+            ("identifierSource", "Disease Ontology")])
+        disease_alt_ids = [OrderedDict([
+            ("identifier", "http://purl.obolibrary.org/obo/DOID_" + str(disease_id)),
+            ("identifierSource", "Disease Ontology")])]
+        subject_hypertension = DatsObj("Disease", [
+            ("name", "Hypertension"),
+            ("identifier", disease_identifier),
+            ("alternateIdentifiers", disease_alt_ids),
+            ("diseaseStatus", OrderedDict([("value", disease['hypertension'] ), ("valueIRI", "")])), 
+            ])
+        subject_bearerOfDisease.append(subject_hypertension)
+
+    # create a DATS Dimension from a dbGaP variable value
+    def make_var_dimension(name, var_value):
+        value = var_value["value"]
+
+        dim = DatsObj("Dimension", 
+                      [("name", DatsObj("Annotation", [( "value",  name )])), 
+                       ("values", [ value ])
+                       ])
+
+        # find existing DATS identifier for the corresponding Dataset Dimension 
+        if "var" in var_value:
+            id = var_value["var"]["id"]
+            dbgap_var_dim = study_md['dbgap_vars'][id]
+            dim.setProperty("identifier", dbgap_var_dim.get("identifier").getIdRef())
+
+        return dim
+
+    # create DATS Dimensions for dbGaP subject metadata
+#    subject_dimensions = [ make_var_dimension(vname, subj_var_values[vname]) for vname in sorted(subj_var_values) ]
+
+    # "raw" characteristics from dbGaP metadata
+#    subject_characteristics.extend(subject_dimensions)
+    
+    # update subject
+    dbgap_subj_id = subj_var_values['dbGaP_Subject_ID']['value']
+    subj.set("alternateIdentifiers", [ util.get_alt_id(dbgap_subj_id, "dbGaP") ])
+    subj.get("characteristics").extend(subject_characteristics)
+    subj.set("bearerOfDisease", subject_bearerOfDisease)
+
 # Generate DATS JSON for a single sample/DNA extract
 def get_single_dna_extract_json(study, study_md, subj_var_values, samp_var_values):
 
@@ -307,7 +427,36 @@ def add_properties(o1, o2):
         else:
             o1[p] = o2[p]    
 
-def get_dna_extracts_json_from_restricted_metadata(study, pub_md, restricted_md):
+def update_subjects_from_restricted_metadata(cache, study, pub_md, restricted_md, subjects_d):
+
+    # Subject
+    # e.g., ['dbGaP_Subject_ID', 'SUBJECT_ID', 'CONSENT', 'AFFECTION_STATUS']
+    subject_md = restricted_md['Subject']
+    # subjects indexed by GTEx subject ID
+    subjects = index_dicts(subject_md['data']['rows'], 'SUBJID')
+
+    # Subject_Phenotypes
+    # e.g., ['dbGaP_Subject_ID', 'SUBJECT_ID', 'GENDER', 'RACE', 'VISIT_AGE', 'DNA_AGE', 'FORMER_SMOKER', 'CURRENT_SMOKER', 'CIGSPERDAY', 'CIGSPERDAY_AVERAGE', 'PACKYEARS', 'PREGNANCY', 'WEIGHT', 'HEIGHT', 'BMI']
+    subject_phen_md = restricted_md['Subject_Phenotypes']
+    logging.debug("indexing restricted Subject_Phenotype file")
+    subject_phens = index_dicts(subject_phen_md['data']['rows'], 'SUBJID')
+
+    for subj_id in subjects:
+        # merge subject phenotype info
+        subject = subjects[subj_id]
+        if subj_id in subject_phens:
+            subject_phen = subject_phens[subj_id]
+            add_properties(subject, subject_phen)
+        else:
+            logging.warn("no subject phenotype data found for " + subj_id)
+        # update DATS subject Material
+        subj = subjects_d[subj_id]
+        subject_atts = {}
+        for sa in subject:
+            subject_atts[sa] = { "value" : subject[sa] }
+        update_single_subject(study, pub_md, subj, subject_atts)
+
+def update_dna_extracts_from_restricted_metadata(cache, study, pub_md, restricted_md, samples_d):
     dna_extracts = []
 
     # Subject

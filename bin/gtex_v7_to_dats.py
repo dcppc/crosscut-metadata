@@ -95,6 +95,151 @@ def cross_check_ids(subjects, samples, manifest, filename, manifest_descr, sourc
 # main()
 # ------------------------------------------------------
 
+# Create DATS StudyGroup corresponding to a consent group
+def make_consent_group(args, group_name, group_index, subject_l, dats_subject_d):
+
+    # find DATS subject that corresponds to each named subject
+    dats_subjects_l = []
+    # parallel array in which existing subjects are represented by idref
+    dats_subjects_idrefs_l = []
+
+    for s in subject_l:
+        if s['SUBJID'] not in dats_subject_d:
+            logging.warn("GTEx subject " + s['SUBJID'] + " not found in public metadata, creating new subject Material")
+
+            # create new placeholder Material and 1. add it to "all subjects" group 2. 
+            subject = DatsObj("Material", [
+                ("name", s['SUBJID']),
+                ("characteristics", []),
+                ("description", "GTEx subject " + s['SUBJID'])
+            ])
+            dats_subject_d[s['SUBJID']] = subject
+            dats_subjects_l.append(subject)
+            dats_subjects_idrefs_l.append(subject)
+        else:
+            ds = dats_subject_d[s['SUBJID']]
+            dats_subjects_l.append(ds)
+            dats_subjects_idrefs_l.append(ds.getIdRef())
+
+    # create StudyGroup and associated ConsentInfo
+
+    # TODO - determine if/where to store group_index (0 or 1)
+
+    # only 2 consent groups in GTEx study:
+    #   0 - Subjects did not participate in the study, did not complete a consent document and 
+    #       are included only for the pedigree structure and/or genotype controls, such as HapMap subjects
+    #   1 - General Research Use (GRU)
+    consent_info = None
+    if group_name == "General Research Use (GRU)":
+        # Data Use Ontology for consent info - http://www.obofoundry.org/ontology/duo.html
+        #  http://purl.obolibrary.org/obo/DUO_0000005 - "general research use and clinical care"
+        #  "This primary category consent code indicates that use is allowed for health/medical/biomedical 
+        # purposes and other biological research, including the study of population origins or ancestry."
+        consent_info = DatsObj("ConsentInfo", [
+            ("name", group_name),
+            ("abbreviation", "GRU"),
+            ("description", group_name),
+            ("relatedIdentifiers", [
+                DatsObj("RelatedIdentifier", [("identifier", "http://purl.obolibrary.org/obo/DUO_0000005")])
+            ])
+        ])
+    elif group_name == "Subjects did not participate in the study, did not complete a consent document and are included only for the pedigree structure and/or genotype controls, such as HapMap subjects":
+        consent_info = DatsObj("ConsentInfo", [
+            ("name", group_name),
+            ("description", group_name)
+        ])
+    else:
+        logging.fatal("unrecognized consent group " + group_name)
+        sys.exit(1)
+
+    group = DatsObj("StudyGroup", [
+        ("name", group_name),
+        ("members", dats_subjects_idrefs_l),
+        ("size", len(dats_subjects_idrefs_l)),
+        ("consentInformation", [ consent_info ])
+    ])
+
+    # create link back from each subject to the parent StudyGroup
+    if args.no_circular_links:
+        logging.warn("not creating Subject level circular links because of --no_circular_links option")
+    else:
+        for s in dats_subjects_l:
+            cl = s.get("characteristics")
+            cl.append(DatsObj("Dimension", [("name", "member of study group"), ("values", [ group.getIdRef() ])]))
+    return group
+
+# augment public metadata with restricted-access (meta)data
+def add_restricted_data(cache, args, study_md, subjects_l, samples_d, study, study_id):
+    restricted_mp = args.dbgap_protected_metadata_path
+    if restricted_mp is None:
+        return
+
+    # index DATS subjects by name (== dbGaP SUBJID)
+    subjects_d = {}
+    for s in subjects_l:
+        name = s.get("name")
+        if name in subjects_d:
+            logging.fatal("duplicate GTEx subject name " + name)
+            sys.exit(1)
+        subjects_d[name] = s
+
+    study_restricted_md = ccmm.gtex.restricted_metadata.read_study_metadata(restricted_mp)
+    d = study_restricted_md
+    # get subject info
+    subj = d['phs000424.v7']['Subject']
+    # group by consent group
+    cid_to_subjects = {}
+    for s in subj['data']['rows']:
+        cg = s['CONSENT']
+        if cg not in cid_to_subjects:
+            cid_to_subjects[cg] = []
+        cid_to_subjects[cg].append(s)
+            
+    # mapping for consent group codes
+    c_vars = [c for c in study_md['Subject']['var_report']['data']['vars'] if c['var_name'] == "CONSENT" and not re.search(r'\.c\d+$', c['id'])]
+    if len(c_vars) != 1:
+        logging.fatal("found "+ str(len(c_vars)) + " CONSENT variables in Subject var_report XML")
+        sys.exit(1)
+    c_var = c_vars[0]
+    c_var_codes = c_var['total']['stats']['values']
+    code_to_c_var = {}
+    for cvc in c_var_codes:
+        code_to_c_var[cvc['code']] = cvc
+           
+    # create StudyGroup and ConsentInfo for each consent group
+    for cid in cid_to_subjects:
+        slist = cid_to_subjects[cid]
+        n_subjects = len(slist)
+        cvc = code_to_c_var[cid]
+        if n_subjects != int(cvc['count']):
+            logging.fatal("subject count mismatch in consent group " + cid)
+            sys.exit(1)
+        logging.info("found " + str(n_subjects) + " subject(s) in consent group " + cid + " - " + cvc['name'])
+        study_group = make_consent_group(args, cvc['name'], cid, slist, subjects_d)
+        # add study group to DATS Study
+        logging.info("adding study group " + cvc['name'])
+        study.get("studyGroups").append(study_group)
+
+    # update subject materials with protected subject phenotype info
+    logging.info("updating subjects with restricted metadata")
+    ccmm.gtex.dna_extracts.update_subjects_from_restricted_metadata(cache, study, study_md, study_restricted_md[study_id], subjects_d)
+    logging.info("finished updating subjects with restricted metadata")
+
+    # update sample/DNA extract materials wtih protected sample attribute info (if present)
+#    ccmm.gtex.dna_extracts.update_dna_extracts_from_restricted_metadata(cache, study, study_md, study_restricted_md[study_id], samples_d)
+
+# TODO - the following function call should handle updating both subjects and samples and the check for 'Sample_Attributes'
+# will need to happen inside the function
+
+# change this:
+#                if 'Sample_Attributes' in study_md:
+#                    dna_extracts = ccmm.gtex.dna_extracts.get_dna_extracts_json_from_restricted_metadata(cache, study, study_md, study_restricted_md[study_id])
+
+# to this:
+#                    
+# (check Sample_Attributes in function call)
+# also need to add DatsObjCache and check for updates present in topmed code but not GTEx
+
 def main():
 
     # input
@@ -110,8 +255,9 @@ def main():
     args = parser.parse_args()
 
     # logging
-    logging.basicConfig(level=logging.INFO)
-#    logging.basicConfig(level=logging.DEBUG)
+#    logging.basicConfig(level=logging.INFO)
+    logging.basicConfig(level=logging.DEBUG)
+
 
     # read portal metadata for subjects and samples
     p_subjects = portal_files.read_subject_phenotypes_file(args.subject_phenotypes_path)
@@ -228,11 +374,13 @@ def main():
     # TODO - add consent groups, of which GTEx has 2: 0=didn't participate, 1=General Research Use (GRU)
     
     # create StudyGroup that lists all the subjects
+    logging.info("creating 'all subjects' StudyGroup containing " + str(len(dats_subjects_l)) + " subject(s) from public metadata")
     all_subjects = DatsObj("StudyGroup", [
-            ("name", "all subjects"),
-            # subjects appear in full here, but id references will be used elsewhere in the instance:
-                ("members", dats_subjects_l)
-            ])
+        ("name", "all subjects"),
+        # subjects appear in full here, but id references will be used elsewhere in the instance:
+        ("members", dats_subjects_l),
+        ("size", len(dats_subjects_l))
+        ])
 
     # create link back from each subject to the parent StudyGroup
     if args.no_circular_links:
@@ -281,13 +429,10 @@ def main():
 
     dbgap_study_dataset.set("hasPart", file_datasets_l)
 
-    # TODO - handle restricted-access (meta)data
+    # augment public (meta)data with restricted-access (meta)data
     if restricted_mp is not None:
-        logging.fatal("restricted-access metadata conversion not yet supported in this version of the script")
-        sys.exit(1)
-#            study_restricted_md = ccmm.gtex.restricted_metadata.read_study_metadata(restricted_mp)
-#            dna_extracts = ccmm.gtex.dna_extracts.get_dna_extracts_json_from_restricted_metadata(study, study_md, study_restricted_md[study_id])
-#            study.set("isAbout", dna_extracts)
+        # create study groups and update subjects/samples with restricted phenotype data
+        add_restricted_data(cache, args, dbgap_study_md, dats_subjects_l, dats_samples_d, dats_study, study_id)
 
     # write Dataset to DATS JSON file
     with open(args.output_file, mode="w") as jf:
