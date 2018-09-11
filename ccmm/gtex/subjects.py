@@ -19,7 +19,6 @@ def get_subject_dats_material(cache, p_subject, gh_subject, var_lookup):
             ("name", util.get_value_annotation("Gender", cache)),
             ("description", "Gender of the subject"),
             ("identifier", get_var_id("SEX")),
-#            ("identifier", DatsObj("Identifier", [("identifier", "SEX"), ("identifierSource", "GTEx")])),
             ("values", [ p_subject['SEX']['mapped_value'] ])
             ])
 
@@ -27,7 +26,6 @@ def get_subject_dats_material(cache, p_subject, gh_subject, var_lookup):
             ("name", util.get_value_annotation("Age range", cache)),
             ("description", "Age range of the subject"),
             ("identifier", get_var_id("AGE")),
-#            ("identifier", DatsObj("Identifier", [("identifier", "AGE"), ("identifierSource", "GTEx")])),
             ("values", [ p_subject['AGE']['mapped_value'] ])
             ])
 
@@ -35,7 +33,6 @@ def get_subject_dats_material(cache, p_subject, gh_subject, var_lookup):
             ("name", util.get_value_annotation("Hardy scale", cache)),
             ("description", "Hardy scale death classification for the subject"),
             ("identifier", get_var_id("DTHHRDY")),
-#            ("identifier", DatsObj("Identifier", [("identifier", "DTHHRDY"), ("identifierSource", "GTEx")])),
             ("values", [ p_subject['DTHHRDY']['mapped_value'] ])
             ])
 
