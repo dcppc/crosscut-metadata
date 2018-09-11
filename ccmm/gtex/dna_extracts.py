@@ -52,15 +52,12 @@ def pick_var_values(vars):
             sorted_values.sort(key=lambda x: x['name'])
             value = sorted_values[0]['name']
         
-#        if vname.upper() == 'BODY_SITE':
-#            vname = 'BODY_SITE'
-        
         res[vname] = { "value": value, "var": var }
 
     return res
 
 # Update a single DATS subject MAterial
-def update_single_subject(study, study_md, subj, subj_var_values):
+def update_single_subject(study, study_md, subj, subj_var_values, use_all_dbgap_vars):
 
     # extract subject attributes
     gender = None
@@ -167,11 +164,11 @@ def update_single_subject(study, study_md, subj, subj_var_values):
 
         return dim
 
+    # add "raw" characteristics / DATS Dimensions for _all_ dbGaP subject metadata
     # create DATS Dimensions for dbGaP subject metadata
-#    subject_dimensions = [ make_var_dimension(vname, subj_var_values[vname]) for vname in sorted(subj_var_values) ]
-
-    # "raw" characteristics from dbGaP metadata
-#    subject_characteristics.extend(subject_dimensions)
+    if use_all_dbgap_vars:
+        subject_dimensions = [ make_var_dimension(vname, subj_var_values[vname]) for vname in sorted(subj_var_values) ]
+        subject_characteristics.extend(subject_dimensions)
     
     # update subject
     dbgap_subj_id = subj_var_values['dbGaP_Subject_ID']['value']
@@ -427,7 +424,7 @@ def add_properties(o1, o2):
         else:
             o1[p] = o2[p]    
 
-def update_subjects_from_restricted_metadata(cache, study, pub_md, restricted_md, subjects_d):
+def update_subjects_from_restricted_metadata(cache, study, pub_md, restricted_md, subjects_d, use_all_dbgap_vars):
 
     # Subject
     # e.g., ['dbGaP_Subject_ID', 'SUBJECT_ID', 'CONSENT', 'AFFECTION_STATUS']
@@ -454,7 +451,7 @@ def update_subjects_from_restricted_metadata(cache, study, pub_md, restricted_md
         subject_atts = {}
         for sa in subject:
             subject_atts[sa] = { "value" : subject[sa] }
-        update_single_subject(study, pub_md, subj, subject_atts)
+        update_single_subject(study, pub_md, subj, subject_atts, use_all_dbgap_vars)
 
 def update_dna_extracts_from_restricted_metadata(cache, study, pub_md, restricted_md, samples_d):
     dna_extracts = []

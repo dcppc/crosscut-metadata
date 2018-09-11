@@ -220,7 +220,7 @@ def add_restricted_data(cache, args, study_md, subjects_l, samples_d, study, stu
         study.get("studyGroups").append(study_group)
 
     # update subject materials with protected subject phenotype info
-    ccmm.gtex.dna_extracts.update_subjects_from_restricted_metadata(cache, study, study_md, study_restricted_md[study_id], subjects_d)
+    ccmm.gtex.dna_extracts.update_subjects_from_restricted_metadata(cache, study, study_md, study_restricted_md[study_id], subjects_d, args.use_all_dbgap_subject_vars)
 
     # TODO - update sample/DNA extract materials wtih protected sample attribute info (if present)
     # e.g.,  ccmm.gtex.dna_extracts.update_dna_extracts_from_restricted_metadata(cache, study, study_md, study_restricted_md[study_id], samples_d)
@@ -241,6 +241,8 @@ def main():
     parser.add_argument('--sample_attributes_path', default=V7_SAMPLE_ATTRIBUTES_FILE, required=False, help ='Path to ' + V7_SAMPLE_ATTRIBUTES_FILE)
     parser.add_argument('--data_stewards_repo_path', default='data-stewards', required=False, help ='Path to local copy of https://github.com/dcppc/data-stewards')
     parser.add_argument('--no_circular_links', action='store_true', help ='Whether to disallow circular links/paths within the JSON-LD output.')
+    parser.add_argument('--use_all_dbgap_subject_vars', action='store_true', help ='Whether to store all available dbGaP variable values as characteristics of the DATS subject Materials.')
+    parser.add_argument('--use_all_dbgap_sample_vars', action='store_true', help ='Whether to store all available dbGaP variable values as characteristics of the DATS sample Materials.')
     args = parser.parse_args()
 
     # logging
