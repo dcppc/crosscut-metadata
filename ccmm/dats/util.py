@@ -17,6 +17,20 @@ DATS_TAXON_HUMAN = DatsObj("TaxonomicInformation", [
                     ("identifierSource", "ncbitax")]))
         ])
 
+DATS_TAXON_MOUSE = DatsObj("TaxonomicInformation", [
+        ("name", "Mus musculus"),
+        ("identifier", OrderedDict([
+                    ("identifier", "ncbitax:10090"),
+                    ("identifierSource", "ncbitax")]))
+        ])
+
+DATS_TAXON_RAT = DatsObj("TaxonomicInformation", [
+        ("name", "Rattus norvegicus"),
+        ("identifier", OrderedDict([
+                    ("identifier", "ncbitax:10116"),
+                    ("identifierSource", "ncbitax")]))
+        ])
+
 # commonly-used Annotation objects
 DATS_ANNOTATIONS = {
     "Actual Subject Number": DatsObj("Annotation", [("value", "Actual Subject Number"), ("valueIRI", "http://purl.obolibrary.org/obo/NCIT_C98703")]),
@@ -48,6 +62,19 @@ def get_taxon_human(cache):
         tkey = ".".join(["TaxonomicInformation", "Homo sapiens"])
         return cache.get_obj_or_ref(tkey, lambda: DATS_TAXON_HUMAN)
     return DATS_TAXON_HUMAN
+
+def get_taxon_mouse(cache):
+    if cache is not None:
+        tkey = ".".join(["TaxonomicInformation", "Mus musculus"])
+        return cache.get_obj_or_ref(tkey, lambda: DATS_TAXON_MOUSE)
+    return DATS_TAXON_MOUSE
+
+def get_taxon_rat(cache):
+    if cache is not None:
+        tkey = ".".join(["TaxonomicInformation", "Rattus norvegicus"])
+        return cache.get_obj_or_ref(tkey, lambda: DATS_TAXON_RAT)
+    return DATS_TAXON_RAT
+
 
 def get_donor_roles(cache):
     roles = ["patient", "donor"]
