@@ -39,6 +39,27 @@ SOID = {
     "SO:3000000": "Gene Segment"
     }
 
+# List of evidence code IDs
+EVID = {
+    "TAS": "ECO_0000304",
+    "DOA": "ECO",
+    "IAGP": "ECO_0005613",
+    "IDA": "ECO_0000314",
+    "IEP": "ECO_0000270",
+    "IGI": "ECO_0000316",
+    "IMP": "ECO_0000315"
+}
+
+# List of relation IDs
+RELID = {
+    "is_implicated_in": "ECO_0000304",
+    "is_model_of": "ECO",
+    "is_marker_for": "ECO_0005613"
+}
+
+def search_dict(key, value, list_of_dictionaries):
+    return [element for element in list_of_dictionaries if element[key] == value]
+
 def read_bgi(cache, mod, bgi_gff3_disease_path):
     
     features = []
@@ -102,12 +123,57 @@ def read_bgi(cache, mod, bgi_gff3_disease_path):
         
     return features
 
+def read_disease(cache, mod, bgi_gff3_disease_path):
+    
+    diseases = []
+    disease = {}
+    
+    file = bgi_gff3_disease_path + "/" + mod + "_disease.json"
+    f = open(file)
+    x = json.load(f)
+    f.close()
+    records = x["data"]
+    
+    for entry in records:
+        # required disease attributes
+        object_id, do_id, data_provider, date_ass, obj_relation, evidence = \
+        entry["objectId"], entry["DOid"], entry["dataProvider"], entry["dateAssigned"], entry["objectRelation"], entry["evidence"]
+        
+        # other disease attributes
+        pubmed_id = "NA" 
+        
+        if 'publication' in entry.keys():
+            pubmed_id = entry["publication"][0]['pubMedId']
+        
+        disease = {
+            'object_id': object_id,
+            'do_id': do_id,
+            'data_provider': data_provider,
+            'date_ass': date_ass,
+            'association_type': obj_relation["associationType"],
+            'evidence_codes': evidence["evidenceCodes"],
+            'pubmed_id':  pubmed_id 
+        }
+        diseases.append(disease)
+
+    return diseases
+
+
 
 # Generate DATS JSON for a single gene
 def get_gene_json(cache, mod, bgi_gff3_disease_path, ortholog_file):
     
     # read gene features form BGI file
     features = read_bgi(cache, mod, bgi_gff3_disease_path)
+    
+    # read disease from disease JSON file
+    diseases = read_disease(cache, mod, bgi_gff3_disease_path)
+
+    # read human homologs from alliance orthology file
+    #orthologs = read_orthology(ortholog_file)
+    
+    # TODO - read gene features from GFF3 file
+    
     
     genes = []
     
@@ -129,12 +195,42 @@ def get_gene_json(cache, mod, bgi_gff3_disease_path, ortholog_file):
             alt_ids_list = []
             for i in f['alt_ids']:
                 source, id = i.split(':')
-                alt_id = [ util.get_alt_id(id, source) ]
-                #alt_id =  "(\"identifier\", " + id + "), (\"identifierSource\", " + source + ")"
-                #logging.info("alt_id: " + alt_id)    
-                alternate_ids.append(alt_id)
-            #alternate_ids = DatsObj("AlternateIdentifier", [ alt_ids_list ])
-            
+                alt_id = [ util.get_alt_id(id, source) ]   
+                alternate_ids.append(alt_id)   
+        
+        disease_list = []
+        
+        #gene_diseases = filter(lambda disease: disease['object_id'] == f['primaryId'], diseases)  
+        gene_diseases = search_dict('object_id', f['primaryId'], diseases)  
+        
+        if len(gene_diseases) > 0:
+            #logging.info("how many diseases?" + str(len(gene_diseases)))
+            for g in gene_diseases:  
+                disease_id = OrderedDict([
+                    ("identifier",  g['do_id']),
+                    ("identifierSource", "Disease Ontology")])
+                
+                relation = OrderedDict([("value", g['association_type'])])
+                
+                evd_ids = []
+                for i in g['evidence_codes']:
+                    evd_id = OrderedDict([("value", i), ("valueIRI", "http://purl.obolibrary.org/obo/" + EVID[i])])                
+                    evd_ids.append(evd_id)
+                     
+                if g['pubmed_id'] != "NA":
+                    pub_id = OrderedDict([("identifier",  g['pubmed_id'])])
+                else: 
+                    pub_id = ""
+                
+                related_entity_id = OrderedDict([
+                    ("object", disease_id),
+                    ("relation", relation),
+                    ("relationEvidence", evd_ids),
+                    ("publications", pub_id)
+                    ])
+                #logging.info("related_entity " + str(related_entity_id)) 
+                disease_list.append(related_entity_id)
+
         
         gene = DatsObj("MolecularEntity", [
                 ("identifier", DatsObj("Identifier", [("identifier", f['primaryId'])])),
@@ -143,18 +239,9 @@ def get_gene_json(cache, mod, bgi_gff3_disease_path, ortholog_file):
                 ("types", types),
                 ("taxonomy", [ f['taxon'] ]),
                 ("genomeLocation", genomeLocation),
-                ("alternateIdentifiers", alternate_ids)
+                ("alternateIdentifiers", alternate_ids),
+                ("relatedEntities", disease_list )
                 ])
-    
-    
-    # TODO - read gene features from GFF3 file
-
-    # read human homologs from alliance orthology file
-    #orthologs = read_orthology(ortholog_file)
-    
-    # read disease from disease JSON file
-    #disease = read_disease(bgi_gff3_disease_path)
-    
         genes.append(gene)
 
     return genes
