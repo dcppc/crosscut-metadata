@@ -59,8 +59,11 @@ def main():
     # Ref genome Variables
     REF_GENOME_VARS = OrderedDict([("value", "Property or Attribute"), ("valueIRI", "http://purl.obolibrary.org/obo/NCIT_C20189")])
 
+    # read human homologs from alliance orthology file
+    all_orthologs = ccmm.agr.genes.read_orthology(args.ortholog_file)
+    
     for acc in acc_d:
-        gene_entity = ccmm.agr.genes.get_gene_json(cache, acc, args.bgi_gff3_disease_path, args.ortholog_file)
+        gene_entity = ccmm.agr.genes.get_gene_json(cache, acc, args.bgi_gff3_disease_path, all_orthologs)
         ref_genome = ref_genomes_by_id[acc]
         ref_genome.set("isAbout", [gene_entity])
     

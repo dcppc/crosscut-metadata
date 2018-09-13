@@ -3,6 +3,7 @@
 from ccmm.dats.datsobj import DatsObj
 import ccmm.dats.util as util
 from collections import OrderedDict
+import pandas as pd
 import csv
 import json
 import logging
@@ -85,7 +86,6 @@ def read_bgi(cache, mod, bgi_gff3_disease_path):
         if 'geneSynopsis' in entry.keys():
             geneSynopsis = entry["geneSynopsis"]
             
-        #logging.info("genomeLocations: " + str(entry["genomeLocations"]))
         #logging.info("genomeLoc: " + genomeLoc[0]['assembly'])    
             
         if 'genomeLocations' in entry.keys():
@@ -159,18 +159,39 @@ def read_disease(cache, mod, bgi_gff3_disease_path):
     return diseases
 
 
+def read_orthology(ortholog_file):
+    
+    orthologs = []
+    ortholog = {}
+    
+    orth_list = pd.read_csv(ortholog_file, sep='\t', header=14, dtype='str')
+    # Process the entries in the file
+    
+    for row in orth_list.itertuples():
+        #logging.info("orth: " + str(row)) 
+        ortho_gene_id, ortho_gene_symbol, ortho_taxon, mod_gene_id, mod_taxon = row[1], row[2], row[3], row[5], row[7]
+        ortholog = {
+            'ortho_gene_id': ortho_gene_id,
+            'ortho_gene_symbol': ortho_gene_symbol,
+            'ortho_taxon': ortho_taxon,
+            'mod_gene_id': mod_gene_id,
+            'mod_taxon': mod_taxon
+            }
+        orthologs.append(ortholog)
+    
+    return orthologs
+        
+
+
 
 # Generate DATS JSON for a single gene
-def get_gene_json(cache, mod, bgi_gff3_disease_path, ortholog_file):
+def get_gene_json(cache, mod, bgi_gff3_disease_path, orthologs):
     
     # read gene features form BGI file
     features = read_bgi(cache, mod, bgi_gff3_disease_path)
     
     # read disease from disease JSON file
     diseases = read_disease(cache, mod, bgi_gff3_disease_path)
-
-    # read human homologs from alliance orthology file
-    #orthologs = read_orthology(ortholog_file)
     
     # TODO - read gene features from GFF3 file
     
@@ -198,13 +219,14 @@ def get_gene_json(cache, mod, bgi_gff3_disease_path, ortholog_file):
                 alt_id = [ util.get_alt_id(id, source) ]   
                 alternate_ids.append(alt_id)   
         
+        
+        #encode disease
         disease_list = []
         
-        #gene_diseases = filter(lambda disease: disease['object_id'] == f['primaryId'], diseases)  
         gene_diseases = search_dict('object_id', f['primaryId'], diseases)  
         
         if len(gene_diseases) > 0:
-            #logging.info("how many diseases?" + str(len(gene_diseases)))
+            
             for g in gene_diseases:  
                 disease_id = OrderedDict([
                     ("identifier",  g['do_id']),
@@ -227,10 +249,31 @@ def get_gene_json(cache, mod, bgi_gff3_disease_path, ortholog_file):
                     ("relation", relation),
                     ("relationEvidence", evd_ids),
                     ("publications", pub_id)
-                    ])
-                #logging.info("related_entity " + str(related_entity_id)) 
+                    ]) 
                 disease_list.append(related_entity_id)
+            
+          
+        #encode ortholog
+        ortholog_list = []
+        
+        gene_orthologs = search_dict('mod_gene_id', f['primaryId'], orthologs)  
 
+        if len(gene_orthologs) > 0:
+            for o in gene_orthologs:  
+                mol_entity_ortholog = DatsObj("MolecularEntity", [
+                    ("identifier", DatsObj("Identifier", [("identifier", o['ortho_gene_id'])])),
+                    ("name", o['ortho_gene_id']),
+                    ("description", "Ortholog"),
+                    ("taxonomy", [ o['ortho_taxon'] ]),
+                    ("alternateIdentifiers", util.get_alt_id(o['ortho_gene_symbol'], "Gene Symbol")),
+                ]) 
+                
+                related_entity_id = OrderedDict([
+                    ("object", mol_entity_ortholog)
+                    ]) 
+                ortholog_list.append(related_entity_id)
+        
+        related_entities = disease_list + ortholog_list
         
         gene = DatsObj("MolecularEntity", [
                 ("identifier", DatsObj("Identifier", [("identifier", f['primaryId'])])),
@@ -240,7 +283,7 @@ def get_gene_json(cache, mod, bgi_gff3_disease_path, ortholog_file):
                 ("taxonomy", [ f['taxon'] ]),
                 ("genomeLocation", genomeLocation),
                 ("alternateIdentifiers", alternate_ids),
-                ("relatedEntities", disease_list )
+                ("relatedEntities", related_entities )
                 ])
         genes.append(gene)
 
