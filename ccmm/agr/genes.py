@@ -219,8 +219,6 @@ def get_gene_json(cache, mod, bgi_gff3_disease_path, orthologs):
                 alt_id = [ util.get_alt_id(id, source) ]   
                 alternate_ids.append(alt_id)  
              
-        
-        
         #encode disease
         disease_list = []
         
@@ -271,11 +269,17 @@ def get_gene_json(cache, mod, bgi_gff3_disease_path, orthologs):
 
         if len(gene_orthologs) > 0:
             for o in gene_orthologs:  
+                if '9606' in o['ortho_taxon']:
+                    o_taxon = util.get_taxon_human(cache)
+                else:
+                    logging.fatal("encountered taxonomy other human - " + o['ortho_taxon'])
+                    sys.exit(1)
+        
                 mol_entity_ortholog = DatsObj("MolecularEntity", [
                     ("identifier", DatsObj("Identifier", [("identifier", o['ortho_gene_id'])])),
                     ("name", o['ortho_gene_id']),
                     ("description", "Ortholog"),
-                    ("taxonomy", [ o['ortho_taxon'] ]),
+                    ("taxonomy", [ o_taxon ]),
                     ("alternateIdentifiers", util.get_alt_id(o['ortho_gene_symbol'], "Gene Symbol")),
                 ]) 
                 
