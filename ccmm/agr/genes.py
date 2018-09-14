@@ -117,7 +117,7 @@ def read_bgi(cache, mod, bgi_gff3_disease_path):
             'end': end,
             'strand': strand,
             'soid': soTermId,
-            'taxon': taxonId
+            'taxon': taxon
         }
         features.append(feature)
         
@@ -199,7 +199,7 @@ def get_gene_json(cache, mod, bgi_gff3_disease_path, orthologs):
     genes = []
     
     for f in features:
-        genomeLocation = DatsObj("GenomeLocation", [
+        genomeLocations = DatsObj("GenomeLocation", [
             ("assembly", f['assembly']),
             ("chromosome", f['chr']),
             ("startPosition", f['start']),
@@ -207,7 +207,7 @@ def get_gene_json(cache, mod, bgi_gff3_disease_path, orthologs):
             ("strand", f['strand'])
             ])
 
-        types = [OrderedDict([
+        roles = [OrderedDict([
             ("value", SOID[f['soid']]),("valueIRI", "http://purl.obolibrary.org/obo/SO_" + f['soid'][3:])
             ])]
         
@@ -217,7 +217,8 @@ def get_gene_json(cache, mod, bgi_gff3_disease_path, orthologs):
             for i in f['alt_ids']:
                 source, id = i.split(':')
                 alt_id = [ util.get_alt_id(id, source) ]   
-                alternate_ids.append(alt_id)   
+                alternate_ids.append(alt_id)  
+             
         
         
         #encode disease
@@ -289,9 +290,9 @@ def get_gene_json(cache, mod, bgi_gff3_disease_path, orthologs):
                 ("identifier", DatsObj("Identifier", [("identifier", f['primaryId'])])),
                 ("name", f['primaryId']),
                 ("description", f['descr']),
-                ("types", types),
+                ("roles", roles),
                 ("taxonomy", [ f['taxon'] ]),
-                ("genomeLocation", genomeLocation),
+                ("genomeLocations", [ genomeLocations ]),
                 ("alternateIdentifiers", alternate_ids),
                 ("relatedEntities", related_entities )
                 ])

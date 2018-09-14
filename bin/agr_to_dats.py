@@ -65,7 +65,7 @@ def main():
     for acc in acc_d:
         gene_entity = ccmm.agr.genes.get_gene_json(cache, acc, args.bgi_gff3_disease_path, all_orthologs)
         ref_genome = ref_genomes_by_id[acc]
-        ref_genome.set("isAbout", [gene_entity])
+        ref_genome.set("isAbout", gene_entity)
     
 
     # write Dataset to DATS JSON file
