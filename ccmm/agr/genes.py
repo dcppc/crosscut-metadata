@@ -139,11 +139,11 @@ def read_disease(cache, mod, bgi_gff3_disease_path):
         object_id, do_id, data_provider, date_ass, obj_relation, evidence = \
         entry["objectId"], entry["DOid"], entry["dataProvider"], entry["dateAssigned"], entry["objectRelation"], entry["evidence"]
         
+        pubmed_id =""
         # other disease attributes
-        pubmed_id = "NA" 
-        
-        if 'publication' in entry.keys():
-            pubmed_id = entry["publication"][0]['pubMedId']
+        if 'pubMedId' in entry["evidence"]["publication"].keys():
+            pubmed_id = entry["evidence"]["publication"]["pubMedId"] 
+            #logging.info("pub: " + pubmed_id)
         
         disease = {
             'object_id': object_id,
@@ -227,28 +227,38 @@ def get_gene_json(cache, mod, bgi_gff3_disease_path, orthologs):
         
         if len(gene_diseases) > 0:
             
-            for g in gene_diseases:  
+            do_ids = [d['do_id'] for d in gene_diseases] 
+            uniq_do_ids = list(set(do_ids))
+            
+            #for g in gene_diseases:  
+            for d in uniq_do_ids:
                 disease_id = OrderedDict([
-                    ("identifier",  g['do_id']),
+                    ("identifier",  d),
                     ("identifierSource", "Disease Ontology")])
                 
-                relation = OrderedDict([("value", g['association_type'])])
+                select_diseases = search_dict('do_id', d, gene_diseases)
                 
+                relation = OrderedDict([("value", select_diseases[0]['association_type'])])
+                
+                # account for multiple evidence codes per disease id
                 evd_ids = []
-                for i in g['evidence_codes']:
+                evd_ids_list = [d['evidence_codes'] for d in select_diseases]
+                for i in evd_ids_list[0]:
                     evd_id = OrderedDict([("value", i), ("valueIRI", "http://purl.obolibrary.org/obo/" + EVID[i])])                
                     evd_ids.append(evd_id)
                      
-                if g['pubmed_id'] != "NA":
-                    pub_id = OrderedDict([("identifier",  g['pubmed_id'])])
-                else: 
-                    pub_id = ""
+               # account for multiple publications per disease id
+                pub_ids = []
+                pub_ids_list = [d['pubmed_id'] for d in select_diseases]
+                for i in pub_ids_list:
+                    pub_id = OrderedDict([("identifier",  i)])                
+                    pub_ids.append(pub_id)
                 
                 related_entity_id = OrderedDict([
                     ("object", disease_id),
                     ("relation", relation),
                     ("relationEvidence", evd_ids),
-                    ("publications", pub_id)
+                    ("publications", pub_ids)
                     ]) 
                 disease_list.append(related_entity_id)
             
