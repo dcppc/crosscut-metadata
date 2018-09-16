@@ -36,6 +36,8 @@ DATS_ANNOTATIONS = {
     "Actual Subject Number": DatsObj("Annotation", [("value", "Actual Subject Number"), ("valueIRI", "http://purl.obolibrary.org/obo/NCIT_C98703")]),
     "count" : DatsObj("Annotation", [("value", "count"), ("valueIRI", "http://purl.obolibrary.org/obo/STATO_0000047")]),
     "donor" : DatsObj("Annotation", [("value", "donor"), ("valueIRI", "http://purl.obolibrary.org/obo/OBI_1110087")]),
+    "CNV" : DatsObj("Annotation", [("value", "CNV"), ("valueIRI", "http://purl.obolibrary.org/obo/SO_0001019")]),
+    "CNV analysis" : DatsObj("Annotation", [("value", "CNV analysis"), ("valueIRI", "http://purl.obolibrary.org/obo/OBI_0000537")]),
     "DNA extract" : DatsObj("Annotation", [("value", "DNA extract"), ("valueIRI", "http://purl.obolibrary.org/obo/OBI_0001051")]),
     "DNA sequencing": DatsObj("Annotation", [("value", "DNA sequencing"), ("valueIRI", "http://purl.obolibrary.org/obo/OBI_0000626")]),
     "exome sequencing assay": DatsObj("Annotation", [("value", "exome sequencing assay"), ("valueIRI", "http://purl.obolibrary.org/obo/OBI_0002118")]),
@@ -46,6 +48,8 @@ DATS_ANNOTATIONS = {
     "RNA extract" : DatsObj("Annotation", [("value", "RNA extract"), ("valueIRI", "http://purl.obolibrary.org/obo/OBI_0000880")]),
     "RNA-seq assay" : DatsObj("Annotation", [("value", "RNA-seq assay"), ("valueIRI", "http://purl.obolibrary.org/obo/OBI_0001271")]),
     "specimen" : DatsObj("Annotation", [("value", "specimen"), ("valueIRI", "http://purl.obolibrary.org/obo/OBI_0100051")]),
+    "SNP" : DatsObj("Annotation", [("value", "SNP"), ("valueIRI", "http://purl.obolibrary.org/obo/SO_0000694")]),
+    "SNP analysis" : DatsObj("Annotation", [("value", "SNP analysis"), ("valueIRI", "http://purl.obolibrary.org/obo/OBI_0000435")]),
     "transcription profiling": DatsObj("Annotation", [("value", "transcription profiling"), ("valueIRI", "http://purl.obolibrary.org/obo/OBI_0000424")]),
     "whole genome sequencing assay": DatsObj("Annotation", [("value", "whole genome sequencing assay"), ("valueIRI", "http://purl.obolibrary.org/obo/OBI_0002117")])
 }
