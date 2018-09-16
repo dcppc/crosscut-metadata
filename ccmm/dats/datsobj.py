@@ -122,11 +122,17 @@ class DatsObj:
     def setProperty(self, name, value):
         self.data[name] = value
 
+    def hasProperty(self, name):
+        return name in self.data
+
     def get(self, name):
         return self.getProperty(name)
     
     def set(self, name, value):
         self.setProperty(name, value)
+
+    def __str__(self):
+        return json.dumps(self, indent=2, cls=DATSEncoder)
 
     # return object id in form suitable for use as JSON-LD id reference
     def getIdRef(self):
@@ -147,9 +153,10 @@ class DATSEncoder(json.JSONEncoder):
 # ------------------------------------------------------
 
 class DatsObjCache:
-    cache = {}
+    cache = None
 
     def __init__(self):
+        self.cache = {}
         pass
 
     # return the object if it's new, the id reference if it's not
