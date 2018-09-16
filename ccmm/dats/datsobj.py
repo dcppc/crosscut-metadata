@@ -49,6 +49,7 @@ DATS_TYPES = {
     "Date": { "name": "Date", "schema": "date_info_schema.json", "has_context": True },
     "Dimension": { "name": "Dimension", "schema": "dimension_schema.json", "has_context": True },
     "Disease": { "name": "Disease", "schema": "disease_schema.json", "has_context": True },
+    "GenomeLocation": { "name": "GenomeLocation", "schema": "genome_location_schema.json", "has_context": True },
     "Grant": { "name": "Grant", "schema": "grant_schema.json", "has_context": True },
     "Identifier": { "name": "Identifier", "schema": "identifier_info_schema.json", "has_context": True },
     "Instrument": { "name": "Instrument", "schema": "instrument_schema.json", "has_context": True },

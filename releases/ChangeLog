@@ -1,3 +1,10 @@
+0.6 (September 14 2018)
+ -v0.6 release of KC7 crosscut metadata model instance for the following datasets:
+   -GTEx v7 public RNA-Seq and WGS metadata from the GTEx Portal and dbGaP study phs000424.v7.p2
+   -TOPMed public metadata for dbGaP studies phs001024.v3.p1, phs000951.v2.p2, and phs000179.v5.p2
+   -Alliance/AGR gene location and ortholog data for mouse and rat reference genomes
+ -Updated AGR ER diagram to reflect new AGR-specific DATS schema extensions
+	
 0.5 (September 7 2018)
  -v0.5 release of KC7 crosscut metadata model instance for the following datasets:
    -GTEx v7 public RNA-Seq metadata from the GTEx Portal and dbGaP study phs000424.v7.p2 (single file)
