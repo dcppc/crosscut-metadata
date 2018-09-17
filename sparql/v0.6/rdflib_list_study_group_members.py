@@ -195,7 +195,7 @@ def print_results(members, dataset_id, study_group_name):
     title += ":"
 
     print()
-    print("StudyGroup members:")
+    print(title)
     print()
     print("dbGaP Study\tStudy Group\tSubject ID")
 
