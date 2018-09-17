@@ -10,25 +10,8 @@ import sys
 # Implementation of "list study group members" query directly in Python using
 # rdflib API calls.
 
-# ------------------------------------------------------
-# main()
-# ------------------------------------------------------
-
-def main():
-
-    # input
-    parser = argparse.ArgumentParser(description='List subjects in a given DATS Dataset and StudyGroup.')
-    parser.add_argument('--dats_file', help ='Path to TOPMed or GTEx DATS JSON file.')
-    parser.add_argument('--dataset_id', required=False, help ='DATS identifier of the Dataset linked to the StudyGroup of interest.')
-    parser.add_argument('--study_group_name', required=False, help ='DATS identifier of the StudyGroup of interest.')
-    args = parser.parse_args()
-
-    # logging
-    logging.basicConfig(level=logging.INFO)
-
-    # parse JSON LD
-    g = ru.read_json_ld_graph(args.dats_file)
-
+def list_study_group_members(g, dataset_id, study_group_name):
+    
     # obo:IAO_0000100 - "data set"
     # obo:IAO_0000577 - "centrally registered identifier symbol"
     # obo:RO_0003001 - "produced by"
@@ -67,7 +50,7 @@ def main():
             datasets.append(d)
 
     # filter datasets by id if one was specified
-    datasets = [d for d in datasets if (args.dataset_id is None) or (rdflib.term.Literal(args.dataset_id) == dataset_ids[d])]
+    datasets = [d for d in datasets if (dataset_id is None) or (rdflib.term.Literal(dataset_id) == dataset_ids[d])]
 
     #            SELECT ?dbgap_study_acc ?study_group_name ?subject_name
     #            WHERE {
@@ -123,13 +106,11 @@ def main():
                 for (s3,p3,o3) in g.triples((o, ru.NAME_TERM, None)):
                     study_group_to_name[o] = o3
                     n_names += 1
+
                 if n_names == 1:
                     groups.append(o)
 
-        # filter study groups by name if one was specified
-        groups = [g for g in groups if (args.study_group_name is None) or (rdflib.term.Literal(args.study_group_name) == study_group_to_name[g])]
         study_to_groups[s] = groups
-
 
     #            SELECT ?dbgap_study_acc ?study_group_name ?subject_name
     #            WHERE {
@@ -175,10 +156,7 @@ def main():
     #            }
     #  ---->     ORDER BY ?dbgap_study_acc ?study_group_name ?subject_name
 
-    print()
-    print("StudyGroup members:")
-    print()
-    print("dbGaP Study\tStudy Group\tSubject ID")
+    members_l = []
 
     # sort datasets
     datasets.sort(key=lambda x: dataset_ids[x])
@@ -192,14 +170,62 @@ def main():
         for g in groups:
             group_name = study_group_to_name[g]
             subjects = study_group_to_subjects[g]
+
+            # filter by study group
+            if (study_group_name is not None) and group_name != rdflib.term.Literal(study_group_name, lang="en"):
+                continue
             
             # sort subjects
             subjects.sort(key=lambda x: subject_to_name[x])
             for s in subjects:
                 subject_name = subject_to_name[s]
-                print("%s\t%s\t%s" % (dataset_id, group_name, subject_name))
+                members_l.append({"dataset_id": dataset_id, "group_name": group_name, "subject_name": subject_name})
     
+    return members_l
+
+def print_results(members, dataset_id, study_group_name):
+    title = "StudyGroup members"
+    conditions = []
+    if dataset_id is not None:
+        conditions.append("dataset " + dataset_id)
+    if study_group_name is not None:
+        conditions.append("study group name " + study_group_name)
+    if len(conditions) > 0:
+        title += " for " + ", ".join(conditions)
+    title += ":"
+
     print()
+    print("StudyGroup members:")
+    print()
+    print("dbGaP Study\tStudy Group\tSubject ID")
+
+    for m in members:
+        print("%s\t%s\t%s" % (m["dataset_id"], m["group_name"], m["subject_name"]))
+
+    print()
+
+# ------------------------------------------------------
+# main()
+# ------------------------------------------------------
+
+def main():
+
+    # input
+    parser = argparse.ArgumentParser(description='List subjects in a given DATS Dataset and StudyGroup.')
+    parser.add_argument('--dats_file', help ='Path to TOPMed or GTEx DATS JSON file.')
+    parser.add_argument('--dataset_id', required=False, help ='DATS identifier of the Dataset linked to the StudyGroup of interest.')
+    parser.add_argument('--study_group_name', required=False, help ='DATS identifier of the StudyGroup of interest.')
+    args = parser.parse_args()
+
+    # logging
+    logging.basicConfig(level=logging.INFO)
+
+    # parse JSON LD
+    g = ru.read_json_ld_graph(args.dats_file)
+
+    # run query
+    members = list_study_group_members(g, args.dataset_id, args.study_group_name)
+    print_results(members, args.dataset_id, args.study_group_name)
 
 if __name__ == '__main__':
     main()

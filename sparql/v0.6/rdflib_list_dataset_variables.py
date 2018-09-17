@@ -10,24 +10,8 @@ import sys
 # Implementation of "list dataset variables" query directly in Python using
 # rdflib API calls.
 
-# ------------------------------------------------------
-# main()
-# ------------------------------------------------------
-
-def main():
-
-    # input
-    parser = argparse.ArgumentParser(description='List variables available in the DATS Dataset that corresponds to a given dbGaP study.')
-    parser.add_argument('--dats_file', help ='Path to TOPMed or GTEx DATS JSON file.')
-    parser.add_argument('--dataset_id', required=False, help ='DATS identifier of the Dataset whose variables should be retrieved.')
-    args = parser.parse_args()
-
-    # logging
-    logging.basicConfig(level=logging.INFO)
-
-    # parse JSON LD
-    g = ru.read_json_ld_graph(args.dats_file)
-
+def list_dataset_variables(g, dataset_id):
+    
     # obo:IAO_0000100 - "data set"
     # obo:IAO_0000577 - "centrally registered identifier symbol"
     # obo:BFO_0000051 - "has part"
@@ -76,7 +60,7 @@ def main():
                 dataset_ids[d] = o2
                 
     # filter datasets by id if one was specified
-    datasets = [d for d in all_datasets if (args.dataset_id is None) or (rdflib.term.Literal(args.dataset_id) == dataset_ids[d])]
+    datasets = [d for d in all_datasets if (dataset_id is None) or (rdflib.term.Literal(dataset_id) == dataset_ids[d])]
 
     #            SELECT DISTINCT ?dbgap_study_acc ?dbgap_var_acc ?pname ?descr
     #            WHERE {
@@ -158,11 +142,7 @@ def main():
 
     datasets_with_ids = [{"d":d, "i":dataset_ids[d]} for d in datasets if d in dataset_ids]
     datasets_with_ids.sort(key=lambda x: x["i"])
-
-    print()
-    print("Dataset variables:")
-    print()
-    print("dbGaP Study\tdbGaP variable\tName\tDescription")
+    variables_l = []
 
     for ds in datasets_with_ids:
         dims = dataset_dims[ds['d']]
@@ -171,9 +151,47 @@ def main():
         dims_with_atts = [{"d":d, "descr": dim_descrs[d], "id": dim_ids[d], "name": dim_names[d] } for d in dims if d in dim_ids]
         dims_with_atts.sort(key = lambda x: x["id"])
         for d in dims_with_atts:
-            print("%s\t%s\t%s\t%s" % (ds["i"], d["id"], d["name"], d["descr"]))
+            variables_l.append({"study": ds["i"], "var_dbgap_id": d["id"], "var_name": d["name"], "var_descr": d["descr"] })
+
+    return variables_l
+
+def print_results(variables, dataset_id):
+    title = "Dataset variables"
+    if dataset_id is not None:
+        title += " for dataset " + dataset_id
+    title += ":"
 
     print()
+    print(title)
+    print()
+    print("dbGaP Study\tdbGaP variable\tName\tDescription")
+
+    for v in variables:
+        print("%s\t%s\t%s\t%s" % (v["study"], v["var_dbgap_id"], v["var_name"], v["var_descr"]))
+
+    print()
+
+# ------------------------------------------------------
+# main()
+# ------------------------------------------------------
+
+def main():
+
+    # input
+    parser = argparse.ArgumentParser(description='List variables available in the DATS Dataset that corresponds to a given dbGaP study.')
+    parser.add_argument('--dats_file', help ='Path to TOPMed or GTEx DATS JSON file.')
+    parser.add_argument('--dataset_id', required=False, help ='DATS identifier of the Dataset whose variables should be retrieved.')
+    args = parser.parse_args()
+
+    # logging
+    logging.basicConfig(level=logging.INFO)
+
+    # parse JSON LD
+    g = ru.read_json_ld_graph(args.dats_file)
+
+    # run query
+    variables = list_dataset_variables(g, args.dataset_id)
+    print_results(variables, args.dataset_id)
 
 if __name__ == '__main__':
     main()

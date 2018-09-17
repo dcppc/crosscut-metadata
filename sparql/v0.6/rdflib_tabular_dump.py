@@ -9,23 +9,8 @@ import sys
 
 # Create tabular dump of DATS-encoded GTEx metadata using rdflib API calls.
 
-# ------------------------------------------------------
-# main()
-# ------------------------------------------------------
-
-def main():
-
-    # input
-    parser = argparse.ArgumentParser(description='Create tabular dump of DATS metadata using rdflib API calls.')
-    parser.add_argument('--dats_file', help ='Path to TOPMed or GTEx DATS JSON file.')
-    args = parser.parse_args()
-
-    # logging
-    logging.basicConfig(level=logging.INFO)
-
-    # parse JSON LD
-    g = ru.read_json_ld_graph(args.dats_file)
-    
+def print_tabular_dump(g):
+        
     # find ALL Datasets, retain those with a DATS identifier
     all_datasets = [s for (s,p,o) in g.triples((None, ru.RDF_TYPE_TERM, ru.DATS_DATASET_TERM))]
     dataset_ids = {}
@@ -345,7 +330,25 @@ def main():
                     col_vals_copy.append(d['GS_URI'])
 
                     print("\t".join(col_vals_copy))
-                    
+
+
+# ------------------------------------------------------
+# main()
+# ------------------------------------------------------
+
+def main():
+
+    # input
+    parser = argparse.ArgumentParser(description='Create tabular dump of DATS metadata using rdflib API calls.')
+    parser.add_argument('--dats_file', help ='Path to TOPMed or GTEx DATS JSON file.')
+    args = parser.parse_args()
+
+    # logging
+    logging.basicConfig(level=logging.INFO)
+
+    # parse JSON LD
+    g = ru.read_json_ld_graph(args.dats_file)
+    print_tabular_dump(g)
 
 if __name__ == '__main__':
     main()
