@@ -136,6 +136,8 @@ def list_2nd_level_datasets(g):
     for i in range(0, nt):
         datasets_l.append({"dataset": idents[i], "description": titles[i] })
 
+    # sort to ensure consistent results
+    datasets_l.sort(key=lambda x: x["dataset"])
     return datasets_l
 
 def print_results(datasets):
