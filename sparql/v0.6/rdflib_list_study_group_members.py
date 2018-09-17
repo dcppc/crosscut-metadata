@@ -10,7 +10,7 @@ import sys
 # Implementation of "list study group members" query directly in Python using
 # rdflib API calls.
 
-def list_study_group_members(g, dataset_id, study_group_name):
+def list_study_group_members(g, dataset_id=None, study_group_name=None):
     
     # obo:IAO_0000100 - "data set"
     # obo:IAO_0000577 - "centrally registered identifier symbol"
@@ -183,7 +183,7 @@ def list_study_group_members(g, dataset_id, study_group_name):
     
     return members_l
 
-def print_results(members, dataset_id, study_group_name):
+def print_results(members, dataset_id=None, study_group_name=None):
     title = "StudyGroup members"
     conditions = []
     if dataset_id is not None:

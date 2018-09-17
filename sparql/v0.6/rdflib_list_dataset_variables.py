@@ -10,7 +10,7 @@ import sys
 # Implementation of "list dataset variables" query directly in Python using
 # rdflib API calls.
 
-def list_dataset_variables(g, dataset_id):
+def list_dataset_variables(g, dataset_id=None):
     
     # obo:IAO_0000100 - "data set"
     # obo:IAO_0000577 - "centrally registered identifier symbol"
@@ -54,13 +54,16 @@ def list_dataset_variables(g, dataset_id):
 
     # get DATS identifier for each one - DATS schema specifies the mapping should be 1-1
     dataset_ids = {}
+    datasets = []
     for d in all_datasets:
         for (s,p,o) in g.triples((d,ru.CENTRAL_ID_TERM,None)):
             for (s2,p2,o2) in g.triples((o, ru.SDO_IDENT_TERM, None)):
                 dataset_ids[d] = o2
+        if d in dataset_ids:
+            datasets.append(d)
                 
     # filter datasets by id if one was specified
-    datasets = [d for d in all_datasets if (dataset_id is None) or (rdflib.term.Literal(dataset_id) == dataset_ids[d])]
+    datasets = [d for d in datasets if (dataset_id is None) or (rdflib.term.Literal(dataset_id) == dataset_ids[d])]
 
     #            SELECT DISTINCT ?dbgap_study_acc ?dbgap_var_acc ?pname ?descr
     #            WHERE {
@@ -155,7 +158,7 @@ def list_dataset_variables(g, dataset_id):
 
     return variables_l
 
-def print_results(variables, dataset_id):
+def print_results(variables, dataset_id=None):
     title = "Dataset variables"
     if dataset_id is not None:
         title += " for dataset " + dataset_id
