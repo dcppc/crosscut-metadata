@@ -183,6 +183,7 @@ def add_restricted_data(cache, args, study_md, subjects_l, samples_d, study, stu
         subjects_d[name] = s
 
     study_restricted_md = ccmm.gtex.restricted_metadata.read_study_metadata(restricted_mp)
+
     d = study_restricted_md
     # get subject info
     subj = d['phs000424.v7']['Subject']
@@ -242,13 +243,12 @@ def main():
     parser.add_argument('--data_stewards_repo_path', default='data-stewards', required=False, help ='Path to local copy of https://github.com/dcppc/data-stewards')
     parser.add_argument('--no_circular_links', action='store_true', help ='Whether to disallow circular links/paths within the JSON-LD output.')
     parser.add_argument('--use_all_dbgap_subject_vars', action='store_true', help ='Whether to store all available dbGaP variable values as characteristics of the DATS subject Materials.')
-    parser.add_argument('--use_all_dbgap_sample_vars', action='store_true', help ='Whether to store all available dbGaP variable values as characteristics of the DATS sample Materials.')
+#    parser.add_argument('--use_all_dbgap_sample_vars', action='store_true', help ='Whether to store all available dbGaP variable values as characteristics of the DATS sample Materials.')
     args = parser.parse_args()
 
     # logging
-#    logging.basicConfig(level=logging.INFO)
-    logging.basicConfig(level=logging.DEBUG)
-
+    logging.basicConfig(level=logging.INFO)
+#    logging.basicConfig(level=logging.DEBUG)
 
     # read portal metadata for subjects and samples
     p_subjects = portal_files.read_subject_phenotypes_file(args.subject_phenotypes_path)
@@ -310,43 +310,10 @@ def main():
 
     dbgap_study_dataset = dbgap_study_datasets_by_id[study_id]
     dbgap_study_md = dbgap_study_pub_md[study_id]
-    dbgap_study_md['dbgap_vars'] = ccmm.gtex.public_metadata.add_study_vars(dbgap_study_dataset, dbgap_study_md)
+    sv = ccmm.gtex.public_metadata.add_study_vars(dbgap_study_dataset, dbgap_study_md)
+    dbgap_study_md['id_to_var'] = sv['id_to_var']
+    dbgap_study_md['type_name_cg_to_var'] = sv['type_name_cg_to_var']
 
-    # build index into dbGaP variables - indexed by variable name and then consent group suffix ("", "c1", "c2")
-    name_to_vars = {}
-    logging.info("indexing " + str(len(dbgap_study_md['dbgap_vars'].keys())) + " dbGaP variables")
-
-    for dbgap_id in sorted(dbgap_study_md['dbgap_vars']):
-        dbv = dbgap_study_md['dbgap_vars'][dbgap_id]
-        name = dbv.get("name").get("value")
-        dbgap_id = dbv.get("identifier").get("identifier")
-        m = re.match(r'^(.*)(\.(c\d+))$', dbgap_id)
-
-        if m is None:
-            prefix = dbgap_id
-            suffix = ""
-        else:
-            prefix = m.group(1)
-            suffix = m.group(3)
-
-        if name not in name_to_vars:
-            name_to_vars[name] = {}
-        if suffix in name_to_vars[name]:
-            name_to_vars[name][suffix].append(dbv)
-        else:
-            name_to_vars[name][suffix] = [ dbv ]
-
-    # mapping may be ambiguous for SUBJID, SAMPID
-    # workaround - use lexical order to break ties
-    # TODO - explicitly use SUBJID mapping from Subject file, SAMPID from Sample file
-    for n in name_to_vars:
-        nv = name_to_vars[n]
-        suffixes = [k for k in nv.keys()]
-        for suffix in suffixes:
-            list = nv[suffix]
-            list.sort(key=lambda x: x.get("name").get("value"))
-            nv[suffix] = list[0]
-            
     # set 2nd level types to be the same as the top-level types: WGS and RNA-Seq
     dbgap_study_dataset.set("types", gtex_dataset.get("types"))
 
@@ -358,7 +325,7 @@ def main():
     # --------------------------
 
     # create subjects based on GTEx Portal subject phenotype file and GitHub data-stewards id dump
-    dats_subjects_d = ccmm.gtex.subjects.get_subjects_dats_materials(cache, p_subjects, gh_subjects, name_to_vars)
+    dats_subjects_d = ccmm.gtex.subjects.get_subjects_dats_materials(cache, p_subjects, gh_subjects, dbgap_study_md['type_name_cg_to_var']['Subject_Phenotypes'])
     # sorted list of subjects
     dats_subjects_l = sorted([dats_subjects_d[s] for s in dats_subjects_d], key=lambda s: s.get("name"))
 
@@ -394,7 +361,7 @@ def main():
     # --------------------------
 
     # create samples based on GTEx Portal sample attributes file and GitHub data-stewards id dump
-    dats_samples_d = ccmm.gtex.samples.get_samples_dats_materials(cache, dats_subjects_d, p_samples, gh_samples, name_to_vars)
+    dats_samples_d = ccmm.gtex.samples.get_samples_dats_materials(cache, dats_subjects_d, p_samples, gh_samples, dbgap_study_md['type_name_cg_to_var']['Sample_Attributes'])
     # sorted list of samples
     dats_samples_l = sorted([dats_samples_d[s] for s in dats_samples_d], key=lambda s: s.get("name"))
     if args.max_output_samples is not None:

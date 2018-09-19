@@ -185,8 +185,9 @@ TOPMED_TYPES = [
     ]
 
 # acc_d - dict whose keys are the dbGaP accession numbers of studies to include
-def get_dbgap_studies(acc_d):
+def get_dbgap_studies(acc_l):
     studies = []
+    id_to_study_d = {}
     study = None
     lnum  = 0
 
@@ -209,6 +210,7 @@ def get_dbgap_studies(acc_d):
         m = re.match('^(phs\S+)$', line)
         if m is not None:
             study = { 'id': m.group(1) }
+            id_to_study_d[study['id']] = study
             studies.append(study)
             continue
         # study description
@@ -238,8 +240,8 @@ def get_dbgap_studies(acc_d):
         logging.fatal("unexpected content at line " + str(lnum) + " of dbGaP studies: " + line)
         sys.exit(1)
 
-    # filter studies by acc_d
-    filtered_studies = [s for s in studies if s['id'] in acc_d]
+    # filter studies by acc_l
+    filtered_studies = [id_to_study_d[acc] for acc in acc_l if acc in id_to_study_d]
     studies = filtered_studies
 
     n_studies = len(studies)
@@ -300,13 +302,13 @@ def get_dbgap_studies(acc_d):
         
     return datasets
 
-# acc_d - dict whose keys are the dbGaP accession numbers of studies to include
-def get_dataset_json(acc_d):
+# acc_l - list of dbGaP accession numbers of studies to include
+def get_dataset_json(acc_l):
     # individual datasets corresponding to studies within TOPMed
     data_subsets = [];
 
     # pull studies from dbGaP
-    data_subsets = get_dbgap_studies(acc_d)
+    data_subsets = get_dbgap_studies(acc_l)
 
     # parent TOPMed Dataset that represents the entire TOPMed program
     parent_topmed_dataset = DatsObj("Dataset", [

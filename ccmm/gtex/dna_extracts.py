@@ -91,10 +91,16 @@ def update_single_subject(study, study_md, subj, subj_var_values, use_all_dbgap_
 
     # harmonized/standardized characteristics
     if gender is not None:
+        # TODO - this 
+        ss = None
+        if gender == "2":
+            ss = "female"
+        if gender == "1":
+            ss = "male"
         subject_sex = DatsObj("Dimension", [
                 ("name", { "value": "Gender" }),
                 ("description", "Gender of the subject"),
-                ("values", [ gender ])
+                ("values", [ ss ])
                 ])
         subject_characteristics.append(subject_sex)
 
@@ -152,15 +158,13 @@ def update_single_subject(study, study_md, subj, subj_var_values, use_all_dbgap_
         value = var_value["value"]
 
         dim = DatsObj("Dimension", 
-                      [("name", DatsObj("Annotation", [( "value",  name )])), 
+                      [("name", DatsObj("Annotation", [( "value",  name )])),
                        ("values", [ value ])
                        ])
 
         # find existing DATS identifier for the corresponding Dataset Dimension 
         if "var" in var_value:
-            id = var_value["var"]["id"]
-            dbgap_var_dim = study_md['dbgap_vars'][id]
-            dim.setProperty("identifier", dbgap_var_dim.get("identifier").getIdRef())
+            dim.setProperty("identifier", var_value["var"]["dim"].get("identifier").getIdRef())
 
         return dim
 
@@ -173,8 +177,20 @@ def update_single_subject(study, study_md, subj, subj_var_values, use_all_dbgap_
     # update subject
     dbgap_subj_id = subj_var_values['dbGaP_Subject_ID']['value']
     subj.set("alternateIdentifiers", [ util.get_alt_id(dbgap_subj_id, "dbGaP") ])
-    subj.get("characteristics").extend(subject_characteristics)
     subj.set("bearerOfDisease", subject_bearerOfDisease)
+
+    # update characteristics
+    chars = subj.get("characteristics")
+    new_chars = []
+
+    # remove values from public data release that will be overwritten
+    for c in chars:
+        name = c.get("name")
+        # TODO - 'member of study group' is string, not Annotation
+        if not isinstance(name, DatsObj) and name == 'member of study group':
+            new_chars.append(c)
+    new_chars.extend(subject_characteristics)
+    subj.set("characteristics", new_chars)
 
 # Generate DATS JSON for a single sample/DNA extract
 def get_single_dna_extract_json(study, study_md, subj_var_values, samp_var_values):
@@ -307,7 +323,7 @@ def get_single_dna_extract_json(study, study_md, subj_var_values, samp_var_value
         # find existing DATS identifier for the corresponding Dataset Dimension 
         if "var" in var_value:
             id = var_value["var"]["id"]
-            dbgap_var_dim = study_md['dbgap_vars'][id]
+            dbgap_var_dim = study_md['id_to_var'][id]['dim']
             dim.setProperty("identifier", dbgap_var_dim.get("identifier").getIdRef())
 
         return dim
@@ -415,42 +431,68 @@ def link_samples_to_subjects(samples, subjects):
         dbgap_subj_id = sample['dbGaP_Subject_ID']
         sample['subject'] = subjects[dbgap_subj_id]
 
-def add_properties(o1, o2):
+def add_properties(o1, o2, vars1, vars2):
     for p in o2:
         if p in o1:
             if o1[p] != o2[p]:
                 logging.fatal("property add/merge failed: o1[p]=" + o1[p] + " o2[p]=" + o2[p])
                 sys.exit(1)
         else:
-            o1[p] = o2[p]    
+            o1[p] = o2[p]
+            if vars1 is not None:
+                vars1[p] = vars2[p]
 
 def update_subjects_from_restricted_metadata(cache, study, pub_md, restricted_md, subjects_d, use_all_dbgap_vars):
+
+    def lookup_var_ids(d, typename, consent_group):
+        var_ids = {}
+        for k in d:
+            cg_key = k + consent_group
+            if cg_key in pub_md['type_name_cg_to_var'][typename]:
+                var_ids[k] = pub_md['type_name_cg_to_var'][typename][cg_key]
+            else:
+                logging.warn("unable to find dbGaP id for " + cg_key)
+        return var_ids
 
     # Subject
     # e.g., ['dbGaP_Subject_ID', 'SUBJECT_ID', 'CONSENT', 'AFFECTION_STATUS']
     subject_md = restricted_md['Subject']
     # subjects indexed by GTEx subject ID
     subjects = index_dicts(subject_md['data']['rows'], 'SUBJID')
+    # TODO - use either table_accession or comment line in file to get variable -> dbGaP variable id mapping
+    # i.e., subject_md['data']['table_accession']
+    # look up variable ids. assumes all subjects have same attributes.
+    subjects_vars = lookup_var_ids(subject_md['data']['rows'][0], 'Subject', '')
 
     # Subject_Phenotypes
     # e.g., ['dbGaP_Subject_ID', 'SUBJECT_ID', 'GENDER', 'RACE', 'VISIT_AGE', 'DNA_AGE', 'FORMER_SMOKER', 'CURRENT_SMOKER', 'CIGSPERDAY', 'CIGSPERDAY_AVERAGE', 'PACKYEARS', 'PREGNANCY', 'WEIGHT', 'HEIGHT', 'BMI']
     subject_phen_md = restricted_md['Subject_Phenotypes']
     logging.debug("indexing restricted Subject_Phenotype file")
     subject_phens = index_dicts(subject_phen_md['data']['rows'], 'SUBJID')
+    subject_phens_vars = lookup_var_ids(subject_phen_md['data']['rows'][0], 'Subject_Phenotypes', '')
 
+    # variable mappings after merging the two sets of attributes
+    combined_vars = {}
+
+    # merge subject phenotype info
     for subj_id in subjects:
-        # merge subject phenotype info
         subject = subjects[subj_id]
+        combined_vars = subjects_vars.copy()
+
         if subj_id in subject_phens:
             subject_phen = subject_phens[subj_id]
-            add_properties(subject, subject_phen)
+            add_properties(subject, subject_phen, combined_vars, subject_phens_vars)
         else:
             logging.warn("no subject phenotype data found for " + subj_id)
+
         # update DATS subject Material
         subj = subjects_d[subj_id]
         subject_atts = {}
         for sa in subject:
             subject_atts[sa] = { "value" : subject[sa] }
+            if sa in combined_vars:
+                subject_atts[sa]["var"] = combined_vars[sa]
+                
         update_single_subject(study, pub_md, subj, subject_atts, use_all_dbgap_vars)
 
 def update_dna_extracts_from_restricted_metadata(cache, study, pub_md, restricted_md, samples_d):
