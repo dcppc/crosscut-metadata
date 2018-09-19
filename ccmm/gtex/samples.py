@@ -15,7 +15,7 @@ def get_sample_dats_material(cache, dats_subject, p_sample, gh_sample, var_looku
 
     # retrieve id reference for the Identifier of the DATS Dimension for the "all subjects" consent group version of the variable
     def get_var_id(name):
-        return var_lookup[name][""].get("identifier").getIdRef()
+        return var_lookup[name]['dim'].get("identifier").getIdRef()
 
     # Uberon id (or EFO id, contrary to the documentation)
     anat_id = p_sample['SMUBRID']['mapped_value']
@@ -91,7 +91,6 @@ def get_sample_dats_material(cache, dats_subject, p_sample, gh_sample, var_looku
             ("identifier", { "identifier": identifier }),
             ("description", anatomy_name + " specimen collected from subject " + subj_id),
             ("characteristics", sample_chars),
-            # TODO - use id refs for these too:
             ("taxonomy", [ util.get_taxon_human(cache) ]),
             ("roles", [ util.get_annotation("specimen", cache) ]),
             ("derivesFrom", [ dats_subj, anatomical_part ])
@@ -145,7 +144,6 @@ def get_sample_dats_material(cache, dats_subject, p_sample, gh_sample, var_looku
     dna_or_rna_material = DatsObj("Material", [
             ("name", stype + " from " + samp_id),
             ("description", "total " + stype + " extracted from " + anatomy_name + " specimen collected from subject " + subj_id),
-            # TODO - use id ref for this:
             ("taxonomy", [ util.get_taxon_human(cache) ]),
             ("roles", [ util.get_annotation(stype + " extract", cache) ]),
             ("derivesFrom", [ biological_sample_material ])

@@ -350,34 +350,53 @@ def read_study_metadata(dir):
 
 # Record study variables as dimensions of the study/Dataset.
 def add_study_vars(study, study_md):
-    all_vars = []
-    dbgap_vars = {}
+    
+    # maps dbGaP variable id to DATS dimension and variable report
+    id_to_var = {}
+    # maps variable type (e.g., Subject, Sample_Attributes), name and consent group to DATS dimension and variable report
+    type_name_cg_to_var = {}
 
     for var_type in ('Subject', 'Subject_Phenotypes', 'Sample', 'Sample_Attributes'):
         if var_type in study_md:
-            var_data = study_md[var_type]['var_report']['data']
+            var_data = study_md[var_type]['data_dict']['data']
             vars = var_data['vars']
-            all_vars.extend(vars)
+            vdict = {}
+            type_name_cg_to_var[var_type] = vdict
 
-    # create a Dimension for each one
-    for var in all_vars:
-        var_name = var['var_name']
-        id = DatsObj("Identifier", [
-                ("identifier",  var['id']),
-                ("identifierSource", "dbGaP")])
+            for var in vars:
+                var_name = var['name']
+                id = DatsObj("Identifier", [
+                    ("identifier",  var['id']),
+                    ("identifierSource", "dbGaP")])
         
-        dim = DatsObj("Dimension", [
-                ("identifier", id),
-                ("name", DatsObj("Annotation", [("value", var_name)])),
-                ("description", var['description'])
-                # TODO: include stats
+                dim = DatsObj("Dimension", [
+                    ("identifier", id),
+                    ("name", DatsObj("Annotation", [("value", var_name)])),
+                    ("description", var['description'])
+                    # TODO: include stats
                 ])  
-        study.getProperty("dimensions").append(dim)
 
-        # track dbGaP variable Dimensions by dbGaP id
-        if var['id'] in dbgap_vars:
-            logging.fatal("duplicate definition found for dbGaP variable " + var_name + " with accession=" + var['id'])
-            sys.exit(1)
-        dbgap_vars[var['id']] = dim
+                study.getProperty("dimensions").append(dim)
+            
+                # track dbGaP variable Dimension and variable report by dbGaP id
+                if var['id'] in id_to_var:
+                    logging.fatal("duplicate definition found for dbGaP variable " + var_name + " with accession=" + var['id'])
+                    sys.exit(1)
 
-    return dbgap_vars
+                t ={"dim": dim, "var": var}
+                id_to_var[var['id']] = t
+                
+                # track by name and consent group
+                m = re.match(r'^(.*)(\.(c\d+))$', var['id'])
+        
+                if m is None:
+                    suffix = ""
+                else:
+                    suffix = "." + m.group(3)
+
+                key = "".join([var_name, suffix])
+                if key in vdict:
+                    logging.fatal("duplicate definition found for dbGaP variable " + key + " in " + var_type + " file")
+                vdict[key] = t
+
+    return { "id_to_var": id_to_var, "type_name_cg_to_var": type_name_cg_to_var }

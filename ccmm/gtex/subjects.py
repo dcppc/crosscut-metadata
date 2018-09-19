@@ -12,7 +12,7 @@ def get_subject_dats_material(cache, p_subject, gh_subject, var_lookup):
 
     # retrieve id reference for the Identifier of the DATS Dimension for the "all subjects" consent group version of the variable
     def get_var_id(name):
-        return var_lookup[name][""].get("identifier").getIdRef()
+        return var_lookup[name]['dim'].get("identifier").getIdRef()
 
     # human experimental subject/patient
     subject_sex = DatsObj("Dimension", [
@@ -57,7 +57,11 @@ def get_subject_dats_material(cache, p_subject, gh_subject, var_lookup):
             ("roles", util.get_donor_roles(cache))
             ])
 
-    return subject_material
+    # add to the cache
+    subj_key = ":".join(["Material", subj_id])
+    dats_subj = cache.get_obj_or_ref(subj_key, lambda: subject_material)
+
+    return dats_subj
 
 # Produce a dict of DATS subject/donor Materials, indexed by GTEx subject id.
 
