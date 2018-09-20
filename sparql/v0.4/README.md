@@ -1,5 +1,5 @@
 
-# SPARQL Queries
+# v0.4 SPARQL Queries
 
 This directory contains a small collection of SPARQL queries that demonstrate how to extract information 
 from the DATS JSON-LD files that make up the crosscut metadata instance. The queries are currently embedded 

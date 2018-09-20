@@ -1,5 +1,5 @@
 
-# SPARQL Queries
+# v0.5 SPARQL Queries
 
 This directory contains a small set of SPARQL queries and associated RDFLib scripts that are compatible
 with the v0.5 crosscut metadata release. In the previous v0.4 release the SPARQL queries were embedded
