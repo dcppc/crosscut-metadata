@@ -14,60 +14,64 @@ from the following DCPPC data sources:
 The metadata _model_ specifies _how_ the various metadata will be transformed into a uniform representation,
 whereas the metadata model _instance_ is the transformed representation itself. The metadata model is based
 on a JSON-LD encoding of [DATS](https://www.nature.com/articles/sdata201759), the DatA Tag Suite data model 
-developed through the Big Data To Knowledge (BD2K) initiative to support dataset discoverability. See below 
-for a description of how each of the 3 main datasets' metadata are encoded in DATS.
+developed through the Big Data To Knowledge (BD2K) initiative to support dataset discoverability. Several 
+extensions to DATS, along with schema.org and OBO Foundry-based JSON-LD context files, have been developed 
+to support the crosscut metadata model. These extensions and context files can be found in the DATS GitHub
+repository at https://github.com/datatagsuite. For more information on how the 3 main datasets' metadata 
+are encoded in DATS, see the relevant sections below.
 
 ## SPARQL Queries
 
-One of the quickest ways to gain familiarity with the metadata model and the current instance is to examine
-and run the example SPARQL queries. To do this, first read and follow the instructions in the next section,
-entitled "Downloading the Public Crosscut Metadata Model Instance". Then retrieve and run the scripts in 
-the following directory as directed in the README.md therein:
+For those familiar with RDF and SPARQL, one of the quickest ways to gain familiarity with the metadata model 
+and the current instance is to examine and run the example SPARQL queries. To do this, first read and follow 
+the instructions in the next section, entitled "Downloading the Public Crosscut Metadata Model Instance". 
+Then retrieve and run the scripts in the following directory, as directed in the README.md therein:
 
-https://github.com/dcppc/crosscut-metadata/tree/master/sparql/v0.5
+https://github.com/dcppc/crosscut-metadata/tree/master/sparql/v0.6
 
 ## Downloading the Public Crosscut Metadata Model Instance
 
 The crosscut metadata model instance, which is essentially a small set of JSON-LD files, is distributed 
-as a [BDBag](http://bd2k.ini.usc.edu/tools/bdbag/). BDBags for all current releases can be found in the 
-[releases/](https://github.com/dcppc/crosscut-metadata/tree/master/releases)
+as a [BDBag](http://bd2k.ini.usc.edu/tools/bdbag/). BDBags for all current public releases can be found 
+in the [releases/](https://github.com/dcppc/crosscut-metadata/tree/master/releases)
 subdirectory. Each BDBag is a gzipped tar file that can be retrieved, extracted and uncompressed with 
 standard Unix or Mac OS command line utilities. On a Mac, for example, the latest (as of this writing) 
-v0.5 release can be retrieved and uncompressed with the following commands:
+v0.6 release can be retrieved and uncompressed with the following commands:
 
 ```
-$ curl -s -O 'https://raw.githubusercontent.com/dcppc/crosscut-metadata/master/releases/KC7-crosscut-metadata-v0.5.tgz'
-$ tar xzvf KC7-crosscut-metadata-v0.5.tgz 
-x KC7-crosscut-metadata-v0.5/
-x KC7-crosscut-metadata-v0.5/tagmanifest-md5.txt
-x KC7-crosscut-metadata-v0.5/bagit.txt
-x KC7-crosscut-metadata-v0.5/bag-info.txt
-x KC7-crosscut-metadata-v0.5/tagmanifest-sha256.txt
-x KC7-crosscut-metadata-v0.5/manifest-md5.txt
-x KC7-crosscut-metadata-v0.5/data/
-x KC7-crosscut-metadata-v0.5/data/datasets/
-x KC7-crosscut-metadata-v0.5/data/datasets/TOPMed_phs000951_phs000946_phs001024_wgs_public.jsonld
-x KC7-crosscut-metadata-v0.5/data/datasets/GTEx_v7_public.jsonld
-x KC7-crosscut-metadata-v0.5/data/docs/
-x KC7-crosscut-metadata-v0.5/data/docs/RELEASE_NOTES
-x KC7-crosscut-metadata-v0.5/data/docs/ChangeLog
-x KC7-crosscut-metadata-v0.5/manifest-sha256.txt
+$ curl -s -O 'https://raw.githubusercontent.com/dcppc/crosscut-metadata/master/releases/KC7-crosscut-metadata-v0.6.tgz'
+$ tar xzvf KC7-crosscut-metadata-v0.6.tgz 
+x KC7-crosscut-metadata-v0.6/
+x KC7-crosscut-metadata-v0.6/tagmanifest-md5.txt
+x KC7-crosscut-metadata-v0.6/bagit.txt
+x KC7-crosscut-metadata-v0.6/bag-info.txt
+x KC7-crosscut-metadata-v0.6/tagmanifest-sha256.txt
+x KC7-crosscut-metadata-v0.6/manifest-md5.txt
+x KC7-crosscut-metadata-v0.6/data/
+x KC7-crosscut-metadata-v0.6/data/datasets/
+x KC7-crosscut-metadata-v0.6/data/datasets/TOPMed_phs000951_phs000946_phs001024_wgs_public.jsonld
+x KC7-crosscut-metadata-v0.6/data/datasets/GTEx_v7_public.jsonld
+x KC7-crosscut-metadata-v0.6/data/datasets/AGR_MGI_RGD.jsonld
+x KC7-crosscut-metadata-v0.6/data/docs/
+x KC7-crosscut-metadata-v0.6/data/docs/RELEASE_NOTES
+x KC7-crosscut-metadata-v0.6/data/docs/ChangeLog
+x KC7-crosscut-metadata-v0.6/manifest-sha256.txt
 ```
 
-After uncompressing the DATS JSON-LD files can be found in `KC7-crosscut-metadata-v0.5/data/datasets`:
+After uncompressing the DATS JSON-LD files can be found in `KC7-crosscut-metadata-v0.6/data/datasets`:
 
 ```
-$ ls -al KC7-crosscut-metadata-v0.5/data/datasets/
-total 634448
-drwxr-xr-x  4 jcrabtree  staff        128 Sep  7 15:45 .
-drwxr-xr-x  4 jcrabtree  staff        128 Sep  7 15:45 ..
--rw-r--r--  1 jcrabtree  staff  323335853 Sep  7 15:45 GTEx_v7_public.jsonld
--rw-r--r--  1 jcrabtree  staff    1497331 Sep  7 15:45 TOPMed_phs000951_phs000946_phs001024_wgs_public.jsonld
+$ ls -al KC7-crosscut-metadata-v0.6/data/datasets/
+total 1457784
+drwxr-xr-x  5 jcrabtree  staff        160 Sep 14 19:47 .
+drwxr-xr-x  4 jcrabtree  staff        128 Sep 14 19:56 ..
+-rw-r--r--  1 jcrabtree  staff  421546018 Sep 14 19:47 AGR_MGI_RGD.jsonld
+-rw-r--r--  1 jcrabtree  staff  323335853 Sep 14 19:47 GTEx_v7_public.jsonld
+-rw-r--r--  1 jcrabtree  staff    1497331 Sep 14 19:47 TOPMed_phs000951_phs000946_phs001024_wgs_public.jsonld
 ```
 
 Note that if the `bdbag` utility is run to extract the BDBag after unpacking it then the `data` portion 
 of the above path will not be present.
-
 
 ## Building the Public Crosscut Metadata Model Instance
 
@@ -80,11 +84,23 @@ The script contains the commands to perform the DATS metadata conversion for eac
 data (sub)sets, but as the comments in the file indicate, the metadata flat files for each of the data
 sources must first be downloaded to the current directory:
 
-### AGR/MGI
 
-The current v0.5 release does not include any DATS JSON encoding for AGR. The v0.3 and earlier releases 
-contained a prototype AGR encoding that consisted of the C57/BL6 mouse reference genome, annotation, and 
-predicted orthologs.
+### AGR / Alliance of Genome Resources
+
+For AGR the following resources are needed to generate the current instance, which includes reference
+annotation for  mouse and rat:
+
+AGR filtered ortholog .tsv file:
+*  alliance-orthology-july-19-2018-stable-1.6.0-v4.tsv
+
+AGR Basic Gene Information (BGI), GFF3, and disease_json files:
+* MGI_1.0.4_BGI.json
+* MGI_1.0.4_disease.json
+* MGI_1.0.4_GFF.gff
+* RGD_1.0.4_BGI.json
+* RGD_1.0.4_disease.json
+* RGD_1.0.4_GFF.gff
+
 
 ### GTEx
 
@@ -103,7 +119,7 @@ ftp://ftp.ncbi.nlm.nih.gov/dbgap/studies/phs000424/phs000424.v7.p2/pheno_variabl
 ```
 
 Finally, the manifest and id dump files from the DCPPC data-stewards GitHub repository are
-also needed:
+required:
 
 ```
 git clone https://github.com/dcppc/data-stewards.git
@@ -132,26 +148,19 @@ pip install bdbag
 ```
 
 
-## Building the Access-Restricted Crosscut Metadata Model Instance
+## Building the Access-Controlled Crosscut Metadata Model Instance
 
 The script mentioned above, `make-crosscut-instance-bdbag.sh`, also contains example commands 
-(which are commented out by default) showing how to generate DATS JSON for the access-restricted 
-metadata available from dbGaP for the GTEx and TOPMed studies. Download the access-restricted 
+(which are commented out by default) showing how to generate DATS JSON for the access-controlled 
+metadata available from dbGaP for the GTEx and TOPMed studies. Download the access-controlled 
 dbGaP files to a local directory with the appropriate access controls, and then tell the 
-conversion script where to find the public and access-restricted metadata files, as in the
-following command:
-
-```
-./bin/topmed_to_dats.py --dbgap_accession_list='phs001024.v3.p1,phs000951.v2.p2,phs000179.v5.p2' \
-  --dbgap_public_xml_path=./dbgap-data \
-  --dbgap_protected_metadata_path=./restricted-access-dbgap-data \
-  --output_file=$EXTERNAL_ID/datasets/TOPMed_phs000951_phs000946_phs001024_wgs_RESTRICTED.jsonld
-```
+conversion script where to find the public and access-controlled metadata files, as shown in
+the script.
 
 ## DATS-JSON validation
 
-Modified versions of the DATS JSON-LD files have all been validated against the latest (as of 
-this writing) version of DATS from
+Modified versions of the public DATS JSON-LD files have all been validated against the latest 
+(as of this writing) version of DATS from
 
 https://github.com/datatagsuite
 
@@ -162,36 +171,51 @@ https://github.com/datatagsuite/dats-tools.
 This repository contains an extension of DATS that is specific to this project and the crosscut 
 metadata model instance JSON-LD files will NOT necessarily validate against the current DATS release 
 found at https://github.com/biocaddie/WG3-MetadataSpecifications. Any changes to the DATS JSON files
-should be checked against the validator before creating a new release of the metadata model instance.
+are checked against the validator before creating a new release of the metadata model instance.
 
 Validation was performed using modified versions of the JSON-LD files because the DATS validator 
 does not yet support circular links or arbitrary id references in the JSON-LD files. Circular links
 are removed and id references are dereferenced for validation and then added back in to create the
-final released JSON-LD files.
+final released JSON-LD files. Comments in the `make-crosscut-instance-bdbag.sh` script describe 
+how this is done.
 
 ## Model Description
 
-This section describes how the GTEx and TOPMed datasets are currently encoded in DATS and discusses 
+This section describes how the three datasets are currently encoded in DATS and discusses 
 some of the tradeoffs and shortcomings of the encoding. The encoding is by no means set in stone 
 and the process of refining and improving it is still ongoing. Concomitant adjustments are also 
 being made to the DATS model in some cases to facilitate the encoding of some aspects of the metadata.
-In this release (v0.5) the AGR encoding is being developed and reworked to handle the 
-recently-approved KC7 use cases and a new DATS JSON instance for AGR is scheduled to be released
-on or before the following release/milestone:
 
-https://github.com/dcppc/crosscut-metadata/issues/32
+### AGR encoding
 
-### GTEx/TOPMed encoding
+Similar to the GTEx and TOPMed encodings, the top level of the AGR JSON-LD structure is a DATS
+`Dataset` that represents all Alliance data. Below that is a set of 2nd-level `Dataset` entities,
+linked by the `hasPart` property. Those 2nd-level `Datasets` correspond to the individual reference
+genomes from the model organism databases that comprise the Alliance. The similarity with the
+GTEx and TOPMed encodings ends at this point: below each 2nd-level `Dataset` is an array of 
+`MolecularEntity` objects, linked to it by the `isAbout` property. These `MolecularEntities`
+represent the genes and/or pseudogenes in each reference genome and make use of the new (as of v0.6)
+DATS `GenomeLocation` schema to specify the genomic sequence location(s) associated with each.
+The DATS `alternateIndentifiers` of each gene link it to the corresponding NCBI_HomoloGene group
+and/or human gene(s). The `relatedEntities` property provides explicit links to orthologs (i.e., 
+represented as a DATS `MolecularEntity`) as well as disease and/or phenotype relationships. 
+The following ER diagram illustrates the overall structure:
+
+![AGR-v0.6](er-diagrams/AGR-v0.6.png)
+
+### GTEx and TOPMed encodings
 
 At the top level of both the GTEx and TOPMed encoding is a DATS `Dataset` that represents the project
 (GTEx) or program (TOPMed) as a whole. This top level `Dataset` is linked by the `hasPart` property
 to an array of DATS `Datasets`, each of which represents a specific study (in the general sense, since
-`Study` is a DATS entity in its own right.) For TOPMed each of the 2nd-level `Dataset` entities 
-corresponds to a dbGaP study, meaning either a TOPMed study or a parent study. Below these 2nd level 
-`Datasets` that represent studies are 3rd level `Datasets` that represent the individual data 
-files/products produced by the study. Below the GTEx dbGAP study, for example, the DATS `hasPart` 
-property links to an array of DATS `Dataset`s, each of which represents one of the access-restricted
-RNA-Seq or WGS data files.
+`Study` is a DATS entity in its own right.) For both TOPMed and GTEx each of the 2nd-level `Dataset` 
+entities corresponds to a dbGaP study. For GTEx there is only one such study, phs000424, but for 
+TOPMed there are several, some of which are "parent" studies (i.e., they existed in dbGaP before 
+becoming part of the TOPMed program) and some of which are "TOPMed" studies (i.e., the ones with 
+which the TOPMed WGS data are associated.) Below these 2nd level `Datasets` that represent studies 
+are 3rd level `Datasets` that represent the individual data files/products produced by the study. 
+Below the GTEx dbGAP study, for example, the DATS `hasPart` property links to an array of DATS 
+`Datasets`, each of which represents one of the access-controlled RNA-Seq or WGS data files.
 
 Each of the second level DATS `Dataset` objects is in turn linked to an array of DATS `Material` objects
 by the `isAbout` property. Each of those `Materials` represents an RNA extract used in the RNA-Seq
@@ -210,8 +234,11 @@ In all of the dbGaP-based public TOPMed DATS JSON encoding the entities that rep
 samples, and RNA/DNA extracts are dummy entities produced by picking the most commonly-occurring 
 values from the dbGaP variable summary reports.
 
-The following simplified ER diagram illustrates the overall structure, using the TOPMed encoding as 
-an example:
+The following simplified ER diagram illustrates the overall structure of the TOPMed encoding:
 
-![TOPMed-v0.3](er-diagrams/TOPMed-v0.5.png)
+![TOPMed-v0.6](er-diagrams/TOPMed-v0.6.png)
+
+And this one does the same for the GTEx encoding:
+
+![GTEx-v0.6](er-diagrams/GTEx-v0.6.png)
 
