@@ -42,4 +42,8 @@ the example SPARQL queries, creating an 'rdflib' equivalent for each one:
 Each of these scripts has been annotated to show the RDFLib `triples()` calls that correspond to
 each part of the (more or less) equivalent SPARQL query. In this release it is these `rdflib_*`
 scripts, not the `sparql_*` ones that are invoked from the `run-sparql-queries-faster.sh` script.
+It should be noted that the code in these rdflib_* scripts is hard to read and maintain, and this
+is intended only as a short-term workaround for those who need to be able to work with the files 
+in Python using RDFLib.
+
 
