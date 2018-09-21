@@ -152,13 +152,13 @@ pip install bdbag
 The procedure for downloading the controlled access version of the metadata model can be found at
 [/docs/controlled_access_download.md](/docs/controlled_access_download.md)
 
-## Building the Access-Controlled Crosscut Metadata Model Instance
+## Building the Controlled Access Crosscut Metadata Model Instance
 
 The script mentioned above, `make-crosscut-instance-bdbag.sh`, also contains example commands 
-(which are commented out by default) showing how to generate DATS JSON for the access-controlled 
-metadata available from dbGaP for the GTEx and TOPMed studies. Download the access-controlled 
+(which are commented out by default) showing how to generate DATS JSON for the controlled access 
+metadata available from dbGaP for the GTEx and TOPMed studies. Download the controlled access 
 dbGaP files to a local directory with the appropriate access controls, and then tell the 
-conversion script where to find the public and access-controlled metadata files, as shown in
+conversion script where to find the public and controlled access metadata files, as shown in
 the script.
 
 ## DATS-JSON validation
@@ -219,7 +219,7 @@ becoming part of the TOPMed program) and some of which are "TOPMed" studies (i.e
 which the TOPMed WGS data are associated.) Below these 2nd level `Datasets` that represent studies 
 are 3rd level `Datasets` that represent the individual data files/products produced by the study. 
 Below the GTEx dbGAP study, for example, the DATS `hasPart` property links to an array of DATS 
-`Datasets`, each of which represents one of the access-controlled RNA-Seq or WGS data files.
+`Datasets`, each of which represents one of the controlled access RNA-Seq or WGS data files.
 
 Each of the second level DATS `Dataset` objects is in turn linked to an array of DATS `Material` objects
 by the `isAbout` property. Each of those `Materials` represents an RNA extract used in the RNA-Seq
