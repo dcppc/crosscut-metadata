@@ -37,7 +37,7 @@ You’ll receive an email notification that your membership is pending.
 
 Your application will be reviewed by a member of Team Phosphorus or Team Argon and compared with the DAR Whitelist. Assuming your application is approved, you’ll receive an email confirmation like the one below.
 
-![Group membership approval page](images/approval.png)
+![Group membership approval page](images/Kc7-metadata-users-approval.png)
 
 ## Step 4: Access the KC7 Controlled Access Crosscut Metadata Instance
 
