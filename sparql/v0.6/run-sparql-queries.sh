@@ -52,5 +52,3 @@ time ./rdflib_list_dataset_variables.py --dats_file=$TOPMED_DATS
 time ./sparql_list_dataset_variables.py --dats_file=$TOPMED_DATS --dataset_id='phs001024.v3.p1'
 # Direct RDFLib access
 time ./rdflib_list_dataset_variables.py --dats_file=$TOPMED_DATS --dataset_id='phs001024.v3.p1'
-
-
