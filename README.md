@@ -147,6 +147,10 @@ must be installed like so:
 pip install bdbag
 ```
 
+## Downloading the Controlled Access Crosscut Metadata Model Instance (DCPPC whitelisted users only)
+
+The procedure for downloading the controlled access version of the metadata model can be found at
+[/docs/controlled_access_download.md](/docs/controlled_access_download.md)
 
 ## Building the Access-Controlled Crosscut Metadata Model Instance
 
@@ -238,7 +242,7 @@ The following simplified ER diagram illustrates the overall structure of the TOP
 
 ![TOPMed-v0.6](er-diagrams/TOPMed-v0.6.png)
 
-And this one does the same for the GTEx encoding:
+And this (very similar) one does the same for the GTEx encoding:
 
 ![GTEx-v0.6](er-diagrams/GTEx-v0.6.png)
 
