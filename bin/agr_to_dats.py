@@ -25,7 +25,7 @@ def main():
     parser = argparse.ArgumentParser(description='Create DATS JSON for Mouse Genome Database reference genome and annotation.')
     parser.add_argument('--agr_genomes_list', required=True, help ='Comma-delimited list of MOD releases to convert to DATS. Eg. MGI_1.0.4_2,RGD_1.0.4_3')
     parser.add_argument('--output_file', required=True, help ='Output file path for the DATS JSON file containing the top-level DATS Dataset.')
-    parser.add_argument('--bgi_gff3_disease_path', required=True, help ='Path to directory that contains Basic Gene Information (BGI), GFF3 and disease_json files.')
+    parser.add_argument('--gff3_json_path', required=True, help ='Path to directory that contains GFF3 files, Basic Gene Information (BGI), disease and phenotype json files.')
     parser.add_argument('--ortholog_file', required=True, help ='Path to filtered ortholog file from AGR (.tsv)')
     args = parser.parse_args()
 
@@ -63,7 +63,7 @@ def main():
     all_orthologs = ccmm.agr.genes.read_orthology(args.ortholog_file)
     
     for acc in acc_d:
-        gene_entity = ccmm.agr.genes.get_gene_json(cache, acc, args.bgi_gff3_disease_path, all_orthologs)
+        gene_entity = ccmm.agr.genes.get_gene_json(cache, acc, args.gff3_json_path, all_orthologs)
         ref_genome = ref_genomes_by_id[acc]
         ref_genome.set("isAbout", gene_entity)
     

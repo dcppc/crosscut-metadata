@@ -43,7 +43,7 @@ SOID = {
 # List of evidence code IDs
 EVID = {
     "TAS": "ECO_0000304",
-    "DOA": "ECO",
+    "DOA": "ECO_000000", #Find term and fix
     "IAGP": "ECO_0005613",
     "IDA": "ECO_0000314",
     "IEP": "ECO_0000270",
@@ -51,12 +51,12 @@ EVID = {
     "IMP": "ECO_0000315"
 }
 
-# List of relation IDs
-RELID = {
-    "is_implicated_in": "ECO_0000304",
-    "is_model_of": "ECO",
-    "is_marker_for": "ECO_0005613"
-}
+# To Do List of relation IDs
+#RELID = {
+#    "is_implicated_in": "ECO",
+#    "is_model_of": "ECO",
+#    "is_marker_for": "ECO_"
+#}
 
 def search_dict(key, value, list_of_dictionaries):
     return [element for element in list_of_dictionaries if element[key] == value]
@@ -123,12 +123,12 @@ def read_bgi(cache, mod, bgi_gff3_disease_path):
         
     return features
 
-def read_disease(cache, mod, bgi_gff3_disease_path):
+def read_disease(cache, mod, gff3_json_path):
     
     diseases = []
     disease = {}
     
-    file = bgi_gff3_disease_path + "/" + mod + "_disease.json"
+    file = gff3_json_path + "/" + mod + "_disease.json"
     f = open(file)
     x = json.load(f)
     f.close()
@@ -139,12 +139,14 @@ def read_disease(cache, mod, bgi_gff3_disease_path):
         object_id, do_id, data_provider, date_ass, obj_relation, evidence = \
         entry["objectId"], entry["DOid"], entry["dataProvider"], entry["dateAssigned"], entry["objectRelation"], entry["evidence"]
         
+                # other disease attributes
         pubmed_id =""
-        # other disease attributes
         if 'pubMedId' in entry["evidence"]["publication"].keys():
             pubmed_id = entry["evidence"]["publication"]["pubMedId"] 
             #logging.info("pub: " + pubmed_id)
-        
+        if 'modPublicationId' in entry["evidence"]["publication"].keys():
+            mod_pub_id = entry["evidence"]["publication"]["modPublicationId"]
+
         disease = {
             'object_id': object_id,
             'do_id': do_id,
@@ -152,11 +154,50 @@ def read_disease(cache, mod, bgi_gff3_disease_path):
             'date_ass': date_ass,
             'association_type': obj_relation["associationType"],
             'evidence_codes': evidence["evidenceCodes"],
-            'pubmed_id':  pubmed_id 
+            'pubmed_id':  pubmed_id,
+            'mod_pub_id': mod_pub_id
         }
         diseases.append(disease)
 
     return diseases
+
+def read_phenotype(cache, mod, gff3_json_path):
+    #assumes one phenotype termID per record as is in RGD and MGI phenotype JSONs 
+    
+    phenotypes = []
+    phenotype = {}
+    
+    file = gff3_json_path + "/" + mod + "_phenotype.json"
+    f = open(file)
+    x = json.load(f)
+    f.close()
+    records = x["data"]
+    
+    for entry in records:
+        # required disease attributes
+        object_id, date_ass, phe_statement, evidence = \
+        entry["objectId"], entry["dateAssigned"], entry["phenotypeStatement"], entry["evidence"]
+        
+        # other phenotype attributes
+        pubmed_id =""
+        if 'pubMedId' in entry["evidence"].keys():
+            pubmed_id = entry["evidence"]["pubMedId"] 
+        if 'modPublicationId' in entry["evidence"].keys():
+            mod_pub_id = entry["evidence"]["modPublicationId"]
+        if 'phenotypeTermIdentifiers' in entry.keys():
+            phe_term_ids = entry["phenotypeTermIdentifiers"][0]['termId']
+        
+        phenotype = {
+            'object_id': object_id,
+            'date_ass': date_ass,
+            'phe_statement': phe_statement,
+            'pubmed_id':  pubmed_id,
+            'mod_pub_id': mod_pub_id,
+            'phe_term_ids': phe_term_ids
+        }
+        phenotypes.append(phenotype)
+
+    return phenotypes
 
 
 def read_orthology(ortholog_file):
@@ -185,16 +226,18 @@ def read_orthology(ortholog_file):
 
 
 # Generate DATS JSON for a single gene
-def get_gene_json(cache, mod, bgi_gff3_disease_path, orthologs):
+def get_gene_json(cache, mod, gff3_json_path, orthologs):
     
     # read gene features form BGI file
-    features = read_bgi(cache, mod, bgi_gff3_disease_path)
+    features = read_bgi(cache, mod, gff3_json_path)
     
-    # read disease from disease JSON file
-    diseases = read_disease(cache, mod, bgi_gff3_disease_path)
+    # read disease info from disease JSON file
+    diseases = read_disease(cache, mod, gff3_json_path)
+    
+    # read disease info from disease JSON file
+    phenotypes = read_phenotype(cache, mod, gff3_json_path)
     
     # TODO - read gene features from GFF3 file
-    
     
     genes = []
     
@@ -207,7 +250,7 @@ def get_gene_json(cache, mod, bgi_gff3_disease_path, orthologs):
             ("strand", f['strand'])
             ])
 
-        roles = [OrderedDict([
+        roles = [DatsObj("Annotation", [
             ("value", SOID[f['soid']]),("valueIRI", "http://purl.obolibrary.org/obo/SO_" + f['soid'][3:])
             ])]
         
@@ -216,7 +259,7 @@ def get_gene_json(cache, mod, bgi_gff3_disease_path, orthologs):
             alt_ids_list = []
             for i in f['alt_ids']:
                 source, id = i.split(':')
-                alt_id = [ util.get_alt_id(id, source) ]   
+                alt_id = util.get_alt_id(id, source)   
                 alternate_ids.append(alt_id)  
              
         #encode disease
@@ -229,39 +272,111 @@ def get_gene_json(cache, mod, bgi_gff3_disease_path, orthologs):
             do_ids = [d['do_id'] for d in gene_diseases] 
             uniq_do_ids = list(set(do_ids))
             
-            #for g in gene_diseases:  
             for d in uniq_do_ids:
-                disease_id = OrderedDict([
-                    ("identifier",  d),
-                    ("identifierSource", "Disease Ontology")])
+                disease_id =  DatsObj("Annotation", [ 
+                    ("value",  d),
+                    ("valueIRI", "http://purl.obolibrary.org/obo/DOID_"+ d[5:])])
+                
+                
                 
                 select_diseases = search_dict('do_id', d, gene_diseases)
                 
-                relation = OrderedDict([("value", select_diseases[0]['association_type'])])
+                #relation = OrderedDict([("value", select_diseases[0]['association_type'])])
+                relation = DatsObj("Annotation", [
+                    ("value",  "Disease"),
+                    ("valueIRI", "http://purl.obolibrary.org/obo/DOID_4")])
                 
                 # account for multiple evidence codes per disease id
                 evd_ids = []
                 evd_ids_list = [d['evidence_codes'] for d in select_diseases]
                 for i in evd_ids_list[0]:
-                    evd_id = OrderedDict([("value", i), ("valueIRI", "http://purl.obolibrary.org/obo/" + EVID[i])])                
+                    evd_id = DatsObj("Annotation", [("value", i), ("valueIRI", "http://purl.obolibrary.org/obo/" + EVID[i])])                
                     evd_ids.append(evd_id)
                      
                # account for multiple publications per disease id
                 pub_ids = []
                 pub_ids_list = [d['pubmed_id'] for d in select_diseases]
                 for i in pub_ids_list:
-                    pub_id = OrderedDict([("identifier",  i)])                
+                    pub_id = DatsObj("Publication", [
+                        ("Identifier", DatsObj("Identifier", [("identifier",  i), ("identifierSource", "PubMed")]))])                
                     pub_ids.append(pub_id)
+                    
+                mod_pub_ids_list = [d['mod_pub_id'] for d in select_diseases]
+                for i in mod_pub_ids_list:
+                    mod_pub_id = DatsObj("Publication", [
+                        ("Identifier", DatsObj("Identifier", [("identifier", i ), ("identifierSource", i[:3])]))])                
+                    pub_ids.append(mod_pub_id)
+                
+                relation_evidence = OrderedDict([
+                    ("evidenceCodes", evd_ids),
+                    ("publications", pub_ids),
+                    ("dateEstablished", DatsObj("Date", [("date", select_diseases[0]['date_ass']),("type", DatsObj("Annotation", [("value", "Date Assigned")]))]))
+                    ])
                 
                 related_entity_id = OrderedDict([
                     ("object", disease_id),
                     ("relation", relation),
-                    ("relationEvidence", evd_ids),
-                    ("publications", pub_ids)
+                    ("resultingFrom", DatsObj("Activity", [("name", select_diseases[0]['association_type'])])),
+                    ("relationEvidence", relation_evidence)
                     ]) 
                 disease_list.append(related_entity_id)
+         
+         
+        #encode phenotype 
+        #assumes one phenotype termID per record as is in RGD and MGI phenotype JSONs  
+        phenotype_list = []
+        
+        gene_phenotypes = search_dict('object_id', f['primaryId'], phenotypes)  
+        
+        if len(gene_phenotypes) > 0:
             
-          
+            phe_ids = [p['phe_term_ids'] for p in gene_phenotypes] 
+            #logging.info("phe_ids: " + str(phe_ids))
+            uniq_phe_ids = list(set(phe_ids))
+              
+            for p in uniq_phe_ids:               
+                select_phenotypes = search_dict('phe_term_ids', p, gene_phenotypes) 
+                #logging.info("select_phe: " + str(select_phenotypes))
+                
+                term_id = DatsObj("Annotation", [ 
+                    ("value",  select_phenotypes[0]['phe_term_ids']),
+                    ("valueIRI", "http://purl.obolibrary.org/obo/MP_"+ select_phenotypes[0]['phe_term_ids'][3:])])
+                                
+                relation = DatsObj("Annotation", [
+                    ("value",  "Phenotype"),
+                    ("valueIRI", "http://purl.obolibrary.org/obo/OGMS_0000023")])
+                     
+               # account for multiple publications per phenotype
+                pub_ids = []
+                empt = ''
+                pub_ids_list = [p['pubmed_id'] for p in select_phenotypes]
+                for i in pub_ids_list:
+                    if i == "":
+                        continue
+                    else:
+                        pub_id = DatsObj("Publication", [
+                            ("Identifier", DatsObj("Identifier", [("identifier",  i), ("identifierSource", "PubMed")]))])                
+                        pub_ids.append(pub_id)
+                    
+                mod_pub_ids_list = [p['mod_pub_id'] for p in select_phenotypes]
+                for i in mod_pub_ids_list:
+                    mod_pub_id = DatsObj("Publication", [
+                        ("Identifier", DatsObj("Identifier", [("identifier", i ), ("identifierSource", i[:3])]))])                
+                    pub_ids.append(mod_pub_id)
+                
+                relation_evidence = OrderedDict([
+                    ("publications", pub_ids),
+                    ("dateEstablished", DatsObj("Date", [("date", select_phenotypes[0]['date_ass']),("type", DatsObj("Annotation", [("value", "Date Assigned")]))]))
+                    ])
+                
+                related_entity_id = OrderedDict([
+                    ("object", term_id),
+                    ("relation", relation),
+                    ("relationEvidence", relation_evidence)
+                    ]) 
+                phenotype_list.append(related_entity_id)
+        
+        
         #encode ortholog
         ortholog_list = []
         
@@ -278,17 +393,17 @@ def get_gene_json(cache, mod, bgi_gff3_disease_path, orthologs):
                 mol_entity_ortholog = DatsObj("MolecularEntity", [
                     ("identifier", DatsObj("Identifier", [("identifier", o['ortho_gene_id'])])),
                     ("name", o['ortho_gene_id']),
-                    ("description", "Ortholog"),
                     ("taxonomy", [ o_taxon ]),
                     ("alternateIdentifiers", util.get_alt_id(o['ortho_gene_symbol'], "Gene Symbol")),
                 ]) 
                 
                 related_entity_id = OrderedDict([
-                    ("object", mol_entity_ortholog)
+                    ("object", mol_entity_ortholog),
+                    ("relation", DatsObj("Annotation", [ ("value",  "Orthology"), ("valueIRI", "http://purl.obolibrary.org/obo/HOM_0000017")]))
                     ]) 
                 ortholog_list.append(related_entity_id)
         
-        related_entities = disease_list + ortholog_list
+        related_entities = disease_list + phenotype_list + ortholog_list
         
         gene = DatsObj("MolecularEntity", [
                 ("identifier", DatsObj("Identifier", [("identifier", f['primaryId'])])),
