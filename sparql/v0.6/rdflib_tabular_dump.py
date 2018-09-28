@@ -175,7 +175,6 @@ def print_tabular_dump(g):
         # link Dataset to DataAcquisition (should be 1-1)
         data_acqs = []
         for (s,p,o) in g.triples((d, ru.PRODUCED_BY_TERM, None)):
-            # TODO - replace SDO_ACTION_TERM with DATS_DATA_ACQUISITION TERM when https://github.com/datatagsuite/context/issues/4 resolved
             for (s2,p2,o2) in g.triples((o, ru.RDF_TYPE_TERM, ru.DATS_DATA_ACQUISITION_TERM)):
                 data_acqs.append(o)
 

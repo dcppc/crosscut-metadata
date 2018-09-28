@@ -4,15 +4,16 @@ setenv PYTHONPATH ./
 
 # Script to create the crosscut metadata model instance. 
 #
-# The public or non-access-restricted crosscut metadata model instance is a
+# The public or non-access-controlled crosscut metadata model instance is a
 # BDBag that contains DATS JSON-LD files that describe the metadata from the 
 # following resources:
 #
-# 1. Public GTEx v7 metadata from dbGaP and the GTEx portal.
-# 2. Public TOPMed metadata from non-access-restricted dbGaP files.
+# 1. Public AGR ortholog, disease, and gene coordinate data from mouse and rat.
+# 2. Public GTEx v7 metadata from dbGaP and the GTEx portal.
+# 3. Public TOPMed metadata from non-access-controlled dbGaP files.
 # 
 # In the case of both GTEx and TOPMed the crosscut metadata model instance may 
-# be expanded to include access-restricted dbGaP metadata (see the relevant script 
+# be expanded to include access-controlled dbGaP metadata (see the relevant script 
 # invocation below) but this expanded instance may not be publicly distributed.
 
 setenv VERSION 0.7
@@ -22,6 +23,36 @@ setenv EXTERNAL_DESCR "v${VERSION} release of the KC7 crosscut metadata model fo
 # set up internal bag structure
 mkdir -p $EXTERNAL_ID/docs
 mkdir -p $EXTERNAL_ID/datasets
+
+## -----------------------------------------------
+## AGR 
+## -----------------------------------------------
+
+# First download the AGR filtered ortholog file:
+#  alliance-orthology-july-19-2018-stable-1.6.0-v4.tsv
+#
+# Then create/find the directory that contains the requisite BGI, disease, and GFF files.
+# For the current mouse and rat instance, for example, a new directory could be created:
+#
+#  mkdir bgi_gff3_disease
+#
+# and the following files copied into it or symlinked from there:
+#
+#  MGI_1.0.4_BGI.json
+#  MGI_1.0.4_disease.json
+#  MGI_1.0.4_GFF.gff
+#  RGD_1.0.4_BGI.json
+#  RGD_1.0.4_disease.json
+#  RGD_1.0.4_GFF.gff
+#
+# Finally, run the command to generate the corresponding DATS JSON-LD, providing 
+# the location of the ortholog file and the directory containing all the rest:
+
+./bin/agr_to_dats.py \
+ --agr_genomes_list='MGI_1.0.4_2,RGD_1.0.4_3' \
+ --bgi_gff3_disease_path=./bgi_gff3_disease \
+ --ortholog_file=alliance-orthology-july-19-2018-stable-1.6.0-v4.tsv \
+ --output_file=AGR_MGI_RGD.jsonld
 
 ## -----------------------------------------------
 ## Public GTEx v7 dbGaP metadata
@@ -56,15 +87,15 @@ mkdir -p $EXTERNAL_ID/datasets
 #  --output_file=$EXTERNAL_ID/datasets/GTEx_v7_public_no_cycles.jsonld 
 
 ## -----------------------------------------------
-## RESTRICTED ACCESS GTEx v7 dbGaP metadata
+## CONTROLLED ACCESS GTEx v7 dbGaP metadata
 ## -----------------------------------------------
 
-# Convert RESTRICTED ACCESS dbGaP metadata for GTEx to DATS JSON.
+# Convert CONTROLLED ACCESS dbGaP metadata for GTEx to DATS JSON.
 
 #./bin/dbgap_gtex_to_dats.py --dbgap_public_xml_path=./dbgap-data/phs000424.v7.p2 \
-#  --dbgap_protected_metadata_path=./restricted-access-dbgap-data/phs000424.v7.p2 \
+#  --dbgap_protected_metadata_path=./controlled-access-dbgap-data/phs000424.v7.p2 \
 #  --data_stewards_repo_path=./data-stewards \
-#  --output_file=$EXTERNAL_ID/datasets/GTEx_v7_RESTRICTED.jsonld
+#  --output_file=$EXTERNAL_ID/datasets/GTEx_v7_CONTROLLED_ACCESS-v${VERSION}.jsonld
 
 ## -----------------------------------------------
 ## Public TOPMed metadata
@@ -84,15 +115,15 @@ mkdir -p $EXTERNAL_ID/datasets
   --output_file=$EXTERNAL_ID/datasets/TOPMed_phs000951_phs000946_phs001024_wgs_public.jsonld
 
 ## -----------------------------------------------
-## RESTRICTED ACCESS TOPMed metadata
+## CONTROLLED ACCESS TOPMed metadata
 ## -----------------------------------------------
 
-# Convert RESTRICTED ACCESS TOPMed metadata to DATS JSON.
+# Convert CONTROLLED ACCESS TOPMed metadata to DATS JSON.
 
 #./bin/topmed_to_dats.py --dbgap_accession_list='phs001024.v3.p1,phs000951.v2.p2,phs000179.v5.p2' \
 #  --dbgap_public_xml_path=./dbgap-data \
-#  --dbgap_protected_metadata_path=./restricted-access-dbgap-data \
-#  --output_file=$EXTERNAL_ID/datasets/TOPMed_phs000951_phs000946_phs001024_wgs_RESTRICTED.jsonld
+#  --dbgap_protected_metadata_path=./controlled-access-dbgap-data \
+#  --output_file=$EXTERNAL_ID/datasets/TOPMed_phs000951_phs000946_phs001024_wgs_CONTROLLED_ACCESS-v${VERSION}.jsonld
 
 ## -----------------------------------------------
 ## Add documentation
