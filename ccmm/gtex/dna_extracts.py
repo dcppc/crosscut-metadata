@@ -57,7 +57,7 @@ def pick_var_values(vars):
     return res
 
 # Update a single DATS subject MAterial
-def update_single_subject(study, study_md, subj, subj_var_values, use_all_dbgap_vars):
+def update_single_subject(cache, study, study_md, subj, subj_var_values, use_all_dbgap_vars):
 
     # extract subject attributes
     gender = None
@@ -81,7 +81,7 @@ def update_single_subject(study, study_md, subj, subj_var_values, use_all_dbgap_
         elif name_upper == "DIASBP":
             dias_bp = subj_var_values[name]['value']
         elif name_upper == "HYPERTENSION" or name_upper == "MHHTN":
-            if subj_var_values[name]['value'].lower() == "yes" or subj_var_values[name]['value'] == 1:
+            if subj_var_values[name]['value'].lower() == "yes" or subj_var_values[name]['value'] == '1':
                 disease['hypertension'] = "yes"
             else:
                 disease['hypertension'] = "no"
@@ -98,7 +98,7 @@ def update_single_subject(study, study_md, subj, subj_var_values, use_all_dbgap_
         if gender == "1":
             ss = "male"
         subject_sex = DatsObj("Dimension", [
-                ("name", { "value": "Gender" }),
+                ("name", DatsObj("Annotation", [("value", "Gender")])),
                 ("description", "Gender of the subject"),
                 ("values", [ ss ])
                 ])
@@ -106,7 +106,7 @@ def update_single_subject(study, study_md, subj, subj_var_values, use_all_dbgap_
 
     if age is not None:
         subject_age = DatsObj("Dimension", [
-                ("name", { "value": "Age" }),
+                ("name", DatsObj("Annotation", [("value", "Age")])),
                 ("description", "Age of the subject"),
                 ("values", [ age ])
                 ])
@@ -114,7 +114,7 @@ def update_single_subject(study, study_md, subj, subj_var_values, use_all_dbgap_
     
     if visit_year is not None:
         subject_visitYear = DatsObj("Dimension", [
-                ("name", { "value": "Visit year" }),
+                ("name", DatsObj("Annotation", [("value", "Visit year")])),
                 ("description", "Year of visit, to use for longitudinal analysis"),
                 ("values", [ visit_year ])
                 ])
@@ -122,7 +122,7 @@ def update_single_subject(study, study_md, subj, subj_var_values, use_all_dbgap_
     
     if sys_bp is not None:
         subject_sysBP = DatsObj("Dimension", [
-                ("name", { "value": "Systolic blood pressure" }),
+                ("name", DatsObj("Annotation", [("value", "Systolic blood pressure")])),
                 ("description", "Systolic blood pressure of subject, measured in mmHg"),
                 ("values", [ sys_bp ])
                 ])
@@ -130,7 +130,7 @@ def update_single_subject(study, study_md, subj, subj_var_values, use_all_dbgap_
         
     if dias_bp is not None:
         subject_diasBP = DatsObj("Dimension", [
-                ("name", { "value": "Diastolic blood pressure" }),
+                ("name", DatsObj("Annotation", [("value", "Diastolic blood pressure")])),
                 ("description", "Diastolic blood pressure of subject, measured in mmHg"),
                 ("values", [ dias_bp ])
                 ])
@@ -149,7 +149,7 @@ def update_single_subject(study, study_md, subj, subj_var_values, use_all_dbgap_
             ("name", "Hypertension"),
             ("identifier", disease_identifier),
             ("alternateIdentifiers", disease_alt_ids),
-            ("diseaseStatus", OrderedDict([("value", disease['hypertension'] ), ("valueIRI", "")])), 
+            ("diseaseStatus", DatsObj("Annotation", [("value", disease['hypertension'])]))
             ])
         subject_bearerOfDisease.append(subject_hypertension)
 
@@ -238,7 +238,7 @@ def get_single_dna_extract_json(study, study_md, subj_var_values, samp_var_value
         elif name_upper == "DIASBP":
             dias_bp = subj_var_values[name]['value']
         elif name_upper == "HYPERTENSION" or name_upper == "MHHTN":
-            if subj_var_values[name]['value'].lower() == "yes" or subj_var_values[name]['value'] == 1:
+            if subj_var_values[name]['value'].lower() == "yes" or subj_var_values[name]['value'] == '1':
                 disease['hypertension'] = "yes"
             else:
                 disease['hypertension'] = "no"
@@ -264,7 +264,7 @@ def get_single_dna_extract_json(study, study_md, subj_var_values, samp_var_value
 
     if age is not None:
         subject_age = DatsObj("Dimension", [
-                ("name", { "value": "Age" }),
+                ("name", DatsObj("Annotation", [("value", "Age")])),
                 ("description", "Age of the subject"),
                 ("values", [ age ])
                 ])
@@ -272,7 +272,7 @@ def get_single_dna_extract_json(study, study_md, subj_var_values, samp_var_value
     
     if visit_year is not None:
         subject_visitYear = DatsObj("Dimension", [
-                ("name", { "value": "Visit year" }),
+                ("name", DatsObj("Annotation", [("value", "Visit year")])),
                 ("description", "Year of visit, to use for longitudinal analysis"),
                 ("values", [ visit_year ])
                 ])
@@ -280,7 +280,7 @@ def get_single_dna_extract_json(study, study_md, subj_var_values, samp_var_value
     
     if sys_bp is not None:
         subject_sysBP = DatsObj("Dimension", [
-                ("name", { "value": "Systolic blood pressure" }),
+                ("name", DatsObj("Annotation", [("value", "Systolic blood pressure")])),
                 ("description", "Systolic blood pressure of subject, measured in mmHg"),
                 ("values", [ sys_bp ])
                 ])
@@ -288,7 +288,7 @@ def get_single_dna_extract_json(study, study_md, subj_var_values, samp_var_value
         
     if dias_bp is not None:
         subject_diasBP = DatsObj("Dimension", [
-                ("name", { "value": "Diastolic blood pressure" }),
+                ("name", DatsObj("Annotation", [("value", "Diastolic blood pressure")])),
                 ("description", "Diastolic blood pressure of subject, measured in mmHg"),
                 ("values", [ dias_bp ])
                 ])
@@ -307,7 +307,7 @@ def get_single_dna_extract_json(study, study_md, subj_var_values, samp_var_value
             ("name", "Hypertension"),
             ("identifier", disease_identifier),
             ("alternateIdentifiers", disease_alt_ids),
-            ("diseaseStatus", OrderedDict([("value", disease['hypertension'] ), ("valueIRI", "")])), 
+            ("diseaseStatus", DatsObj("Annotation", [("value", disease['hypertension'])]))
             ])
         subject_bearerOfDisease.append(subject_hypertension)
 
@@ -493,7 +493,7 @@ def update_subjects_from_restricted_metadata(cache, study, pub_md, restricted_md
             if sa in combined_vars:
                 subject_atts[sa]["var"] = combined_vars[sa]
                 
-        update_single_subject(study, pub_md, subj, subject_atts, use_all_dbgap_vars)
+        update_single_subject(cache, study, pub_md, subj, subject_atts, use_all_dbgap_vars)
 
 def update_dna_extracts_from_restricted_metadata(cache, study, pub_md, restricted_md, samples_d):
     dna_extracts = []
