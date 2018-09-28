@@ -113,9 +113,9 @@ def get_single_dna_extract_json(cache, study, study_md, subj_var_values, samp_va
         elif name_upper == "DIASBP":
             dias_bp = subj_var_values[name]['value']
         elif name_upper == "HYPERTENSION" or name_upper == "HIGHBLOODPRES":
-            if subj_var_values[name]['value'].lower() == "yes" or subj_var_values[name]['value'] == 1:
+            if subj_var_values[name]['value'].lower() == "yes" or subj_var_values[name]['value'] == '1':
                 disease['hypertension'] = "yes"
-            else:
+            elif re.match(r'\S', subj_var_values[name]['value']):
                 disease['hypertension'] = "no"
 
     # anatomical part
@@ -184,7 +184,7 @@ def get_single_dna_extract_json(cache, study, study_md, subj_var_values, samp_va
             ("name", "Hypertension"),
             ("identifier", disease_identifier),
             ("alternateIdentifiers", disease_alt_ids),
-            ("diseaseStatus", OrderedDict([("value", disease['hypertension'] ), ("valueIRI", "")])), 
+            ("diseaseStatus", DatsObj("Annotation", [("value", disease['hypertension'] ), ("valueIRI", "")])), 
             ])
         subject_bearerOfDisease.append(subject_hypertension)
 

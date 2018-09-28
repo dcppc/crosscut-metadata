@@ -43,9 +43,9 @@ def get_subject_dats_material(cache, study, study_md, subj_var_values):
         elif name_upper == "DIASBP":
             dias_bp = subj_var_values[name]['value']
         elif name_upper == "HYPERTENSION" or name_upper == "HIGHBLOODPRES":
-            if subj_var_values[name]['value'].lower() == "yes" or subj_var_values[name]['value'] == 1:
+            if subj_var_values[name]['value'].lower() == "yes" or subj_var_values[name]['value'] == '1':
                 disease['hypertension'] = "yes"
-            else:
+            elif re.match(r'\S', subj_var_values[name]['value']):
                 disease['hypertension'] = "no"
 
     subject_characteristics = []
@@ -105,7 +105,7 @@ def get_subject_dats_material(cache, study, study_md, subj_var_values):
             ("name", "Hypertension"),
             ("identifier", disease_identifier),
             ("alternateIdentifiers", disease_alt_ids),
-            ("diseaseStatus", OrderedDict([("value", disease['hypertension'] ), ("valueIRI", "")])), 
+            ("diseaseStatus", DatsObj("Annotation", [("value", disease['hypertension'] ), ("valueIRI", "")])), 
             ])
         subject_bearerOfDisease.append(subject_hypertension)
 
