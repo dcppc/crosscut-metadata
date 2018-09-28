@@ -83,7 +83,7 @@ def update_single_subject(cache, study, study_md, subj, subj_var_values, use_all
         elif name_upper == "HYPERTENSION" or name_upper == "MHHTN":
             if subj_var_values[name]['value'].lower() == "yes" or subj_var_values[name]['value'] == '1':
                 disease['hypertension'] = "yes"
-            else:
+            elif re.match(r'\S', subj_var_values[name]['value']):
                 disease['hypertension'] = "no"
 
     subject_characteristics = []
@@ -240,7 +240,7 @@ def get_single_dna_extract_json(study, study_md, subj_var_values, samp_var_value
         elif name_upper == "HYPERTENSION" or name_upper == "MHHTN":
             if subj_var_values[name]['value'].lower() == "yes" or subj_var_values[name]['value'] == '1':
                 disease['hypertension'] = "yes"
-            else:
+            elif re.match(r'\S', subj_var_values[name]['value']):
                 disease['hypertension'] = "no"
 
     # anatomical part
