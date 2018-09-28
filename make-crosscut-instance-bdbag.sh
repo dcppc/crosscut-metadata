@@ -15,7 +15,7 @@ setenv PYTHONPATH ./
 # be expanded to include access-restricted dbGaP metadata (see the relevant script 
 # invocation below) but this expanded instance may not be publicly distributed.
 
-setenv VERSION 0.5
+setenv VERSION 0.7
 setenv EXTERNAL_ID "KC7-crosscut-metadata-v${VERSION}"
 setenv EXTERNAL_DESCR "v${VERSION} release of the KC7 crosscut metadata model for GTEx v7 and TOPMed public metadata using DATS v2.2+"
 
