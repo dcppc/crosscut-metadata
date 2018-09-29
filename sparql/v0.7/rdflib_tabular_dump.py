@@ -138,8 +138,7 @@ def print_tabular_dump(g):
                     disease_name = o3
                 # diseaseStatus
                 disease_status = None
-                # TODO - HAS_QUALITY_TERM is a temporary placeholder in disease_obo_context.jsonld
-                for (s3,p3,o3) in g.triples((o, ru.HAS_QUALITY_TERM, None)):
+                for (s3,p3,o3) in g.triples((o, ru.DISEASE_STATUS_TERM, None)):
                     for (s4,p4,o4) in g.triples((o3, ru.SDO_VALUE_TERM, None)):
                         disease_status = o4
 
