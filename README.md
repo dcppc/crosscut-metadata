@@ -12,13 +12,17 @@ from the following DCPPC data sources:
 ## Metadata Model versus Instance
 
 The metadata _model_ specifies _how_ the various metadata will be transformed into a uniform representation,
-whereas the metadata model _instance_ is the transformed representation itself. The metadata model is based
+whereas the metadata _instance_ is the transformed representation itself. The metadata model is based
 on a JSON-LD encoding of [DATS](https://www.nature.com/articles/sdata201759), the DatA Tag Suite data model 
 developed through the Big Data To Knowledge (BD2K) initiative to support dataset discoverability. Several 
 extensions to DATS, along with schema.org and OBO Foundry-based JSON-LD context files, have been developed 
 to support the crosscut metadata model. These extensions and context files can be found in the DATS GitHub
-repository at https://github.com/datatagsuite. For more information on how the 3 main datasets' metadata 
+repository at https://github.com/datatagsuite. For more information on how the three main datasets' metadata 
 are encoded in DATS, see the relevant sections below.
+
+As some TOPmed and GTEx metadata are controlled access, we have created two versions of the Crosscut Metadata Instance: 
+a Public instance that can be accessed by anyone and a more extensive Access Controlled instance for which permission
+is required. We describe below how to access these two versions.
 
 ## SPARQL Queries
 
@@ -29,10 +33,10 @@ Then retrieve and run the scripts in the following directory, as directed in the
 
 https://github.com/dcppc/crosscut-metadata/tree/master/sparql/v0.6
 
-## Downloading the Public Crosscut Metadata Model Instance
+## Downloading the Public Crosscut Metadata Instance
 
-The crosscut metadata model instance, which is essentially a small set of JSON-LD files, is distributed 
-as a [BDBag](http://bd2k.ini.usc.edu/tools/bdbag/). BDBags for all current public releases can be found 
+The Public Commons Metadata Instance, which is essentially a small set of JSON-LD files, is distributed 
+as a [BDBag](https://github.com/fair-research/bdbag/). BDBags for all current public releases can be found 
 in the [releases/](https://github.com/dcppc/crosscut-metadata/tree/master/releases)
 subdirectory. Each BDBag is a gzipped tar file that can be retrieved, extracted and uncompressed with 
 standard Unix or Mac OS command line utilities. On a Mac, for example, the latest (as of this writing) 
@@ -73,9 +77,9 @@ drwxr-xr-x  4 jcrabtree  staff        128 Sep 14 19:56 ..
 Note that if the `bdbag` utility is run to extract the BDBag after unpacking it then the `data` portion 
 of the above path will not be present.
 
-## Building the Public Crosscut Metadata Model Instance
+## Building the Crosscut Metadata Instance
 
-The script to build the public crosscut metadata model instance is called `make-crosscut-instance-bdbag.sh`
+The script that we use to build the Public Crosscut Metadata Instance is called `make-crosscut-instance-bdbag.sh`
 and can be found in the top level of this repository:
 
 https://github.com/dcppc/crosscut-metadata/blob/master/make-crosscut-instance-bdbag.sh
@@ -87,8 +91,8 @@ sources must first be downloaded to the current directory:
 
 ### AGR / Alliance of Genome Resources
 
-For AGR the following resources are needed to generate the current instance, which includes reference
-annotation for  mouse and rat:
+The following resources are needed to generate the AGR contribution to the Crosscut Metadata Instance, which includes reference
+annotations for **mouse** and **rat**:
 
 AGR filtered ortholog .tsv file:
 *  alliance-orthology-july-19-2018-stable-1.6.0-v4.tsv
@@ -111,7 +115,7 @@ GTEx_v7_Annotations_SubjectPhenotypesDS.txt
 GTEx_v7_Annotations_SampleAttributesDS.txt
 ```
 
-In addition the public dbGaP variable summaries and data dictionaries should be downloaded
+In addition, the public dbGaP variable summaries and data dictionaries should be downloaded
 from the following URL into a local directory named `phs000424.v7.p2`:
 
 ```
@@ -147,15 +151,15 @@ must be installed like so:
 pip install bdbag
 ```
 
-## Downloading the Controlled Access Crosscut Metadata Model Instance (DCPPC whitelisted users only)
+## Downloading the Controlled Access Crosscut Metadata Instance (DCPPC whitelisted users only)
 
-The procedure for downloading the controlled access version of the metadata model can be found at
+The procedure for downloading the controlled access version of the Crosscut Metadata Instancee can be found at
 [/docs/controlled_access_download.md](/docs/controlled_access_download.md)
 
-## Building the Controlled Access Crosscut Metadata Model Instance
+## Building the Controlled Access Crosscut Metadata Instance
 
 The script mentioned above, `make-crosscut-instance-bdbag.sh`, also contains example commands 
-(which are commented out by default) showing how to generate DATS JSON for the controlled access 
+(commented out by default) showing how to generate DATS JSON for the controlled access 
 metadata available from dbGaP for the GTEx and TOPMed studies. Download the controlled access 
 dbGaP files to a local directory with the appropriate access controls, and then tell the 
 conversion script where to find the public and controlled access metadata files, as shown in
