@@ -36,11 +36,6 @@ def main():
     # list 2nd-level datasets
     datasets = rdflib_list_2nd_level_datasets.list_2nd_level_datasets(g)
     rdflib_list_2nd_level_datasets.print_results(datasets)
-    
-    # list dataset variables
-#    for dataset_id in (DATASETS):
-#        variables = rdflib_list_dataset_variables.list_dataset_variables(g, dataset_id)
-#        rdflib_list_dataset_variables.print_results(variables, dataset_id)
 
     variables = rdflib_list_dataset_variables.list_dataset_variables(g)
     rdflib_list_dataset_variables.print_results(variables)

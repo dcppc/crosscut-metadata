@@ -36,7 +36,9 @@ DATS_MATERIAL_TERM = rdflib.term.URIRef('http://purl.obolibrary.org/obo/BFO_0000
 DATS_STUDY_TERM = rdflib.term.URIRef('http://purl.obolibrary.org/obo/OBI_0000066') # "investigation"
 DATS_STUDY_GROUP_TERM = rdflib.term.URIRef('http://purl.obolibrary.org/obo/STATO_0000193') # "study group population"
 
+SDO_ACCESS_TERM = rdflib.term.URIRef('https://schema.org/accessMode')
 SDO_ACTION_TERM = rdflib.term.URIRef('https://schema.org/Action')
+SDO_CONTENT_URL = rdflib.term.URIRef('https://schema.org/contentUrl')
 SDO_SIZE_TERM = rdflib.term.URIRef('https://schema.org/contentSize')
 SDO_ANATOMICAL_STRUCTURE_TERM = rdflib.term.URIRef('https://schema.org/AnatomicalStructure')
 SDO_DATA_DOWNLOAD_TERM = rdflib.term.URIRef('https://schema.org/DataDownload')

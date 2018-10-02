@@ -174,7 +174,7 @@ def get_samples_dats_materials(cache, dats_subjects, p_samples, gh_samples, var_
     return dats_samples
 
 # create Datasets for file-level links based on GitHub manifest files
-def get_files_dats_datasets(cache, dats_samples_d, p_samples, gh_samples, protected_cram_files, no_circular_links):
+def get_files_dats_datasets(cache, dats_samples_d, p_samples, gh_samples, protected_cram_files, dois, no_circular_links):
     file_datasets = []
 
     rnaseq_datatype = DatsObj("DataType", [
@@ -223,18 +223,21 @@ def get_files_dats_datasets(cache, dats_samples_d, p_samples, gh_samples, protec
         if re.search(r'wgs\/', file['cram_file_aws']['raw_value']):
             material_type = 'DNA'
             ds_types = get_wgs_datatype()
-            gcp_suffix = '_gcp'
         elif re.search(r'rnaseq\/', file['cram_file_aws']['raw_value']):
             material_type = 'RNA'
             ds_types = get_rnaseq_datatype()
-            gcp_suffix = ''
         else:
             logging.fatal("unable to determine material/sequence type from cram_file_aws=" + file['cram_file_aws']['raw_value'])
             sys.exit(1)
 
+        # retrieve DOIs
+        sample_dois = dois[sample_id]
+        cram_doi = sample_dois['Sodium_GUID_cram']
+        crai_doi = sample_dois['Sodium_GUID_crai']
+
         # RNA-Seq keys = sample_id	cram_file	cram_file_md5	cram_file_size	cram_index	cram_file_aws	cram_index_aws
         # WGS keys = same as above + firecloud_id
-        cram_file = file['cram_file' + gcp_suffix]['raw_value']
+        cram_file = file['cram_file_gcp']['raw_value']
         cram_file_md5 = file['cram_file_md5']['raw_value']
 
         # TODO - review the following encoding decisions:
@@ -244,12 +247,12 @@ def get_files_dats_datasets(cache, dats_samples_d, p_samples, gh_samples, protec
 
         # Google Cloud Platform / Google Storage copy
         gs_access = DatsObj("Access", [
-                ("landingPage", file['cram_file' + gcp_suffix]['raw_value'])
+                ("accessURL", file['cram_file_gcp']['raw_value'])
                 ])
         gs_distro = DatsObj("DatasetDistribution", [
                 ("access", gs_access),
-                ("identifier", DatsObj("Identifier", [("identifier", file['cram_file' + gcp_suffix]['raw_value'])])),
-                ("relatedIdentifiers", [ DatsObj("RelatedIdentifier", [("identifier", file['cram_index' + gcp_suffix]['raw_value']), ("relationType", "cram_index") ])]),
+                ("identifier", DatsObj("Identifier", [("identifier", cram_doi['raw_value'])])),
+                ("relatedIdentifiers", [ DatsObj("RelatedIdentifier", [("identifier", crai_doi['raw_value']), ("relationType", "cram_index") ])]),
                 ("size", int(file['cram_file_size']['raw_value'])),
                 # TODO - add unit for bytes, include IRI?
 #                ("unit", util.get_value_annotation("bytes", cache))
@@ -258,12 +261,12 @@ def get_files_dats_datasets(cache, dats_samples_d, p_samples, gh_samples, protec
 
         # AWS / S3 copy
         s3_access = DatsObj("Access", [
-                ("landingPage", file['cram_file_aws']['raw_value'])
+                ("accessURL", file['cram_file_aws']['raw_value'])
                 ])
         s3_distro = DatsObj("DatasetDistribution", [
                 ("access", s3_access),
-                ("identifier", DatsObj("Identifier", [("identifier", file['cram_file_aws']['raw_value'])])),
-                ("relatedIdentifiers", [ DatsObj("RelatedIdentifier", [("identifier", file['cram_index_aws']['raw_value']), ("relationType", "cram_index") ])]),
+                ("identifier", DatsObj("Identifier", [("identifier", cram_doi['raw_value'])])),
+                ("relatedIdentifiers", [ DatsObj("RelatedIdentifier", [("identifier", crai_doi['raw_value']), ("relationType", "cram_index") ])]),
                 ("size", int(file['cram_file_size']['raw_value'])),
                 # TODO - add unit for bytes, include IRI?
 #                ("unit", util.get_value_annotation("bytes", cache))

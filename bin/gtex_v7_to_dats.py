@@ -29,7 +29,10 @@ V7_SAMPLE_ATTRIBUTES_FILE = 'GTEx_v7_Annotations_SampleAttributesDS.txt'
 
 # manifest files from dcppc/data-stewards GitHub repo:
 WGS_MANIFEST_FILE = 'wgs_cram_files_v7_hg38_datacommons_011516.txt'
-RNASEQ_MANIFEST_FILE = 'rnaseq_cram_files_v7_dbGaP_011516.txt'
+RNASEQ_MANIFEST_FILE = 'rnaseq_cram_files_v7_datacommons_011516.txt'
+# these are currently only on the "dois" branch:
+WGS_DOIS_FILE = 'wgs_dois_2018-10-01.txt'
+RNASEQ_DOIS_FILE = 'rnaseq_dois_2018-10-01.txt'
 
 # ------------------------------------------------------
 # Check sample ids between files
@@ -271,6 +274,12 @@ def main():
     protected_wgs_manifest = args.data_stewards_repo_path + "/gtex/v7/manifests/protected_data/" + WGS_MANIFEST_FILE
     protected_wgs_files = github_files.read_protected_wgs_manifest(protected_wgs_manifest)
 
+    # DOIs
+    rnaseq_dois_file = args.data_stewards_repo_path + "/gtex/v7/manifests/protected_data/" + RNASEQ_DOIS_FILE
+    rnaseq_dois = github_files.read_dois_manifest(rnaseq_dois_file)
+    wgs_dois_file = args.data_stewards_repo_path + "/gtex/v7/manifests/protected_data/" + WGS_DOIS_FILE
+    wgs_dois = github_files.read_dois_manifest(wgs_dois_file)
+
     # compare GitHub manifest files with GitHub id dumps
     cross_check_ids(gh_subjects, gh_samples, protected_rnaseq_files, protected_rnaseq_manifest, "RNA-Seq", "GitHub id dumps")
     cross_check_ids(gh_subjects, gh_samples, protected_wgs_files, protected_wgs_manifest, "WGS","GitHub id dumps")
@@ -376,12 +385,12 @@ def main():
     file_datasets_l = []
 
     # WGS CRAM
-    wgs_dats_file_datasets_l = ccmm.gtex.samples.get_files_dats_datasets(cache, dats_samples_d, p_samples, gh_samples, protected_wgs_files, args.no_circular_links)
+    wgs_dats_file_datasets_l = ccmm.gtex.samples.get_files_dats_datasets(cache, dats_samples_d, p_samples, gh_samples, protected_wgs_files, wgs_dois, args.no_circular_links)
     logging.info("adding Datasets for " + str(len(wgs_dats_file_datasets_l)) + " WGS CRAM files")
     file_datasets_l.extend(wgs_dats_file_datasets_l)
 
     # RNA-Seq CRAM
-    rnaseq_dats_file_datasets_l = ccmm.gtex.samples.get_files_dats_datasets(cache, dats_samples_d, p_samples, gh_samples, protected_rnaseq_files, args.no_circular_links)
+    rnaseq_dats_file_datasets_l = ccmm.gtex.samples.get_files_dats_datasets(cache, dats_samples_d, p_samples, gh_samples, protected_rnaseq_files, rnaseq_dois, args.no_circular_links)
     logging.info("adding Datasets for " + str(len(rnaseq_dats_file_datasets_l)) + " RNA-Seq CRAM files")
     file_datasets_l.extend(rnaseq_dats_file_datasets_l)
 

@@ -152,13 +152,19 @@ def print_tabular_dump(g):
     # retrieve data files
     for d in all_datasets:
         distribs = []  # file paths and sizes
+
+        # primary file
         s3_URI = None
         gs_URI = None
         md5_checksum = None
         file_size = None
+        doi = None
+
+        # index file in relatedIdentifiers
+        index_doi = None
 
         # MD5 checksum
-        # TODO - this is currently stored as a Dimension of Dataset, but will be moved
+        # TODO - this is currently stored as a Dimension of Dataset, but may be moved
         md5_checksum = None
 
         for (s2,p2,o2) in g.triples((d, ru.HAS_PART_TERM, None)):
@@ -175,6 +181,17 @@ def print_tabular_dump(g):
 
         # link Dataset to DatasetDistributions
         for (s,p,o) in g.triples((d, ru.SDO_DISTRIBUTIONS_TERM, None)):
+            is_distribution = False
+
+            # check that the type = DatasetDistribution
+            for (s2,p2,o2) in g.triples((o, ru.RDF_TYPE_TERM, ru.SDO_DATA_DOWNLOAD_TERM)):
+                is_distribution = True
+            if not is_distribution:
+                continue
+
+            # GUID/DOI from @id of DatasetDistribution
+            if re.match(r'^.*doi\.org.*$', str(o)):
+                doi = str(o)
 
             # file size
             for (s2,p2,o2) in g.triples((o, ru.SDO_SIZE_TERM, None)):
@@ -186,15 +203,21 @@ def print_tabular_dump(g):
                         logging.fatal("file size mismatch")
                         sys.exit(1)
 
-            for (s2,p2,o2) in g.triples((o, ru.RDF_TYPE_TERM, ru.SDO_DATA_DOWNLOAD_TERM)):
-                m = re.match(r'^(gs|s3):\/\/.*', str(o))
-                if m is not None:
-                    distribs.append({'URI': str(o), 'size': file_size})
-                    if m.group(1) == "gs":
-                        gs_URI = str(o)
-                    else:
-                        s3_URI = str(o)
-                
+            # access
+            for (s2,p2,o2) in g.triples((o, ru.SDO_ACCESS_TERM, None)):
+                # accessURL
+                for (s3,p3,o3) in g.triples((o2, ru.SDO_CONTENT_URL, None)):
+                    m = re.match(r'^(gs|s3):\/\/.*', str(o3))
+                    if m is not None:
+                        distribs.append({'URI': str(o3), 'size': file_size})
+                        if m.group(1) == "gs":
+                            gs_URI = str(o3)
+                        else:
+                            s3_URI = str(o3)
+
+            # relatedIdentifiers - no term defined yet
+#            for (s2,p2,o2) in g.triples((o, ru.SDO_ACCESS_TERM, None)):
+   
         # link Dataset to DataAcquisition (should be 1-1)
         data_acqs = []
         for (s,p,o) in g.triples((d, ru.PRODUCED_BY_TERM, None)):
@@ -282,6 +305,7 @@ def print_tabular_dump(g):
                         'anatomical_part_id': anatomical_parts[0]['id'],
                         'S3_URI': s3_URI,
                         'GS_URI': gs_URI,
+                        'DOI': doi,
                         'datatype': datatype,
                         'distribs': distribs,
                         'file_size': file_size,
@@ -299,6 +323,7 @@ def print_tabular_dump(g):
     col_headings.extend(["Datatype"])
     col_headings.extend(["File_Size", "MD5_Checksum"])                                    
     col_headings.extend(["AWS_URI", "GCP_URI"])
+    col_headings.extend(["DOI"])
     print("\t".join(col_headings))
 
     # sort datasets
@@ -370,6 +395,9 @@ def print_tabular_dump(g):
                     # URIs
                     col_vals_copy.append(d['S3_URI'])
                     col_vals_copy.append(d['GS_URI'])
+
+                    # DOI
+                    col_vals_copy.append(d['DOI'])
 
                     print("\t".join(col_vals_copy))
 
