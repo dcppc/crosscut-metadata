@@ -13,6 +13,7 @@ import logging
 MD5_REGEX = r'^[a-f\d+]{32}$'
 SUBJECT_ID_REGEX = r'^(GTEX|K)-[0-9A-Z]+$'
 SAMPLE_ID_REGEX = r'^GTEX-[0-9A-Z]+-\d+-([A-Za-z0-9]+-)?[A-Z]+-[A-Z0-9]+|K-\d+-[A-Z]+-[0-9A-Z]+$'
+DOI_REGEX = r'^https:\/\/doi\.org\/[\d\.]+/[\d0-9a-z\-]+$'
 
 # gtex_v7_subject_ids.txt
 #Native form	Prefixed form	URI	Destination URL	Outgoing URI	Entity Type
@@ -57,12 +58,13 @@ TISSUE_ID_COLS = [
 # sample_id	cram_file	cram_file_md5	cram_file_size	cram_index	cram_file_aws	cram_index_aws
 RNASEQ_MANIFEST_COLS = [
     {'id': 'sample_id', 'regex': SAMPLE_ID_REGEX, 'empty_ok': False },
-    {'id': 'cram_file', 'regex': '^gs:\/\/\S+\.cram$', 'empty_ok': False },             # Google Storage URI
+    {'id': 'cram_file_gcp', 'regex': '^gs:\/\/\S+\.cram$', 'empty_ok': False },         # Google Storage URI
+    {'id': 'cram_index_gcp', 'regex': '^gs:\/\/\S+\.cram.crai$', 'empty_ok': False },   # Google Storage URI
+    {'id': 'cram_file_aws', 'regex': '^s3:\/\/\S+\.cram$', 'empty_ok': False },         # S3 URI
+    {'id': 'cram_index_aws', 'regex': '^s3:\/\/\S+\.cram\.crai$', 'empty_ok': False },  # S3 URI
     {'id': 'cram_file_md5', 'regex': MD5_REGEX, 'empty_ok': False },
     {'id': 'cram_file_size', 'regex': r'\d+', 'empty_ok': False },
-    {'id': 'cram_index', 'regex': '^gs:\/\/\S+\.cram.crai$', 'empty_ok': False },       # Google Storage URI
-    {'id': 'cram_file_aws', 'regex': '^s3:\/\/\S+\.cram$', 'empty_ok': False },         # S3 URI
-    {'id': 'cram_index_aws', 'regex': '^s3:\/\/\S+\.cram\.crai$', 'empty_ok': False }   # S3 URI
+    {'id': 'cram_index_md5', 'regex': MD5_REGEX, 'empty_ok': False },                   # Google Storage URI
 ]
 
 #sample_id	firecloud_id	cram_file	cram_file_md5	cram_file_size	cram_index	cram_file_aws	cram_index_aws
@@ -79,6 +81,13 @@ WGS_MANIFEST_COLS = [
     {'id': 'cram_file_md5', 'regex': MD5_REGEX, 'empty_ok': False },
     {'id': 'cram_file_size', 'regex': r'\d+', 'empty_ok': False },
     {'id': 'cram_index_md5', 'regex': MD5_REGEX, 'empty_ok': False }
+]
+
+# sample_id	Sodium_GUID_cram	Sodium_GUID_crai
+DOIS_MANIFEST_COLS = [
+    {'id': 'sample_id', 'regex': SAMPLE_ID_REGEX, 'empty_ok': False },
+    {'id': 'Sodium_GUID_cram', 'regex': DOI_REGEX, 'empty_ok': False },
+    {'id': 'Sodium_GUID_crai', 'regex': DOI_REGEX, 'empty_ok': False }
 ]
 
 # ------------------------------------------------------
@@ -127,3 +136,8 @@ def read_protected_wgs_manifest(manifest_file):
     wgs_cram_files = util.read_csv_metadata_file(manifest_file, WGS_MANIFEST_COLS, 'sample_id')
     logging.info("Read " + str(len(wgs_cram_files)) + " CRAM file(s) from " + manifest_file)
     return wgs_cram_files
+
+def read_dois_manifest(dois_file):
+    dois = util.read_csv_metadata_file(dois_file, DOIS_MANIFEST_COLS, 'sample_id')
+    logging.info("Read " + str(len(dois)) + " DOI(s) from " + dois_file)
+    return dois
