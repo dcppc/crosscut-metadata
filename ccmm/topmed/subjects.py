@@ -154,22 +154,34 @@ def get_subject_dats_material(cache, study, study_md, subj_var_values):
 
     return dats_subj
 
-def get_synthetic_subject_dats_material_from_public_metadata(cache, study, study_md):
+def get_synthetic_subject_dats_material_from_public_metadata(cache, study, study_md, dbgap_subj_id, subj_id):
+    dats_subjects = {}
+
     # Subject summary data
     subj_var_values = {}
+
     for var_type in ('Subject', 'Subject_Phenotypes'):
         if var_type not in study_md:
             continue
         subj_data = study_md[var_type]['var_report']['data']
         subj_vars = subj_data['vars']
+        for sv in subj_vars:
+            id = sv['id']
+            m = re.match(r'^(phv\d+\.v\d+).*$', id)
+            if m is not None:
+                sv['dim'] = study_md['id_to_var'][m.group(1)]['dim']
+            else:
+                logging.warn("failed to parse variable prefix from " + id)
+
         # pick representative and/or legal value for each variable
         dna_extracts.pick_var_values(subj_vars, subj_var_values)
 
     # assign dummy ids: subject ids are protected data
-    subj_var_values['dbGaP_Subject_ID'] = { "value" : "0000000" }
-    subj_var_values['SUBJECT_ID'] = { "value" : "SU0000000" }
-
-    return get_subject_dats_material(cache, study, study_md, subj_var_values)
+    subj_var_values['dbGaP_Subject_ID'] = { "value" : dbgap_subj_id }
+    subj_var_values['SUBJECT_ID'] = { "value" : subj_id }
+    dats_subject = get_subject_dats_material(cache, study, study_md, subj_var_values)
+    dats_subjects[dbgap_subj_id] = dats_subject
+    return dats_subjects
 
 def add_properties(o1, o2, vars1, vars2):
     for p in o2:

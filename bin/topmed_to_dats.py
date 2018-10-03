@@ -19,6 +19,10 @@ import os
 import re
 import sys
 
+# synthetic subject and sample ids
+SUBJ_ID = 1
+SAMP_ID = 1
+
 # ------------------------------------------------------
 # Create DATS StudyGroups from restricted access data
 # ------------------------------------------------------
@@ -164,8 +168,9 @@ def add_study_groups(cache, args, study_md, study_restricted_md, subjects_l, dat
 # ------------------------------------------------------
 
 def process_study(args, cache, topmed_dataset, dbgap_study_dataset, study_id, study_pub_md, study_restricted_md, sample_manifest):
+    global SUBJ_ID, SAMP_ID
     study_md = study_pub_md[study_id]        
-    study_res_md = study_restricted_md[study_id]
+    study_res_md = None
 
     # add DATS Dimensions for dbGaP study variables
     sv = ccmm.topmed.public_metadata.add_study_vars(dbgap_study_dataset, study_md)
@@ -176,19 +181,21 @@ def process_study(args, cache, topmed_dataset, dbgap_study_dataset, study_id, st
     # subjects
     # --------------------------
     dats_subjects_d = {}
-    dats_subjects_l = []
 
     # create DATS subject Materials
     if study_restricted_md is None:
         # create single dummy subject
-        dats_subject = ccmm.topmed.subjects.get_synthetic_subject_dats_material_from_public_metadata(cache, dbgap_study_dataset, study_md)
-        dats_subjects_l.append(dats_subject)
+        dbgap_subj_id = "{:07d}".format(SUBJ_ID)
+        subj_id = "SU{:07d}".format(SUBJ_ID)
+        SUBJ_ID += 1
+        dats_subjects_d = ccmm.topmed.subjects.get_synthetic_subject_dats_material_from_public_metadata(cache, dbgap_study_dataset, study_md, dbgap_subj_id, subj_id)
     else:
         # create complete subject list from restricted metadata
+        study_res_md = study_restricted_md[study_id]
         dats_subjects_d = ccmm.topmed.subjects.get_subjects_dats_materials_from_restricted_metadata(cache, dbgap_study_dataset, study_md, study_res_md)
-        # sorted list of subjects
-        dats_subjects_l = sorted([dats_subjects_d[s] for s in dats_subjects_d], key=lambda s: s.get("name"))
 
+    # sorted list of subjects
+    dats_subjects_l = sorted([dats_subjects_d[s] for s in dats_subjects_d], key=lambda s: s.get("name"))
     logging.info("created " + str(len(dats_subjects_l)) + " subject Materials")
 
     # create 'all subjects' StudyGroup
@@ -215,10 +222,19 @@ def process_study(args, cache, topmed_dataset, dbgap_study_dataset, study_id, st
     # --------------------------
     # samples
     # --------------------------
+    dats_samples_d = {}
 
     # create DATS sample Materials (i.e., RNA/DNA extracts and biological samples)
-    # samples indexed by dbGaP_Sample_ID
-    dats_samples_d = ccmm.topmed.samples.get_samples_dats_materials_from_restricted_metadata(cache, dats_subjects_d, dbgap_study_dataset, study_md, study_res_md)
+    if study_restricted_md is None:
+        # create single dummy sample
+        dbgap_samp_id = "{:07d}".format(SAMP_ID)
+        samp_id = "SA{:07d}".format(SAMP_ID)
+        SAMP_ID += 1
+        dats_samples_d = ccmm.topmed.samples.get_synthetic_sample_dats_material_from_public_metadata(cache, dats_subjects_l[0], dbgap_study_dataset, study_md, dbgap_samp_id, samp_id)
+    else:
+        # samples indexed by dbGaP_Sample_ID from restricted metadata
+        dats_samples_d = ccmm.topmed.samples.get_samples_dats_materials_from_restricted_metadata(cache, dats_subjects_d, dbgap_study_dataset, study_md, study_res_md)
+
     dats_samples_l = sorted([dats_samples_d[s] for s in dats_samples_d], key=lambda s: s.get("name"))
     logging.info("created " + str(len(dats_samples_l)) + " sample Materials")
     dbgap_study_dataset.set("isAbout", dats_samples_l)
@@ -227,26 +243,27 @@ def process_study(args, cache, topmed_dataset, dbgap_study_dataset, study_id, st
     # file Datasets
     # --------------------------
 
-    file_datasets_l = ccmm.topmed.samples.get_files_dats_datasets(cache, dats_samples_d, sample_manifest, args.no_circular_links)
-    logging.info("adding file Datasets for " + str(len(file_datasets_l)) + " sample(s)")
-    dbgap_study_dataset.set("hasPart", file_datasets_l)
+    if study_restricted_md is not None:
+        file_datasets_l = ccmm.topmed.samples.get_files_dats_datasets(cache, dats_samples_d, sample_manifest, args.no_circular_links)
+        logging.info("adding file Datasets for " + str(len(file_datasets_l)) + " sample(s)")
+        dbgap_study_dataset.set("hasPart", file_datasets_l)
 
-    # filter samples not referenced by Datasets
-    referenced_samples = {}
-    for fd in file_datasets_l:
-        data_acq = fd.get("producedBy")
-        for ds in data_acq.get("input"):
-            ds_id = ds.get("@id")
-            referenced_samples[ds_id] = True
+        # filter samples not referenced by Datasets
+        referenced_samples = {}
+        for fd in file_datasets_l:
+            data_acq = fd.get("producedBy")
+            for ds in data_acq.get("input"):
+                ds_id = ds.get("@id")
+                referenced_samples[ds_id] = True
 
-    filtered_dats_samples_l = []
-    for ds in dats_samples_l:
-        if ds.get("@id") in referenced_samples:
-            filtered_dats_samples_l.append(ds)
+        filtered_dats_samples_l = []
+        for ds in dats_samples_l:
+            if ds.get("@id") in referenced_samples:
+                filtered_dats_samples_l.append(ds)
 
-    nfs = len(filtered_dats_samples_l)
-    logging.info(str(nfs) + " sample Materials remain after filtering non-TOPMed samples")
-    dbgap_study_dataset.set("isAbout", filtered_dats_samples_l)
+        nfs = len(filtered_dats_samples_l)
+        logging.info(str(nfs) + " sample Materials remain after filtering non-TOPMed samples")
+        dbgap_study_dataset.set("isAbout", filtered_dats_samples_l)
 
 # ------------------------------------------------------
 # main()

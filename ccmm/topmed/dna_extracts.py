@@ -50,10 +50,11 @@ def pick_var_values(vars, vdict):
             sorted_values.sort(key=lambda x: x['name'])
             value = sorted_values[0]['name']
         
-        if vname in vdict:
+        if (vname in vdict) and (vdict[vname] is not None) and (value is not None) and (vdict[vname]["value"] != value):
             logging.warn("previous value (" + vdict[vname]["value"] + ") for variable " + vname + " overwritten with " + value)
 
-        vdict[vname] = { "value": value, "var": var }
+        if value is not None:
+            vdict[vname] = { "value": value, "var": var }
 
     return vdict
 

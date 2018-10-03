@@ -2,7 +2,7 @@
 
 from ccmm.dats.datsobj import DatsObj
 import ccmm.dats.util as util
-import ccmm.topmed.dna_extracts
+import ccmm.topmed.dna_extracts as dna_extracts
 from collections import OrderedDict
 import logging
 import re
@@ -143,6 +143,36 @@ def add_properties(o1, o2, vars1, vars2):
             o1[p] = o2[p]
             vars1[p] = vars2[p]
 
+def get_synthetic_sample_dats_material_from_public_metadata(cache, dats_subject, study, pub_md, dbgap_samp_id, samp_id):
+    dats_samples_d = {}
+    
+    # Sample summary data
+    samp_var_values = {}
+    for var_type in ('Sample', 'Sample_Attributes'):
+        if var_type not in pub_md:
+            continue
+        samp_data = pub_md[var_type]['var_report']['data']
+        samp_vars = samp_data['vars']
+        for sv in samp_vars:
+            id = sv['id']
+            m = re.match(r'^(phv\d+\.v\d+).*$', id)
+            if m is not None:
+                sv['dim'] = pub_md['id_to_var'][m.group(1)]['dim']
+            else:
+                logging.warn("failed to parse variable prefix from " + id)
+
+        # pick representative and/or legal value for each variable
+        samp_var_values = dna_extracts.pick_var_values(samp_vars, samp_var_values)
+
+    # assign dummy ids: subject and sample ids are protected data
+    samp_var_values['dbGaP_Sample_ID'] = { "value": dbgap_samp_id }
+    samp_var_values['SAMPLE_ID'] = { "value" : samp_id }
+
+    dats_extract = get_sample_dats_material(cache, dats_subject, study, pub_md, samp_var_values)
+    dats_samples_d[samp_var_values['dbGaP_Sample_ID']['value']] = dats_extract
+
+    return dats_samples_d
+
 def get_samples_dats_materials_from_restricted_metadata(cache, dats_subjects, study, pub_md, restricted_md):
     dats_samples_d = {}
 
@@ -161,7 +191,7 @@ def get_samples_dats_materials_from_restricted_metadata(cache, dats_subjects, st
     sample_md = restricted_md['Sample']
     # samples indexed by dbGaP ID
     logging.debug("indexing restricted Sample")
-    samples = ccmm.topmed.dna_extracts.index_dicts(sample_md['data']['rows'], 'dbGaP_Sample_ID')
+    samples = dna_extracts.index_dicts(sample_md['data']['rows'], 'dbGaP_Sample_ID')
     samples_vars = lookup_var_ids(sample_md['data']['rows'][0], 'Sample', '')
 
     sample_atts = None
@@ -172,7 +202,7 @@ def get_samples_dats_materials_from_restricted_metadata(cache, dats_subjects, st
     if 'Sample_Attributes' in restricted_md:
         sample_atts_md = restricted_md['Sample_Attributes']
         logging.debug("indexing restricted Sample_Attributes file")
-        sample_atts = ccmm.topmed.dna_extracts.index_dicts(sample_atts_md['data']['rows'], 'dbGaP_Sample_ID')
+        sample_atts = dna_extracts.index_dicts(sample_atts_md['data']['rows'], 'dbGaP_Sample_ID')
         sample_atts_vars = lookup_var_ids(sample_atts_md['data']['rows'][0], 'Sample_Attributes', '')
     
     # generate JSON for each sample
