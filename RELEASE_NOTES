@@ -1,11 +1,11 @@
 
-v0.6 Release Notes
+v0.7 Release Notes
 
-This is the v0.6 release of the KC7 crosscut metadata model instance for the following datasets:
+This is the v0.7 release of the KC7 crosscut metadata model instance for the following datasets:
 
    -GTEx v7 public RNA-Seq and WGS metadata from the GTEx Portal and dbGaP study phs000424.v7.p2
    -TOPMed public metadata for dbGaP studies phs001024.v3.p1, phs000951.v2.p2, and phs000179.v5.p2
-   -Alliance/AGR gene location and ortholog data for mouse and rat reference genomes
+   -Alliance/AGR gene location and ortholog and phenotype data for mouse and rat reference genomes
 
 The Python scripts used to generate this release may also be run on dbGAP controlled access metadata 
 for the three TOPMed studies (phs001024.v3.p1, phs000951.v2.p2, and phs000179.v5.p2) and one 

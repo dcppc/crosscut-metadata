@@ -8,7 +8,7 @@ setenv PYTHONPATH ./
 # BDBag that contains DATS JSON-LD files that describe the metadata from the 
 # following resources:
 #
-# 1. Public AGR ortholog, disease, and gene coordinate data from mouse and rat.
+# 1. Public AGR ortholog, disease, phenotype and gene coordinate data from mouse and rat.
 # 2. Public GTEx v7 metadata from dbGaP and the GTEx portal.
 # 3. Public TOPMed metadata from non-access-controlled dbGaP files.
 # 
@@ -53,6 +53,8 @@ mkdir -p $EXTERNAL_ID/datasets
  --bgi_gff3_disease_path=./bgi_gff3_disease \
  --ortholog_file=alliance-orthology-july-19-2018-stable-1.6.0-v4.tsv \
  --output_file=AGR_MGI_RGD.jsonld
+
+# NOTE: AGR file is staged remotely and referenced from remote-files.json
 
 ## -----------------------------------------------
 ## Public GTEx v7 dbGaP metadata
@@ -142,10 +144,12 @@ bdbag --archive tgz \
  --contact-email 'jcrabtree@som.umaryland.edu' \
  --external-description "$EXTERNAL_DESCR" \
  --external-identifier $EXTERNAL_ID \
+ --remote-file-manifest remote-files.json \
 $EXTERNAL_ID
 
 ## -----------------------------------------------
 ## Validate BDBag
 ## -----------------------------------------------
 
-bdbag --validate full $EXTERNAL_ID.tgz
+#bdbag $EXTERNAL_ID.tgz
+#bdbag --resolve-fetch missing --validate full $EXTERNAL_ID

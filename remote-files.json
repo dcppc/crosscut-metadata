@@ -1,0 +1,9 @@
+[
+    {
+        "url":"https://s3.amazonaws.com/dcppc-public/crosscut-metadata/v0.7/AGR_MGI_RGD_public-v0.7.jsonld.gz",
+        "length": 102550659,
+        "filename":"datasets/AGR_MGI_RGD_public-v0.7.jsonld.gz",
+        "md5":"a3b4abac87752573a96723a29aabe400",
+        "sha256":"cda2a7388b5ef127743f35c1a86de128d00ce83c7c759eacc7c25ba26e7f7503"
+    }
+]

@@ -1,3 +1,13 @@
+0.7 (October 3 2018)
+ -v0.7 release of KC7 crosscut metadata model instance for the following datasets:
+   -GTEx v7 public RNA-Seq and WGS metadata from the GTEx Portal and dbGaP study phs000424.v7.p2
+   -TOPMed public metadata for dbGaP studies phs001024.v3.p1, phs000951.v2.p2, and phs000179.v5.p2
+   -Alliance/AGR gene location and ortholog and phenotype data for mouse and rat reference genomes
+ -Added phenotype data to AGR instance.
+ -Moved AGR instance to fetch.txt for remote retrieval from Amazon S3, due to file size.
+ -Incorporated KC2 GUIDs (DataCite DOIs) into GTEx instance and modified queries accordingly.
+ -Created separate scripts for several SPARQL queries from earlier releases.
+	
 0.6 (September 14 2018)
  -v0.6 release of KC7 crosscut metadata model instance for the following datasets:
    -GTEx v7 public RNA-Seq and WGS metadata from the GTEx Portal and dbGaP study phs000424.v7.p2
