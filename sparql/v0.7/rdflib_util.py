@@ -15,6 +15,7 @@ RDF_TYPE_TERM = rdflib.term.URIRef('http://www.w3.org/1999/02/22-rdf-syntax-ns#t
 
 BEARER_OF_TERM = rdflib.term.URIRef('http://purl.obolibrary.org/obo/RO_0000053')
 CENTRAL_ID_TERM = rdflib.term.URIRef('http://purl.obolibrary.org/obo/IAO_0000577')
+RELATED_ID_TERM = rdflib.term.URIRef('http://purl.obolibrary.org/obo/IAO_0000578')
 NAME_TERM = rdflib.term.URIRef('http://purl.obolibrary.org/obo/IAO_0000590')
 DESCR_TERM = rdflib.term.URIRef('http://purl.obolibrary.org/obo/IAO_0000300')
 DERIVES_FROM_TERM = rdflib.term.URIRef('http://purl.obolibrary.org/obo/RO_0001000')

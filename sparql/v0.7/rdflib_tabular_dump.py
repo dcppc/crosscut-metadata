@@ -191,7 +191,21 @@ def print_tabular_dump(g):
 
             # GUID/DOI from @id of DatasetDistribution
             if re.match(r'^.*doi\.org.*$', str(o)):
+                if doi is not None and doi != str(o):
+                    logging.warn("DOI " + doi + " replaced by " + str(o))
                 doi = str(o)
+
+            # GUID/DOI of index file - from relatedIdentifiers
+            for (s2,p2,o2) in g.triples((o, ru.CENTRAL_ID_TERM, None)):
+                for (s3,p3,o3) in g.triples((o2, ru.RDF_TYPE_TERM, ru.RELATED_ID_TERM)):
+                    for (s4,p4,o4) in g.triples((o2, ru.CENTRAL_ID_TERM, None)):
+                        if re.match(r'^.*doi\.org.*$', str(o4)):
+                            if index_doi is not None and index_doi != str(o4):
+                                logging.warn("Index DOI " + index_doi + " replaced by " + str(o4))
+                            index_doi = str(o4)
+                            if doi == index_doi:
+                                logging.fatal("DOI and INDEX_DOI are identical: " + doi)
+                                sys.exit(1)
 
             # file size
             for (s2,p2,o2) in g.triples((o, ru.SDO_SIZE_TERM, None)):
@@ -306,6 +320,7 @@ def print_tabular_dump(g):
                         'S3_URI': s3_URI,
                         'GS_URI': gs_URI,
                         'DOI': doi,
+                        'INDEX_DOI': index_doi,
                         'datatype': datatype,
                         'distribs': distribs,
                         'file_size': file_size,
@@ -323,7 +338,7 @@ def print_tabular_dump(g):
     col_headings.extend(["Datatype"])
     col_headings.extend(["File_Size", "MD5_Checksum"])                                    
     col_headings.extend(["AWS_URI", "GCP_URI"])
-    col_headings.extend(["DOI"])
+    col_headings.extend(["DOI", "INDEX_DOI"])
     print("\t".join(col_headings))
 
     # sort datasets
@@ -398,6 +413,7 @@ def print_tabular_dump(g):
 
                     # DOI
                     col_vals_copy.append(d['DOI'])
+                    col_vals_copy.append(d['INDEX_DOI'])
 
                     print("\t".join(col_vals_copy))
 
