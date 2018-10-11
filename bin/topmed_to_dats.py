@@ -167,7 +167,7 @@ def add_study_groups(cache, args, study_md, study_restricted_md, subjects_l, dat
 # Process a single study
 # ------------------------------------------------------
 
-def process_study(args, cache, topmed_dataset, dbgap_study_dataset, study_id, study_pub_md, study_restricted_md, sample_manifest):
+def process_study(args, cache, topmed_dataset, dbgap_study_dataset, study_id, study_pub_md, study_restricted_md, sample_manifest, file_guids):
     global SUBJ_ID, SAMP_ID
     study_md = study_pub_md[study_id]        
     study_res_md = None
@@ -244,7 +244,7 @@ def process_study(args, cache, topmed_dataset, dbgap_study_dataset, study_id, st
     # --------------------------
 
     if study_restricted_md is not None:
-        file_datasets_l = ccmm.topmed.samples.get_files_dats_datasets(cache, dats_samples_d, sample_manifest, args.no_circular_links)
+        file_datasets_l = ccmm.topmed.samples.get_files_dats_datasets(cache, dats_samples_d, sample_manifest, file_guids, args.no_circular_links)
         logging.info("adding file Datasets for " + str(len(file_datasets_l)) + " sample(s)")
         dbgap_study_dataset.set("hasPart", file_datasets_l)
 
@@ -278,6 +278,7 @@ def main():
     parser.add_argument('--dbgap_public_xml_path', required=True, help ='Path to directory that contains public dbGaP pheno_variable_summary files, grouped into subdirectories by accession number.')
     parser.add_argument('--dbgap_protected_metadata_path', required=False, help ='Path to directory that contains access-controlled dbGaP tab-delimited metadata files.')
     parser.add_argument('--manifest_file', required=False, help ='Path to directory that contains TOPMed file manifest for access-controlled data.')
+    parser.add_argument('--guid_files', required=False, help ='Path to directory that contains the .tsv GUID files for TOPMed CRAM and VCF files and associated index files.')
     parser.add_argument('--no_circular_links', action='store_true', help ='Whether to disallow circular links/paths within the JSON-LD output.')
     args = parser.parse_args()
 
@@ -307,13 +308,31 @@ def main():
         studies_by_id[m.group(1)] = tds
         logging.info("indexed study " + m.group(1))
 
-    # read manifest file
     sample_manifest = None
+    file_guids = None
+
     if args.dbgap_protected_metadata_path is not None:
+        # read manifest file
         if args.manifest_file is None:
             logging.fatal("--dbgap_protected_metadata_path given, but no --manifest_file specified")
             sys.exit(1)
         sample_manifest = manifest_files.read_manifest(args.manifest_file)
+
+        # read guid files
+        if args.guid_files is None:
+            logging.fatal("--dbgap_protected_metadata_path given, but no --guid_files specified")
+            sys.exit(1)
+        file_guids = {}
+        for suffix in ('cram', 'crai', 'vcf', 'vcfcsi'):
+            guid_file = args.guid_files + "/" + "topmed-" + suffix + ".tsv"
+            guids = manifest_files.read_guid_file(guid_file)
+            # add guids to file_guids
+            for g in guids:
+                if g in file_guids:
+                    logging.fatal("duplicate filename " + g + " in GUID file " + guid_file)
+                    sys.exit(1)
+                file_guids[g] = guids[g]
+        logging.info("read GUIDs for " + str(len(file_guids)) + " file(s)")
 
     for acc in acc_l:
         # cache used to minimize duplication of JSON objects in JSON-LD output
@@ -333,7 +352,7 @@ def main():
 
         for study_id in study_pub_md:
             dbgap_study_dataset = studies_by_id[study_id]
-            process_study(args, cache, topmed_dataset, dbgap_study_dataset, study_id, study_pub_md, study_restricted_md, sample_manifest)
+            process_study(args, cache, topmed_dataset, dbgap_study_dataset, study_id, study_pub_md, study_restricted_md, sample_manifest, file_guids)
 
     # write Dataset to DATS JSON file
     with open(args.output_file, mode="w") as jf:

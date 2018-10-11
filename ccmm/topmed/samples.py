@@ -238,7 +238,7 @@ def get_samples_dats_materials_from_restricted_metadata(cache, dats_subjects, st
     return dats_samples_d
 
 # create Datasets for file-level links based on TOPMed manifest file
-def get_files_dats_datasets(cache, dats_samples_d, sample_manifest, no_circular_links):
+def get_files_dats_datasets(cache, dats_samples_d, sample_manifest, file_guids, no_circular_links):
     file_datasets_l = []
 
     wgs_datatype = DatsObj("DataType", [
@@ -309,27 +309,56 @@ def get_files_dats_datasets(cache, dats_samples_d, sample_manifest, no_circular_
         # WGS sequence - CRAM and CRAI files
         # ------------------------------------------------
 
-        # Google Cloud Platform / Google Storage copy
+        def get_filename(gs_uri):
+            m = re.match(r'^.*\/([^\/]+)$', gs_uri)
+            if m is None:
+                logging.fatal("unable to parse filename from " + gs_uri)
+                sys.exit(1)
+            filename = m.group(1)
+            return filename
+
         gs_cram = ms['gs_cram']['mapped_value']
         gs_crai = ms['gs_crai']['mapped_value']
-        gs_cram_access = DatsObj("Access", [ ("landingPage", gs_cram) ])
+
+        # GUID lookup
+        cram_file = get_filename(gs_cram)
+        crai_file = get_filename(gs_crai)
+
+        cram_doi = file_guids[cram_file]['Sodium_GUID']['raw_value']
+        cram_size = file_guids[cram_file]['File size']['raw_value']
+        cram_md5 = file_guids[cram_file]['md5sum']['raw_value']
+
+        crai_doi = file_guids[crai_file]['Sodium_GUID']['raw_value']
+        crai_md5 = file_guids[crai_file]['md5sum']['raw_value']
+
+        # handle file size values with "e" in them
+        def filesize_to_int(size):
+            if re.match(r'.*e.*', size):
+                size = int(float(size))
+            else:
+                size = int(size)
+
+        # Google Cloud Platform / Google Storage copy
+        gs_cram_access = DatsObj("Access", [ ("accessURL", gs_cram) ])
         gs_cram_distro = DatsObj("DatasetDistribution", [
             ("access", gs_cram_access),
-            ("identifier", DatsObj("Identifier", [("identifier", gs_cram)])),
-            ("relatedIdentifiers", [ DatsObj("RelatedIdentifier", [("identifier", gs_crai), ("relationType", "cram_index") ])]),
-            # TODO - add file size and units, MD5 checksum
+            ("identifier", DatsObj("Identifier", [("identifier", cram_doi)])),
+            ("relatedIdentifiers", [ DatsObj("RelatedIdentifier", [("identifier", crai_doi), ("relationType", "cram_index") ])]),
+            ("size", filesize_to_int(cram_size)),
+            # TODO - add file size units
             ("conformsTo", [ cram_dstan ])
         ])
 
         # AWS / S3 copy
         s3_cram = ms['s3_cram']['mapped_value']
         s3_crai = ms['s3_crai']['mapped_value']
-        s3_cram_access = DatsObj("Access", [ ("landingPage", s3_cram) ])
+        s3_cram_access = DatsObj("Access", [ ("accessURL", s3_cram) ])
         s3_cram_distro = DatsObj("DatasetDistribution", [
             ("access", s3_cram_access),
-            ("identifier", DatsObj("Identifier", [("identifier", s3_cram)])),
-            ("relatedIdentifiers", [ DatsObj("RelatedIdentifier", [("identifier", s3_crai), ("relationType", "cram_index") ])]),
-            # TODO - add file size and units, MD5 checksum
+            ("identifier", DatsObj("Identifier", [("identifier", cram_doi)])),
+            ("relatedIdentifiers", [ DatsObj("RelatedIdentifier", [("identifier", crai_doi), ("relationType", "cram_index") ])]),
+            ("size", filesize_to_int(cram_size)),
+            # TODO - add file size units
             ("conformsTo", [ cram_dstan ])
         ])
 
@@ -339,9 +368,15 @@ def get_files_dats_datasets(cache, dats_samples_d, sample_manifest, no_circular_
             sys.exit(1)
         filename = m.group(1)
 
+        # TODO - replace this with DATS-specific MD5 checksum encoding (TBD)
+        md5_dimension = DatsObj("Dimension", [
+                ("name", util.get_value_annotation("MD5", cache)),
+                ("values", [ cram_md5 ])
+                ])
+
         cram_dataset = DatsObj("Dataset", [
             ("distributions", [gs_cram_distro, s3_cram_distro]),
-#            ("dimensions", [ md5_dimension ]),
+            ("dimensions", [ md5_dimension ]),
             ("title", filename),
             ("types", [ wgs_type ]),
             ("creators", creators),
@@ -363,27 +398,45 @@ def get_files_dats_datasets(cache, dats_samples_d, sample_manifest, no_circular_
         # Variant calls - VCF and CSI files
         # ------------------------------------------------
 
-        # Google Cloud Platform / Google Storage copy
         gs_vcf = ms['gs_vcf']['mapped_value']
         gs_csi = ms['gs_csi']['mapped_value']
-        gs_vcf_access = DatsObj("Access", [ ("landingPage", gs_vcf) ])
+
+        if gs_vcf is None:
+            logging.warn("no VCF file found for " + sample_id)
+            continue
+
+        # GUID lookup
+        vcf_file = get_filename(gs_vcf)
+        csi_file = get_filename(gs_csi)
+
+        vcf_doi = file_guids[vcf_file]['Sodium_GUID']['raw_value']
+        vcf_size = file_guids[vcf_file]['File size']['raw_value']
+        vcf_md5 = file_guids[vcf_file]['md5sum']['raw_value']
+
+        csi_doi = file_guids[csi_file]['Sodium_GUID']['raw_value']
+        csi_md5 = file_guids[csi_file]['md5sum']['raw_value']
+
+        # Google Cloud Platform / Google Storage copy
+        gs_vcf_access = DatsObj("Access", [ ("accessURL", gs_vcf) ])
         gs_vcf_distro = DatsObj("DatasetDistribution", [
             ("access", gs_vcf_access),
-            ("identifier", DatsObj("Identifier", [("identifier", gs_vcf)])),
-            ("relatedIdentifiers", [ DatsObj("RelatedIdentifier", [("identifier", gs_csi), ("relationType", "vcf_index") ])]),
-            # TODO - add file size and units, MD5 checksum
+            ("identifier", DatsObj("Identifier", [("identifier", vcf_doi)])),
+            ("relatedIdentifiers", [ DatsObj("RelatedIdentifier", [("identifier", csi_doi), ("relationType", "vcf_index") ])]),
+            ("size", filesize_to_int(vcf_size)),
+            # TODO - add file size units
             ("conformsTo", [ vcf_dstan ])
         ])
 
         # AWS / S3 copy
         s3_vcf = ms['s3_vcf']['mapped_value']
         s3_csi = ms['s3_csi']['mapped_value']
-        s3_vcf_access = DatsObj("Access", [ ("landingPage", s3_vcf) ])
+        s3_vcf_access = DatsObj("Access", [ ("accessURL", s3_vcf) ])
         s3_vcf_distro = DatsObj("DatasetDistribution", [
             ("access", s3_vcf_access),
-            ("identifier", DatsObj("Identifier", [("identifier", s3_vcf)])),
-            ("relatedIdentifiers", [ DatsObj("RelatedIdentifier", [("identifier", s3_csi), ("relationType", "vcf_index") ])]),
-            # TODO - add file size and units, MD5 checksum
+            ("identifier", DatsObj("Identifier", [("identifier", vcf_doi)])),
+            ("relatedIdentifiers", [ DatsObj("RelatedIdentifier", [("identifier", csi_doi), ("relationType", "vcf_index") ])]),
+            ("size", filesize_to_int(vcf_size)),
+            # TODO - add file size units
             ("conformsTo", [ vcf_dstan ])
         ])
 
@@ -393,9 +446,15 @@ def get_files_dats_datasets(cache, dats_samples_d, sample_manifest, no_circular_
             sys.exit(1)
         filename = m.group(1)
 
+        # TODO - replace this with DATS-specific MD5 checksum encoding (TBD)
+        md5_dimension = DatsObj("Dimension", [
+                ("name", util.get_value_annotation("MD5", cache)),
+                ("values", [ vcf_md5 ])
+                ])
+
         vcf_dataset = DatsObj("Dataset", [
             ("distributions", [gs_vcf_distro, s3_vcf_distro]),
-#            ("dimensions", [ md5_dimension ]),
+            ("dimensions", [ md5_dimension ]),
             ("title", filename),
             ("types", [ snp_type, cnv_type ]),
             ("creators", creators),
