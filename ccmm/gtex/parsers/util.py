@@ -56,19 +56,19 @@ def read_csv_metadata_file(file_path, column_metadata, id_column):
                     colval = line[cnum]
                     parsed_col = { "raw_value": colval }
 
-                    # check regex if present
-                    if 'regex' in col:
-                        regex = col['regex']
-                        m = re.match(regex, colval)
-                        if m is None:
-                            fatal_parse_error("Value in column '" + str(cnum+1) + "' ('" + colval+ "') does not match regex " + str(regex), file_path, lnum)
-
                     # check for empty value
                     if colval == '':
                         if col['empty_ok']:
                             parsed_col['mapped_value'] = None
                         else:
                             fatal_parse_error("Missing value in column " + str(cnum+1) + "/" + colname + " but empty_ok = False.", file_path, lnum)
+
+                    # check regex if present
+                    elif 'regex' in col:
+                        regex = col['regex']
+                        m = re.match(regex, colval)
+                        if m is None:
+                            fatal_parse_error("Value in column '" + str(cnum+1) + "' ('" + colval+ "') does not match regex " + str(regex), file_path, lnum)
 
                     # integer_cv
                     elif 'integer_cv' in col:
